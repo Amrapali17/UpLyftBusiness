@@ -765,7 +765,7 @@ import {
                       to={`/login?service=${serviceId}&package=${pkg.name}`}
                       className="package-connect"
                     >
-                      Connect with VELQOR
+                      Connect with UpLyftBusiness
                       <ArrowUpRight size={16} />
                     </Link>
                   </article>
@@ -773,7 +773,7 @@ import {
               </div>
   
               <div className="login-note">
-                <strong>Login required.</strong> Create or sign in to your VELQOR
+                <strong>Login required.</strong> Create or sign in to your UpLyftBusiness
                 account before connecting with a service or package.
               </div>
             </div>

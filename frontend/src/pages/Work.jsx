@@ -1002,7 +1002,7 @@ import {
   
                 <p>
                   A look at the types of digital experiences and growth systems
-                  VELQOR can create for businesses.
+                  UpLyftBusiness can create for businesses.
                 </p>
               </div>
   

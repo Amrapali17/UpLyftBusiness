@@ -1,8 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import {
   ArrowUpRight,
-  ChevronDown,
   Moon,
   Sun,
 } from "lucide-react";
@@ -14,11 +14,7 @@ function Navbar() {
     return localStorage.getItem("velqor_theme") === "dark";
   });
 
-  const [contactOpen, setContactOpen] = useState(false);
-
-  /*
-   * Apply theme globally
-   */
+  // Apply theme globally
   useEffect(() => {
     document.body.classList.toggle("dark-mode", darkMode);
 
@@ -33,24 +29,14 @@ function Navbar() {
     );
   }, [darkMode]);
 
-  /*
-   * Close contact dropdown whenever route changes
-   */
-  useEffect(() => {
-    setContactOpen(false);
-  }, [location.pathname]);
-
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "Work", path: "/work" },
     { name: "Industries", path: "/industries" },
+    { name: "Contact", path: "/contact" },
   ];
-
-  const isContactActive =
-    location.pathname === "/contact" ||
-    location.pathname === "/feedback";
 
   const toggleTheme = () => {
     setDarkMode((prev) => !prev);
@@ -61,22 +47,18 @@ function Navbar() {
       <header className="navbar">
         <div className="navbar-inner">
 
-          {/* =========================
-              LOGO
-          ========================== */}
+          {/* LOGO */}
           <Link to="/" className="logo">
             UpLyftBusiness
           </Link>
 
-          {/* =========================
-              NAVIGATION
-          ========================== */}
+          {/* NAVIGATION */}
           <nav className="nav-links">
-
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
                 to={link.path}
+                end={link.path === "/"}
                 className={({ isActive }) =>
                   isActive
                     ? "nav-link active"
@@ -86,85 +68,18 @@ function Navbar() {
                 {link.name}
               </NavLink>
             ))}
-
-            {/* =========================
-                CONTACT DROPDOWN
-            ========================== */}
-            <div className="contact-dropdown">
-
-              <button
-                type="button"
-                className={`nav-link contact-trigger ${
-                  isContactActive ? "active" : ""
-                }`}
-                onClick={() =>
-                  setContactOpen((prev) => !prev)
-                }
-                aria-expanded={contactOpen}
-                aria-haspopup="menu"
-              >
-                <span>Contact</span>
-
-                <ChevronDown
-                  size={15}
-                  className={
-                    contactOpen
-                      ? "rotate-icon"
-                      : ""
-                  }
-                />
-              </button>
-
-              {contactOpen && (
-                <div
-                  className="contact-menu"
-                  role="menu"
-                >
-
-                  <Link
-                    to="/contact"
-                    className="contact-menu-item"
-                    role="menuitem"
-                    onClick={() =>
-                      setContactOpen(false)
-                    }
-                  >
-                    Contact Us
-                  </Link>
-
-                  <Link
-                    to="/feedback"
-                    className="contact-menu-item"
-                    role="menuitem"
-                    onClick={() =>
-                      setContactOpen(false)
-                    }
-                  >
-                    Feedback
-                  </Link>
-
-                </div>
-              )}
-
-            </div>
-
           </nav>
 
-          {/* =========================
-              RIGHT SIDE
-          ========================== */}
+          {/* RIGHT SIDE */}
           <div className="navbar-actions">
 
-            {/* Login */}
-            <Link
-              to="/login"
-              className="nav-button"
-            >
+            {/* LOGIN */}
+            <Link to="/login" className="nav-button">
               <span>Login</span>
               <ArrowUpRight size={17} />
             </Link>
 
-            {/* Theme Toggle */}
+            {/* THEME TOGGLE */}
             <button
               type="button"
               className="theme-toggle"
@@ -188,35 +103,19 @@ function Navbar() {
             </button>
 
           </div>
-
         </div>
       </header>
 
-      {/* =====================================================
-          GLOBAL THEME STYLES
-          ===================================================== */}
       <style>{`
-
-        /* =====================================================
-           BASE
-        ===================================================== */
-
-        html {
-          transition:
-            background-color 0.35s ease,
-            color 0.35s ease;
-        }
-
+        /* BASE */
+        html,
         body {
           transition:
             background-color 0.35s ease,
             color 0.35s ease;
         }
 
-        /* =====================================================
-           NAVBAR
-        ===================================================== */
-
+        /* NAVBAR */
         .navbar {
           position: relative;
           z-index: 1000;
@@ -230,13 +129,19 @@ function Navbar() {
           transition: color 0.35s ease;
         }
 
+        /* LOGO */
         .logo {
+          font-size: 25px;
+          font-weight: 800;
+          letter-spacing: -0.8px;
+          white-space: nowrap;
+          text-decoration: none;
           transition:
             color 0.3s ease,
             opacity 0.3s ease;
-          white-space: nowrap;
         }
 
+        /* NAVIGATION LINKS */
         .nav-link,
         .nav-button,
         .theme-toggle {
@@ -248,34 +153,11 @@ function Navbar() {
             transform 0.25s ease;
         }
 
-        .contact-trigger {
-          display: inline-flex;
+        /* LOGIN + THEME SPACING */
+        .navbar-actions {
+          display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 5px;
-          cursor: pointer;
-          border: 0;
-          background: transparent;
-          font: inherit;
-        }
-
-        .rotate-icon {
-          transform: rotate(180deg);
-          transition: transform 0.25s ease;
-        }
-
-        .contact-menu {
-          z-index: 2000;
-          transition:
-            background-color 0.25s ease,
-            border-color 0.25s ease,
-            box-shadow 0.25s ease;
-        }
-
-        .contact-menu-item {
-          transition:
-            color 0.2s ease,
-            background-color 0.2s ease;
+          gap: 18px;
         }
 
         .theme-toggle {
@@ -289,10 +171,7 @@ function Navbar() {
           transform: translateY(-1px);
         }
 
-        /* =====================================================
-           LIGHT MODE
-        ===================================================== */
-
+        /* LIGHT MODE */
         body:not(.dark-mode) {
           background-color: #ffffff;
           color: #111827;
@@ -316,31 +195,6 @@ function Navbar() {
           color: #111827;
         }
 
-        body:not(.dark-mode) .contact-trigger {
-          color: #475569;
-        }
-
-        body:not(.dark-mode) .contact-trigger:hover,
-        body:not(.dark-mode) .contact-trigger.active {
-          color: #111827;
-        }
-
-        body:not(.dark-mode) .contact-menu {
-          background: #ffffff;
-          border-color: rgba(15, 23, 42, 0.08);
-          box-shadow:
-            0 18px 45px rgba(15, 23, 42, 0.12);
-        }
-
-        body:not(.dark-mode) .contact-menu-item {
-          color: #475569;
-        }
-
-        body:not(.dark-mode) .contact-menu-item:hover {
-          color: #111827;
-          background: #f5f8fb;
-        }
-
         body:not(.dark-mode) .nav-button {
           color: #ffffff;
           background: #111827;
@@ -360,10 +214,7 @@ function Navbar() {
           background: #edf1f5;
         }
 
-        /* =====================================================
-           DARK MODE — GLOBAL
-        ===================================================== */
-
+        /* DARK MODE */
         body.dark-mode {
           background: #080d12 !important;
           color: #f4f7fa;
@@ -372,8 +223,7 @@ function Navbar() {
         body.dark-mode .navbar {
           background: rgba(8, 13, 18, 0.94) !important;
           border-bottom-color: rgba(255, 255, 255, 0.08) !important;
-          box-shadow:
-            0 8px 30px rgba(0, 0, 0, 0.18);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
         }
 
         body.dark-mode .logo {
@@ -387,31 +237,6 @@ function Navbar() {
         body.dark-mode .nav-link:hover,
         body.dark-mode .nav-link.active {
           color: #ffffff !important;
-        }
-
-        body.dark-mode .contact-trigger {
-          color: #aeb9c5 !important;
-        }
-
-        body.dark-mode .contact-trigger:hover,
-        body.dark-mode .contact-trigger.active {
-          color: #ffffff !important;
-        }
-
-        body.dark-mode .contact-menu {
-          background: #101820 !important;
-          border: 1px solid rgba(255, 255, 255, 0.09) !important;
-          box-shadow:
-            0 20px 55px rgba(0, 0, 0, 0.38) !important;
-        }
-
-        body.dark-mode .contact-menu-item {
-          color: #b9c4cf !important;
-        }
-
-        body.dark-mode .contact-menu-item:hover {
-          color: #ffffff !important;
-          background: #18232d !important;
         }
 
         body.dark-mode .nav-button {
@@ -433,12 +258,7 @@ function Navbar() {
           background: #1d2a35 !important;
         }
 
-        /* =====================================================
-           HOME PAGE — DARK MODE
-           These selectors make the existing Home.jsx
-           respond to the theme toggle.
-        ===================================================== */
-
+        /* HOME PAGE — DARK MODE */
         body.dark-mode .site {
           background: #080d12 !important;
           color: #f4f7fa !important;
@@ -475,8 +295,7 @@ function Navbar() {
         body.dark-mode .team-card {
           background: #101820 !important;
           border-color: rgba(255, 255, 255, 0.08) !important;
-          box-shadow:
-            0 15px 45px rgba(0, 0, 0, 0.16) !important;
+          box-shadow: 0 15px 45px rgba(0, 0, 0, 0.16) !important;
         }
 
         body.dark-mode .service-card:hover,
@@ -550,10 +369,7 @@ function Navbar() {
           background: rgba(255, 255, 255, 0.08) !important;
         }
 
-        /* =====================================================
-           FOOTER — DARK MODE
-        ===================================================== */
-
+        /* FOOTER — DARK MODE */
         body.dark-mode footer {
           background: #05090d !important;
           color: #e9eef2 !important;
@@ -568,10 +384,7 @@ function Navbar() {
           color: #ffffff !important;
         }
 
-        /* =====================================================
-           FORM ELEMENTS — DARK MODE
-        ===================================================== */
-
+        /* FORM ELEMENTS — DARK MODE */
         body.dark-mode input,
         body.dark-mode textarea,
         body.dark-mode select {
@@ -589,10 +402,7 @@ function Navbar() {
           color: #dbe3e9 !important;
         }
 
-        /* =====================================================
-           SCROLLBAR
-        ===================================================== */
-
+        /* SCROLLBAR */
         body.dark-mode::-webkit-scrollbar {
           width: 10px;
         }
@@ -610,38 +420,30 @@ function Navbar() {
           background: #354957;
         }
 
-        /* =====================================================
-           ACCESSIBILITY
-        ===================================================== */
-
+        /* ACCESSIBILITY */
         @media (prefers-reduced-motion: reduce) {
           .navbar,
           .nav-link,
           .nav-button,
-          .theme-toggle,
-          .contact-menu-item {
+          .theme-toggle {
             transition: none !important;
           }
         }
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
+        /* MOBILE */
         @media (max-width: 768px) {
           .logo {
-            font-size: 17px;
+            font-size: 19px;
           }
 
           .navbar-actions {
-            gap: 8px;
+            gap: 14px;
           }
 
           .nav-button span {
             display: none;
           }
         }
-
       `}</style>
     </>
   );

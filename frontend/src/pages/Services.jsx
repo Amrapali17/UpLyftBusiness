@@ -110,7 +110,7 @@ export default function Services() {
           <div className="hero-content">
             <div className="hero-eyebrow">
               <span className="live-dot"></span>
-              VELQOR / SERVICES
+              UpLyftBusiness / SERVICES
             </div>
 
             <h1>
@@ -154,7 +154,7 @@ export default function Services() {
           <div className="intro-right">
             <p>
               From building your digital presence to creating demand and
-              accelerating growth — VELQOR brings everything together.
+              accelerating growth — UpLyftBusiness brings everything together.
             </p>
 
             <div className="mini-stats">
@@ -263,7 +263,7 @@ export default function Services() {
 
           <div className="capabilities-header">
             <span className="section-number light">
-              03 — WHY VELQOR
+              03 — WHY UpLyftBusiness
             </span>
 
             <h2>
@@ -304,7 +304,7 @@ export default function Services() {
           </div>
 
           <div className="capability-footer">
-            <span>VELQOR</span>
+            <span>UpLyftBusiness</span>
             <span>BUILD / GROW / SCALE</span>
           </div>
         </section>
