@@ -931,7 +931,7 @@ function About() {
 
 
         /* =====================================================
-           VELQOR SYSTEM
+           UpLyftBusiness SYSTEM
         ===================================================== */
 
         .about-system {
@@ -1385,7 +1385,7 @@ function About() {
         }
 
         .about-final-cta::before {
-          content: "VELQOR";
+          content: "UpLyftBusiness";
 
           position: absolute;
 
@@ -1766,7 +1766,7 @@ function About() {
 
               <div className="about-eyebrow about-reveal">
                 <Sparkles size={15} />
-                ABOUT VELQOR
+                ABOUT UpLyftBusiness
               </div>
 
               <h1 className="about-reveal about-reveal-delay-1">
@@ -1778,7 +1778,7 @@ function About() {
               </h1>
 
               <p className="about-hero-description about-reveal about-reveal-delay-2">
-                VELQOR is a digital and technology company helping businesses
+                UpLyftBusiness is a digital and technology company helping businesses
                 build stronger digital foundations, connect with customers and
                 move toward sustainable growth.
               </p>
@@ -1810,7 +1810,7 @@ function About() {
               <div className="about-visual-card">
 
                 <div className="about-card-top">
-                  <span>VELQOR</span>
+                  <span>UpLyftBusiness</span>
                   <span>01 / 05</span>
                 </div>
 
@@ -1882,7 +1882,7 @@ function About() {
             </p>
 
             <p>
-              VELQOR brings technology, creativity and digital growth together
+              UpLyftBusiness brings technology, creativity and digital growth together
               to help businesses move forward with clarity and confidence.
             </p>
 
@@ -1962,7 +1962,7 @@ function About() {
 
 
         {/* =====================================================
-            VELQOR SYSTEM
+            UpLyftBusiness SYSTEM
         ===================================================== */}
 
         <section className="about-system">
@@ -1977,7 +1977,7 @@ function About() {
 
               <span>V</span>
 
-              <strong>VELQOR</strong>
+              <strong>UpLyftBusiness</strong>
 
             </div>
 
@@ -2011,7 +2011,7 @@ function About() {
           <div className="about-system-content">
 
             <p className="about-label">
-              THE VELQOR SYSTEM
+              THE UpLyftBusiness SYSTEM
             </p>
 
             <h2>
@@ -2140,7 +2140,7 @@ function About() {
             </div>
 
             <p>
-              VELQOR is being built for the long term — solving business needs
+              UpLyftBusiness is being built for the long term — solving business needs
               today while creating the foundation for bigger technology
               solutions tomorrow.
             </p>

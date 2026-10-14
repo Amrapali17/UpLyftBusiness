@@ -248,7 +248,7 @@ function Enquire() {
               </div>
 
               <Link to="/contact" className="direct-button">
-                Contact VELQOR
+                Contact UpLyftBusiness
                 <ArrowRight size={18} />
               </Link>
             </div>
@@ -260,7 +260,7 @@ function Enquire() {
           <div className="cta-glow"></div>
 
           <div className="enquire-container">
-            <span className="section-label">VELQOR</span>
+            <span className="section-label">UpLyftBusiness</span>
 
             <h2>
               Digital.

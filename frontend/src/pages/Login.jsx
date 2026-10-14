@@ -42,8 +42,8 @@ function Login() {
       Supabase, your own backend, etc.
     */
 
-    localStorage.setItem("velqor_logged_in", "true");
-    localStorage.setItem("velqor_user_email", email);
+    localStorage.setItem("UpLyftBusiness_logged_in", "true");
+    localStorage.setItem("UpLyftBusiness_user_email", email);
 
     if (service && packageName) {
       navigate(

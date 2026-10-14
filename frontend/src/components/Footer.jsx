@@ -12,7 +12,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="velqor-footer">
+    <footer className="UpLyftBusiness-footer">
       <div className="footer-main">
         {/* BRAND */}
         <div className="footer-brand">
@@ -144,7 +144,7 @@ function Footer() {
       </div>
 
       <style>{`
-        .velqor-footer {
+        .UpLyftBusiness-footer {
           width: 100%;
           background: #071f2d;
           color: #ffffff;
@@ -328,7 +328,7 @@ function Footer() {
         }
 
         /* DARK MODE */
-        body.dark-mode .velqor-footer {
+        body.dark-mode .UpLyftBusiness-footer {
           background: #050b10 !important;
           color: #f4f7fa;
           border-top: 1px solid rgba(255, 255, 255, 0.06);

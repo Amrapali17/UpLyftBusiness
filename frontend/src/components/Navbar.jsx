@@ -11,7 +11,7 @@ function Navbar() {
   const location = useLocation();
 
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("velqor_theme") === "dark";
+    return localStorage.getItem("UpLyftBusiness_theme") === "dark";
   });
 
   // Apply theme globally
@@ -24,7 +24,7 @@ function Navbar() {
     );
 
     localStorage.setItem(
-      "velqor_theme",
+      "UpLyftBusiness_theme",
       darkMode ? "dark" : "light"
     );
   }, [darkMode]);

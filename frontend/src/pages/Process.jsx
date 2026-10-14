@@ -170,7 +170,7 @@ function Process() {
               <div>
                 <div className="process-label">
                   <span></span>
-                  THE VELQOR METHOD
+                  THE UpLyftBusiness METHOD
                 </div>
 
                 <h2>
@@ -302,7 +302,7 @@ function Process() {
             <div className="statement-layout">
               <div className="process-label light-label">
                 <span></span>
-                THE VELQOR APPROACH
+                THE UpLyftBusiness APPROACH
               </div>
 
               <div>
@@ -361,7 +361,7 @@ function Process() {
 
       <style>{`
         /* =========================================
-           VELQOR — PROCESS PAGE
+           UpLyftBusiness — PROCESS PAGE
            Premium / Editorial / Minimal
         ========================================= */
 
