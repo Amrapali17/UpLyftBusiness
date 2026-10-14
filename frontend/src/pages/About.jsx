@@ -1823,7 +1823,7 @@ function About() {
                   </span>
 
                   <div className="about-big-letter">
-                    V
+                    UB
                   </div>
 
                   <div className="about-card-copy">
@@ -1975,7 +1975,7 @@ function About() {
 
             <div className="system-center">
 
-              <span>V</span>
+              <span>UB</span>
 
               <strong>UpLyftBusiness</strong>
 
