@@ -122,12 +122,14 @@ function Home() {
       description:
         "Leading technology, development and the technical direction of UpLyftBusiness.",
     },
+    
     {
       number: "05",
       role: "Chief Strategy Officer",
       name: "Avanti Kailash Zore",
       description:
         "Shaping business strategy, market opportunities and long-term growth.",
+        image: "/avi.png",
     },
   ];
 
@@ -345,11 +347,15 @@ function Home() {
 
         <section className="about-section">
           <div className="about-visual">
-            <div className="visual-grid">
-              <div className="visual-text" aria-label="UpLyftBusiness">
-                <span>UpLyft</span>
-                <span>Business</span>
-              </div>
+    <div className="visual-grid">
+      <div className="about-logo-circle">
+        <img
+          src="/logo.png"
+          alt="UpLyftBusiness Logo"
+          className="about-logo-image"
+        />
+      </div>
+      
 
               <div className="visual-badge">
                 <span className="badge-dot"></span>
@@ -1312,7 +1318,7 @@ function Home() {
         /* =====================================================
            TEAM
         ====================================================== */
-
+         
         .team-section {
           padding: 150px 0;
           background: #ffffff;
@@ -1762,6 +1768,33 @@ function Home() {
             transition: none !important;
           }
         }
+        .team-member-photo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #69b2e6;
+  background: #edf7fc;
+  box-shadow: 0 8px 24px rgba(47, 121, 168, 0.15);
+}
+
+.team-member-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .team-member-photo {
+    width: 100px;
+    height: 100px;
+  }
+}
+
       `}</style>
     </div>
   );

@@ -121,11 +121,6 @@ function Footer() {
             <span>India · Working Worldwide</span>
           </div>
 
-          <a href="tel:+911234567890">
-            <Phone size={15} />
-            +91 12345 67890
-          </a>
-
           <Link to="/enquire" className="footer-enquire">
             Start a Project
             <ArrowUpRight size={16} />
