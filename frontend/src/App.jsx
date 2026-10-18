@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import Enquire from "./pages/Enquire";
 
 import AdminDashboard from "./admin/AdminDashboard";
+import FloatingWhatsApp from "./components/FloatingWhatsApp";
 
 import "./App.css";
 
@@ -20,7 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Existing website routes */}
+        {/* Website routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
@@ -38,6 +39,9 @@ function App() {
         {/* Admin dashboard */}
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
+
+      {/* Floating WhatsApp button on every route */}
+      <FloatingWhatsApp />
     </BrowserRouter>
   );
 }

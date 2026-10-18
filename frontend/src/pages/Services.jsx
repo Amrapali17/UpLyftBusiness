@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
-  ArrowRight,
   Code2,
   Megaphone,
   Share2,
   Target,
   Palette,
   TrendingUp,
-  Sparkles,
   Check,
 } from "lucide-react";
 
@@ -25,8 +24,6 @@ const services = [
     description:
       "Modern websites and digital platforms designed around your business goals.",
     icon: Code2,
-    tag: "BUILD",
-    accent: "blue",
     points: ["Business Websites", "Web Applications", "Landing Pages"],
   },
   {
@@ -35,46 +32,38 @@ const services = [
     title: "Digital Marketing",
     short: "Make your business impossible to ignore.",
     description:
-      "Data-led marketing systems that attract the right audience and create demand.",
+      "Build your online visibility and connect with the right audience.",
     icon: Megaphone,
-    tag: "GROW",
-    accent: "violet",
-    points: ["SEO", "Lead Generation", "Marketing Strategy"],
+    points: ["SEO", "Marketing Strategy", "Online Visibility"],
   },
   {
     id: "social-media-management",
     number: "03",
-    title: "Social Media",
+    title: "Social Media Management",
     short: "Turn attention into brand value.",
     description:
-      "Consistent content and strategy that make your brand recognizable.",
+      "Build a consistent and recognisable presence across social platforms.",
     icon: Share2,
-    tag: "CONNECT",
-    accent: "cyan",
     points: ["Content Strategy", "Content Creation", "Community"],
   },
   {
     id: "advertising-performance",
     number: "04",
-    title: "Advertising",
+    title: "Performance Advertising",
     short: "Spend smarter. Scale faster.",
     description:
-      "Performance campaigns focused on measurable growth and stronger returns.",
+      "Create and manage advertising campaigns focused on measurable outcomes.",
     icon: Target,
-    tag: "PERFORM",
-    accent: "orange",
-    points: ["Meta Ads", "Google Ads", "Performance Tracking"],
+    points: ["Meta Ads", "Google Ads", "Campaign Tracking"],
   },
   {
     id: "creative-branding",
     number: "05",
     title: "Creative & Branding",
-    short: "Give your business a visual identity.",
+    short: "Give your business a distinctive identity.",
     description:
-      "Distinctive creative systems that make your business look established.",
+      "Create a consistent visual identity that makes your business stand out.",
     icon: Palette,
-    tag: "CREATE",
-    accent: "pink",
     points: ["Brand Identity", "Creative Design", "Visual Systems"],
   },
   {
@@ -83,273 +72,214 @@ const services = [
     title: "Growth & Strategy",
     short: "Turn ambition into a clear direction.",
     description:
-      "Practical strategies designed to identify opportunities and accelerate growth.",
+      "Identify opportunities and build a practical direction for business growth.",
     icon: TrendingUp,
-    tag: "SCALE",
-    accent: "green",
     points: ["Growth Strategy", "Business Consulting", "Market Research"],
   },
 ];
 
 export default function Services() {
   const [active, setActive] = useState(0);
-  const featured = services[active];
-  const FeaturedIcon = featured.icon;
+  const total = services.length;
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % total);
+    }, 2500);
+
+    return () => window.clearInterval(timer);
+  }, [total]);
 
   return (
     <>
       <Navbar />
 
-      <main className="services-page">
+      <main className="up-services">
         {/* HERO */}
-        <section className="services-hero">
-          <div className="hero-grid"></div>
-          <div className="hero-glow hero-glow-one"></div>
-          <div className="hero-glow hero-glow-two"></div>
+        <section className="up-services-hero">
+          <div className="up-hero-grid" />
 
-          <div className="hero-content">
-            <div className="hero-eyebrow">
-              <span className="live-dot"></span>
-              UpLyftBusiness / SERVICES
+          <div className="up-hero-inner">
+            <div className="up-eyebrow">
+              <span className="up-eyebrow-dot" />
+              UPLYFTBUSINESS / SERVICES
             </div>
 
             <h1>
-              We build.
+              Digital solutions
               <br />
-              We grow.
-              <br />
-              <span>We scale.</span>
+              that move business <span>forward.</span>
             </h1>
 
-            <div className="hero-bottom">
+            <div className="up-hero-bottom">
               <p>
-                Digital solutions designed to move ambitious businesses
-                forward.
+                Technology, creativity and strategy — working together to
+                help your business move forward.
               </p>
 
-              <Link to="/enquire" className="hero-button">
-                Start a project
+              <Link to="/enquire" className="up-primary-button">
+                Start a Project
                 <ArrowUpRight size={18} />
               </Link>
             </div>
           </div>
 
-          <div className="hero-scroll">
-            <span>SCROLL TO EXPLORE</span>
-            <div></div>
-          </div>
+          <div className="up-hero-index">01 — OUR EXPERTISE</div>
         </section>
 
-        {/* SERVICES INTRO */}
-        <section className="services-intro">
-          <div className="intro-left">
-            <span className="section-number">01 — WHAT WE DO</span>
-            <h2>
-              One partner.
-              <br />
-              <span>Multiple capabilities.</span>
-            </h2>
-          </div>
-
-          <div className="intro-right">
-            <p>
-              From building your digital presence to creating demand and
-              accelerating growth — UpLyftBusiness brings everything together.
-            </p>
-
-            <div className="mini-stats">
-              <div>
-                <strong>06</strong>
-                <span>CORE SERVICES</span>
-              </div>
-
-              <div>
-                <strong>01</strong>
-                <span>GROWTH PARTNER</span>
-              </div>
-
-              <div>
-                <strong>∞</strong>
-                <span>POSSIBILITIES</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FEATURED SERVICE */}
-        <section className="service-explorer">
-          <div className="explorer-heading">
+        {/* SERVICE CAROUSEL */}
+        <section className="up-service-section">
+          <div className="up-section-heading">
             <div>
-              <span className="section-number">02 — EXPLORE</span>
-              <h2>What can we build together?</h2>
+              <span className="up-section-label">WHAT WE DO</span>
+              <h2>
+                One partner.
+                <br />
+                <span>Multiple capabilities.</span>
+              </h2>
             </div>
 
-            <Sparkles size={26} />
+            <p className="up-section-intro">
+              Explore the services that help businesses build, grow and
+              scale their digital presence.
+            </p>
           </div>
 
-          <div className="explorer-layout">
-            {/* FEATURED */}
-            <Link
-              to={`/services/${featured.id}`}
-              className={`featured-service ${featured.accent}`}
-            >
-              <div className="featured-pattern"></div>
-
-              <div className="featured-top">
-                <span>{featured.number}</span>
-                <span>{featured.tag}</span>
-              </div>
-
-              <div className="featured-icon">
-                <FeaturedIcon size={32} strokeWidth={1.5} />
-              </div>
-
-              <div className="featured-content">
-                <span className="featured-label">FEATURED SERVICE</span>
-
-                <h3>{featured.title}</h3>
-
-                <p>{featured.short}</p>
-
-                <div className="featured-link">
-                  Explore service
-                  <ArrowUpRight size={18} />
-                </div>
-              </div>
-
-              <div className="featured-orb"></div>
-            </Link>
-
-            {/* SERVICE LIST */}
-            <div className="service-list">
+          <div className="up-carousel-window">
+            <div className="up-carousel-track">
               {services.map((service, index) => {
                 const Icon = service.icon;
-                const isActive = index === active;
+                const position = (index - active + total) % total;
+
+                let positionClass = "up-card-hidden";
+
+                if (position === 0) {
+                  positionClass = "up-card-active";
+                } else if (position === 1) {
+                  positionClass = "up-card-next";
+                } else if (position === total - 1) {
+                  positionClass = "up-card-previous";
+                }
 
                 return (
-                  <Link
+                  <article
                     key={service.id}
-                    to={`/services/${service.id}`}
-                    className={`service-row ${
-                      isActive ? "active" : ""
-                    }`}
-                    onMouseEnter={() => setActive(index)}
-                    onFocus={() => setActive(index)}
+                    className={`up-service-card ${positionClass}`}
+                    aria-hidden={position !== 0}
+                    aria-label={service.title}
                   >
-                    <div className="service-row-number">
-                      {service.number}
+                    <div className="up-card-top">
+                      <span>
+                        {service.number}{" "}
+                        <span className="up-card-slash">/</span> 06
+                      </span>
+
+                      <Icon size={29} strokeWidth={1.5} />
                     </div>
 
-                    <div className="service-row-icon">
-                      <Icon size={21} strokeWidth={1.7} />
-                    </div>
+                    <div className="up-card-main">
+                      <span className="up-card-kicker">
+                        DIGITAL & TECHNOLOGY
+                      </span>
 
-                    <div className="service-row-info">
                       <h3>{service.title}</h3>
                       <p>{service.short}</p>
+
+                      <div className="up-card-points">
+                        {service.points.map((point) => (
+                          <span key={point}>
+                            <Check size={14} />
+                            {point}
+                          </span>
+                        ))}
+                      </div>
+
+                      <Link
+                        to={`/services/${service.id}`}
+                        className="up-card-link"
+                        tabIndex={position === 0 ? 0 : -1}
+                      >
+                        Explore service
+                        <ArrowUpRight size={18} />
+                      </Link>
                     </div>
 
-                    <ArrowUpRight className="row-arrow" size={20} />
-                  </Link>
+                    <span className="up-card-watermark">
+                      {service.number}
+                    </span>
+                  </article>
                 );
               })}
             </div>
           </div>
-        </section>
 
-        {/* CAPABILITIES */}
-        <section className="capabilities">
-          <div className="capabilities-bg"></div>
+          <div className="up-carousel-footer">
+            <span>CONTINUOUSLY EXPLORING OUR SERVICES</span>
 
-          <div className="capabilities-header">
-            <span className="section-number light">
-              03 — WHY UpLyftBusiness
+            <div className="up-carousel-progress" aria-hidden="true">
+              <span
+                key={active}
+                className="up-carousel-progress-fill"
+              />
+            </div>
+
+            <span className="up-carousel-count">
+              {String(active + 1).padStart(2, "0")} / 06
             </span>
-
-            <h2>
-              More than
-              <br />
-              <span>just a service.</span>
-            </h2>
-          </div>
-
-          <div className="capability-grid">
-            <div className="capability-card">
-              <span>01</span>
-              <div className="capability-line"></div>
-              <h3>Strategy First</h3>
-              <p>Every project starts with a clear direction.</p>
-            </div>
-
-            <div className="capability-card">
-              <span>02</span>
-              <div className="capability-line"></div>
-              <h3>Built to Perform</h3>
-              <p>Design and technology with business outcomes in mind.</p>
-            </div>
-
-            <div className="capability-card">
-              <span>03</span>
-              <div className="capability-line"></div>
-              <h3>One Ecosystem</h3>
-              <p>Everything works together instead of working separately.</p>
-            </div>
-
-            <div className="capability-card">
-              <span>04</span>
-              <div className="capability-line"></div>
-              <h3>Built to Scale</h3>
-              <p>Solutions designed for where your business is going.</p>
-            </div>
-          </div>
-
-          <div className="capability-footer">
-            <span>UpLyftBusiness</span>
-            <span>BUILD / GROW / SCALE</span>
           </div>
         </section>
 
-        {/* SERVICE STRIP */}
-        <section className="service-strip">
-          <div className="strip-title">
-            <span>OUR EXPERTISE</span>
-            <h2>Everything your business needs.</h2>
+        {/* ALL SERVICES */}
+        <section className="up-all-services">
+          <div className="up-all-services-heading">
+            <div>
+              <span className="up-section-label">OUR CAPABILITIES</span>
+              <h2>Everything we do.</h2>
+            </div>
+
+            <span className="up-total-services">06 SERVICES</span>
           </div>
 
-          <div className="strip-items">
+          <div className="up-services-list">
             {services.map((service) => (
               <Link
                 key={service.id}
                 to={`/services/${service.id}`}
-                className="strip-item"
+                className="up-service-row"
               >
-                <Check size={17} />
-                {service.title}
+                <span className="up-row-number">{service.number}</span>
+                <span className="up-row-name">{service.title}</span>
+                <span className="up-row-description">{service.short}</span>
+
+                <ArrowUpRight
+                  size={20}
+                  className="up-row-arrow"
+                />
               </Link>
             ))}
           </div>
         </section>
 
         {/* CTA */}
-        <section className="services-cta">
-          <div className="cta-grid"></div>
+        <section className="up-services-cta">
+          <div className="up-cta-grid" />
 
-          <div className="cta-inner">
-            <span>04 — LET'S BUILD</span>
+          <div className="up-cta-content">
+            <span className="up-section-label">HAVE A PROJECT IN MIND?</span>
 
             <h2>
-              Have an idea?
+              Let's move your
               <br />
-              <em>Let's make it real.</em>
+              business <span>forward.</span>
             </h2>
 
             <p>
-              Tell us what you're building. We'll figure out the rest.
+              Tell us what you're building. Let's explore what's possible.
             </p>
 
-            <Link to="/enquire" className="cta-button">
-              Start a conversation
-              <ArrowRight size={19} />
+            <Link to="/enquire" className="up-primary-button">
+              Start a Project
+              <ArrowUpRight size={18} />
             </Link>
           </div>
         </section>
@@ -358,880 +288,719 @@ export default function Services() {
       <Footer />
 
       <style>{`
-        * {
+        .up-services {
+          --up-bg: #f6f8fa;
+          --up-text: #111c25;
+          --up-muted: #73808b;
+          --up-line: #dce3e9;
+          background: var(--up-bg);
+          color: var(--up-text);
+          overflow: hidden;
+          transition: background .3s ease, color .3s ease;
+        }
+
+        .up-services *,
+        .up-services *::before,
+        .up-services *::after {
           box-sizing: border-box;
         }
 
-        .services-page {
-          background: #f6f8fb;
-          color: #071018;
-          overflow: hidden;
-        }
-
-        /* ================= HERO ================= */
-
-        .services-hero {
-          min-height: 88vh;
-          background: #061017;
-          color: white;
+        /* HERO */
+        .up-services-hero {
           position: relative;
+          min-height: 650px;
           display: flex;
           align-items: center;
           overflow: hidden;
+          background: #091722;
+          color: #f8fafc;
         }
 
-        .hero-grid {
+        .up-hero-grid,
+        .up-cta-grid {
           position: absolute;
           inset: 0;
-          opacity: .18;
-          background-image:
-            linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
-          background-size: 70px 70px;
-          mask-image: linear-gradient(to bottom, black, transparent);
-        }
-
-        .hero-glow {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
           pointer-events: none;
+          background-image:
+            linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+          background-size: 64px 64px;
+          mask-image: linear-gradient(to bottom, black, transparent 90%);
         }
 
-        .hero-glow-one {
-          width: 500px;
-          height: 500px;
-          right: -100px;
-          top: -100px;
-          background: rgba(36, 141, 255, .25);
-        }
-
-        .hero-glow-two {
-          width: 400px;
-          height: 400px;
-          left: -180px;
-          bottom: -150px;
-          background: rgba(102, 56, 255, .18);
-        }
-
-        .hero-content {
+        .up-hero-inner {
+          position: relative;
+          z-index: 1;
           width: min(1220px, 90%);
           margin: auto;
-          position: relative;
-          z-index: 2;
-          padding: 110px 0 90px;
+          padding: 135px 0 100px;
         }
 
-        .hero-eyebrow,
-        .section-number {
-          font-size: 11px;
-          letter-spacing: 2.2px;
-          font-weight: 700;
-          color: #668096;
-        }
-
-        .hero-eyebrow {
-          color: #9db2c5;
+        .up-eyebrow {
           display: flex;
           align-items: center;
           gap: 10px;
-          margin-bottom: 40px;
+          color: #a7b7c4;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 2px;
+          margin-bottom: 36px;
         }
 
-        .live-dot {
+        .up-eyebrow-dot {
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: #3da5ff;
-          box-shadow: 0 0 16px #3da5ff;
+          background: #86b8dc;
         }
 
-        .hero-content h1 {
-          font-size: clamp(64px, 9vw, 138px);
-          line-height: .86;
-          letter-spacing: -7px;
+        .up-hero-inner h1 {
+          max-width: 1100px;
+          font-size: clamp(49px, 7.7vw, 100px);
+          line-height: .99;
+          letter-spacing: -4.5px;
+          font-weight: 740;
           margin: 0;
-          font-weight: 700;
-          max-width: 1050px;
         }
 
-        .hero-content h1 span {
-          color: #4aa7ff;
+        .up-hero-inner h1 span {
+          color: #8ab9dd;
         }
 
-        .hero-bottom {
+        .up-hero-bottom {
+          max-width: 930px;
+          margin-top: 40px;
           display: flex;
+          align-items: center;
           justify-content: space-between;
-          align-items: flex-end;
-          margin-top: 75px;
-          max-width: 950px;
+          gap: 25px;
         }
 
-        .hero-bottom p {
-          color: #9aacbc;
-          font-size: 18px;
-          line-height: 1.6;
+        /* INCREASED HERO SUBTEXT */
+        .up-hero-bottom p {
           max-width: 430px;
+          color: #afbdc8;
+          font-size: 17px;
+          line-height: 1.9;
           margin: 0;
         }
 
-        .hero-button {
+        .up-primary-button {
           display: inline-flex;
           align-items: center;
-          gap: 12px;
+          justify-content: center;
+          gap: 13px;
+          flex-shrink: 0;
           padding: 16px 21px;
-          background: white;
-          color: #071018;
+          background: #f5f8fa;
+          color: #0b1a25;
           text-decoration: none;
-          font-size: 13px;
-          font-weight: 700;
-          transition: .3s ease;
+          font-size: 15px;
+          font-weight: 750;
+          transition: background .2s ease, transform .2s ease;
         }
 
-        .hero-button:hover {
-          background: #4aa7ff;
-          color: white;
-          transform: translateY(-3px);
+        .up-primary-button:hover {
+          background: #dceaf4;
+          transform: translateY(-2px);
         }
 
-        .hero-scroll {
+        .up-hero-index {
           position: absolute;
           right: 5%;
-          bottom: 38px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          color: #627889;
+          bottom: 30px;
+          color: #8597a5;
           font-size: 9px;
-          letter-spacing: 2px;
-          z-index: 2;
+          letter-spacing: 1.7px;
         }
 
-        .hero-scroll div {
-          width: 55px;
-          height: 1px;
-          background: #526776;
-        }
-
-        /* ================= INTRO ================= */
-
-        .services-intro {
+        /* SECTION HEADINGS */
+        .up-service-section,
+        .up-all-services {
           width: min(1220px, 90%);
           margin: auto;
-          padding: 125px 0 105px;
-          display: grid;
-          grid-template-columns: 1.15fr .85fr;
-          gap: 100px;
         }
 
-        .services-intro h2,
-        .explorer-heading h2 {
-          font-size: clamp(48px, 5vw, 76px);
-          line-height: .98;
-          letter-spacing: -3.5px;
-          margin: 25px 0 0;
+        .up-service-section {
+          padding: 105px 0 55px;
         }
 
-        .services-intro h2 span {
-          color: #8b99a7;
+        .up-section-label {
+          color: #7d8c98;
+          font-size: 11px;
+          font-weight: 750;
+          letter-spacing: 1.8px;
         }
 
-        .intro-right {
-          padding-top: 40px;
-        }
-
-        .intro-right > p {
-          font-size: 19px;
-          line-height: 1.65;
-          color: #667582;
-          max-width: 500px;
-          margin: 0;
-        }
-
-        .mini-stats {
-          margin-top: 60px;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          border-top: 1px solid #d8dfe5;
-          border-bottom: 1px solid #d8dfe5;
-        }
-
-        .mini-stats div {
-          padding: 25px 15px 25px 0;
-          border-right: 1px solid #d8dfe5;
-        }
-
-        .mini-stats div:last-child {
-          border: 0;
-          padding-left: 20px;
-        }
-
-        .mini-stats strong {
-          display: block;
-          font-size: 34px;
-          letter-spacing: -2px;
-        }
-
-        .mini-stats span {
-          display: block;
-          margin-top: 8px;
-          font-size: 9px;
-          letter-spacing: 1.5px;
-          color: #87939d;
-        }
-
-        /* ================= EXPLORER ================= */
-
-        .service-explorer {
-          width: min(1220px, 90%);
-          margin: auto;
-          padding-bottom: 130px;
-        }
-
-        .explorer-heading {
+        .up-section-heading {
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
-          margin-bottom: 45px;
+          gap: 40px;
+          margin-bottom: 43px;
         }
 
-        .explorer-heading h2 {
-          font-size: clamp(38px, 4vw, 58px);
-          margin-top: 15px;
+        .up-section-heading h2,
+        .up-all-services-heading h2 {
+          font-size: clamp(39px, 5vw, 65px);
+          line-height: .99;
+          letter-spacing: -3px;
+          margin: 19px 0 0;
         }
 
-        .explorer-heading > svg {
-          color: #4a9df0;
-          margin-bottom: 8px;
+        .up-section-heading h2 span {
+          color: #84939f;
         }
 
-        .explorer-layout {
-          display: grid;
-          grid-template-columns: 1.05fr .95fr;
-          gap: 18px;
-          min-height: 600px;
+        /* INCREASED SECTION INTRO */
+        .up-section-intro {
+          max-width: 360px;
+          color: var(--up-muted);
+          font-size: 16px;
+          line-height: 1.9;
+          margin: 0 0 3px;
         }
 
-        .featured-service {
-          min-height: 600px;
+        /* CAROUSEL */
+        .up-carousel-window {
           position: relative;
+          width: 100%;
           overflow: hidden;
-          color: white;
-          text-decoration: none;
-          padding: 34px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          transition: .35s ease;
+          padding: 12px 0 18px;
+        }
+
+        .up-carousel-track {
+          position: relative;
+          height: 435px;
           isolation: isolate;
         }
 
-        .featured-service.blue {
-          background: linear-gradient(135deg, #0a3151, #0b6fb5);
-        }
-
-        .featured-service.violet {
-          background: linear-gradient(135deg, #22124e, #6641d5);
-        }
-
-        .featured-service.cyan {
-          background: linear-gradient(135deg, #063d4b, #0796b7);
-        }
-
-        .featured-service.orange {
-          background: linear-gradient(135deg, #502a0a, #d87316);
-        }
-
-        .featured-service.pink {
-          background: linear-gradient(135deg, #4a1537, #c74388);
-        }
-
-        .featured-service.green {
-          background: linear-gradient(135deg, #0d3c2c, #26946c);
-        }
-
-        .featured-service:hover {
-          transform: translateY(-5px);
-        }
-
-        .featured-pattern {
+        .up-service-card {
           position: absolute;
-          inset: 0;
-          opacity: .14;
-          background-image:
-            linear-gradient(135deg, transparent 45%, rgba(255,255,255,.5) 46%, transparent 47%),
-            linear-gradient(45deg, transparent 45%, rgba(255,255,255,.35) 46%, transparent 47%);
-          background-size: 80px 80px;
-          z-index: -1;
-        }
-
-        .featured-top {
+          top: 0;
+          left: 50%;
+          width: 72%;
+          height: 405px;
+          padding: clamp(23px, 3.5vw, 40px);
           display: flex;
+          flex-direction: column;
           justify-content: space-between;
-          font-size: 10px;
-          letter-spacing: 2px;
-          font-weight: 700;
+          overflow: hidden;
+          background: #0b1a25;
+          border: 1px solid #253a48;
+          color: #f7fafc;
+          transition:
+            transform .8s cubic-bezier(.22,.8,.25,1),
+            opacity .8s ease,
+            filter .8s ease;
+          will-change: transform, opacity;
         }
 
-        .featured-icon {
-          position: absolute;
-          right: 35px;
-          top: 95px;
-          width: 72px;
-          height: 72px;
-          border: 1px solid rgba(255,255,255,.25);
+        .up-card-active {
+          z-index: 3;
+          opacity: 1;
+          transform: translateX(-50%) scale(1);
+          filter: none;
+          pointer-events: auto;
+        }
+
+        .up-card-next {
+          z-index: 2;
+          opacity: .8;
+          transform: translateX(37%) scale(.92);
+          filter: brightness(.78);
+          pointer-events: none;
+        }
+
+        .up-card-previous {
+          z-index: 1;
+          opacity: .6;
+          transform: translateX(-137%) scale(.92);
+          filter: brightness(.7);
+          pointer-events: none;
+        }
+
+        .up-card-hidden {
+          z-index: 0;
+          opacity: 0;
+          transform: translateX(150%) scale(.86);
+          pointer-events: none;
+        }
+
+        .up-card-top {
+          position: relative;
+          z-index: 1;
           display: flex;
           align-items: center;
-          justify-content: center;
-          backdrop-filter: blur(10px);
+          justify-content: space-between;
+          gap: 16px;
+          color: #9cabb7;
+          font-size: 11px;
+          letter-spacing: 1.6px;
         }
 
-        .featured-content {
+        .up-card-top svg {
+          color: #a3c9e6;
+          flex-shrink: 0;
+        }
+
+        .up-card-slash {
+          color: #536978;
+          padding: 0 5px;
+        }
+
+        .up-card-main {
           position: relative;
-          z-index: 2;
+          z-index: 1;
+          max-width: 580px;
+          padding-bottom: 3px;
         }
 
-        .featured-label {
-          font-size: 9px;
+        .up-card-kicker {
+          color: #8db7d6;
+          font-size: 10px;
+          font-weight: 750;
           letter-spacing: 2px;
-          opacity: .65;
         }
 
-        .featured-content h3 {
-          font-size: clamp(42px, 5vw, 70px);
-          line-height: .95;
-          letter-spacing: -3px;
-          max-width: 550px;
-          margin: 14px 0;
+        .up-card-main h3 {
+          font-size: clamp(37px, 5.1vw, 67px);
+          line-height: .99;
+          letter-spacing: -2.7px;
+          margin: 17px 0;
+          overflow-wrap: anywhere;
         }
 
-        .featured-content p {
-          font-size: 17px;
-          color: rgba(255,255,255,.75);
-          max-width: 420px;
-          line-height: 1.5;
+        /* INCREASED FEATURED SERVICE SUBTEXT */
+        .up-card-main p {
+          max-width: 440px;
+          color: #b2c0ca;
+          font-size: 16px;
+          line-height: 1.8;
+          margin: 0;
         }
 
-        .featured-link {
-          margin-top: 30px;
+        .up-card-points {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px 18px;
+          margin-top: 23px;
+        }
+
+        .up-card-points span {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          color: #d0dae1;
+          font-size: 12px;
+        }
+
+        .up-card-points svg {
+          color: #9cc5e2;
+          flex-shrink: 0;
+        }
+
+        .up-card-link {
           display: inline-flex;
           align-items: center;
           gap: 10px;
+          margin-top: 23px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid #647b8b;
+          color: #fff;
+          text-decoration: none;
           font-size: 13px;
           font-weight: 700;
-          border-bottom: 1px solid rgba(255,255,255,.4);
-          padding-bottom: 10px;
+          transition: gap .2s ease;
         }
 
-        .featured-orb {
+        .up-card-link:hover {
+          gap: 16px;
+        }
+
+        .up-card-watermark {
           position: absolute;
-          width: 320px;
-          height: 320px;
-          right: -130px;
-          bottom: -140px;
-          border: 1px solid rgba(255,255,255,.18);
-          border-radius: 50%;
-          box-shadow:
-            0 0 0 50px rgba(255,255,255,.025),
-            0 0 0 100px rgba(255,255,255,.02);
+          z-index: 0;
+          right: -8px;
+          bottom: -66px;
+          color: rgba(255,255,255,.035);
+          font-size: clamp(180px, 24vw, 300px);
+          font-weight: 800;
+          letter-spacing: -20px;
+          line-height: 1;
+          pointer-events: none;
         }
 
-        /* ================= SERVICE LIST ================= */
-
-        .service-list {
+        .up-carousel-footer {
           display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-
-        .service-row {
-          min-height: 94px;
-          display: grid;
-          grid-template-columns: 40px 48px 1fr 30px;
           align-items: center;
-          gap: 15px;
-          padding: 15px 20px;
-          color: #071018;
-          text-decoration: none;
-          background: white;
-          border: 1px solid #e5e9ed;
-          transition: .3s ease;
-        }
-
-        .service-row:hover,
-        .service-row.active {
-          background: #071018;
-          color: white;
-          border-color: #071018;
-          transform: translateX(-5px);
-        }
-
-        .service-row-number {
-          font-size: 10px;
-          color: #9ba7b0;
+          gap: 20px;
+          color: #85939e;
+          font-size: 11px;
           font-weight: 700;
+          letter-spacing: 1.2px;
         }
 
-        .service-row-icon {
-          width: 42px;
-          height: 42px;
+        .up-carousel-progress {
+          position: relative;
+          flex: 1;
+          max-width: 200px;
+          height: 2px;
+          background: var(--up-line);
+          overflow: hidden;
+        }
+
+        .up-carousel-progress-fill {
+          position: absolute;
+          inset: 0;
+          background: #6b9fc5;
+          transform-origin: left;
+          animation: upProgress 2.5s linear forwards;
+        }
+
+        .up-carousel-count {
+          margin-left: auto;
+          font-variant-numeric: tabular-nums;
+          white-space: nowrap;
+        }
+
+        @keyframes upProgress {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+
+        /* ALL SERVICES LIST */
+        .up-all-services {
+          padding: 70px 0 115px;
+        }
+
+        .up-all-services-heading {
           display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 20px;
+          padding-bottom: 30px;
+        }
+
+        .up-all-services-heading h2 {
+          font-size: clamp(35px, 4.5vw, 53px);
+          letter-spacing: -2.5px;
+        }
+
+        .up-total-services {
+          color: #87939d;
+          font-size: 10px;
+          font-weight: 750;
+          letter-spacing: 1.5px;
+          white-space: nowrap;
+          padding-bottom: 6px;
+        }
+
+        .up-services-list {
+          border-top: 1px solid var(--up-line);
+        }
+
+        .up-service-row {
+          min-height: 82px;
+          display: grid;
+          grid-template-columns: 55px minmax(200px, .95fr) minmax(200px, 1fr) 24px;
           align-items: center;
-          justify-content: center;
-          background: #f0f3f6;
-          color: #4a9df0;
-          transition: .3s;
+          gap: 18px;
+          border-bottom: 1px solid var(--up-line);
+          color: var(--up-text);
+          text-decoration: none;
+          transition: padding .25s ease, background .25s ease;
         }
 
-        .service-row:hover .service-row-icon,
-        .service-row.active .service-row-icon {
-          background: rgba(74,157,240,.15);
+        .up-service-row:hover {
+          padding-left: 12px;
+          background: rgba(105, 150, 185, .06);
         }
 
-        .service-row-info h3 {
-          margin: 0 0 5px;
-          font-size: 16px;
-        }
-
-        .service-row-info p {
-          margin: 0;
-          color: #8a969f;
+        .up-row-number {
+          color: #8996a1;
           font-size: 12px;
         }
 
-        .service-row:hover .service-row-info p,
-        .service-row.active .service-row-info p {
-          color: #8fa1af;
+        /* INCREASED SERVICE LIST TITLE */
+        .up-row-name {
+          font-size: 18px;
+          font-weight: 650;
         }
 
-        .row-arrow {
-          transition: .3s;
+        /* INCREASED SERVICE LIST DESCRIPTION */
+        .up-row-description {
+          color: var(--up-muted);
+          font-size: 14px;
+          line-height: 1.7;
         }
 
-        .service-row:hover .row-arrow,
-        .service-row.active .row-arrow {
-          color: #4aa7ff;
+        .up-row-arrow {
+          justify-self: end;
+          color: #6e8799;
+          transition: transform .2s ease;
+        }
+
+        .up-service-row:hover .up-row-arrow {
           transform: translate(3px, -3px);
         }
 
-        /* ================= CAPABILITIES ================= */
-
-        .capabilities {
-          background: #061017;
-          color: white;
-          position: relative;
-          padding: 125px max(5%, calc((100vw - 1220px) / 2)) 45px;
-          overflow: hidden;
-        }
-
-        .capabilities-bg {
-          position: absolute;
-          width: 700px;
-          height: 700px;
-          right: -350px;
-          top: -250px;
-          border-radius: 50%;
-          background: rgba(37, 139, 255, .12);
-          filter: blur(80px);
-        }
-
-        .capabilities-header {
-          position: relative;
-          z-index: 2;
-        }
-
-        .section-number.light {
-          color: #718697;
-        }
-
-        .capabilities h2 {
-          font-size: clamp(60px, 7vw, 100px);
-          line-height: .88;
-          letter-spacing: -5px;
-          margin: 28px 0 85px;
-        }
-
-        .capabilities h2 span {
-          color: #657988;
-        }
-
-        .capability-grid {
-          position: relative;
-          z-index: 2;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          border-top: 1px solid #26353f;
-          border-bottom: 1px solid #26353f;
-        }
-
-        .capability-card {
-          min-height: 250px;
-          padding: 28px 25px;
-          border-right: 1px solid #26353f;
-        }
-
-        .capability-card:first-child {
-          border-left: 1px solid #26353f;
-        }
-
-        .capability-card > span {
-          color: #5d7382;
-          font-size: 10px;
-        }
-
-        .capability-line {
-          height: 1px;
-          background: #26353f;
-          margin: 25px 0 35px;
-        }
-
-        .capability-card h3 {
-          font-size: 21px;
-          margin: 0 0 14px;
-        }
-
-        .capability-card p {
-          color: #81919c;
-          font-size: 13px;
-          line-height: 1.6;
-          max-width: 190px;
-          margin: 0;
-        }
-
-        .capability-footer {
-          position: relative;
-          z-index: 2;
-          display: flex;
-          justify-content: space-between;
-          padding-top: 35px;
-          font-size: 9px;
-          letter-spacing: 2px;
-          color: #536875;
-        }
-
-        /* ================= STRIP ================= */
-
-        .service-strip {
-          width: min(1220px, 90%);
-          margin: auto;
-          padding: 115px 0;
-          display: grid;
-          grid-template-columns: .7fr 1.3fr;
-          gap: 80px;
-        }
-
-        .strip-title span {
-          font-size: 9px;
-          letter-spacing: 2px;
-          font-weight: 700;
-          color: #788894;
-        }
-
-        .strip-title h2 {
-          font-size: 38px;
-          line-height: 1;
-          letter-spacing: -2px;
-          margin: 18px 0 0;
-        }
-
-        .strip-items {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          border-top: 1px solid #dce2e7;
-        }
-
-        .strip-item {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 22px 15px;
-          border-bottom: 1px solid #dce2e7;
-          color: #17222a;
-          text-decoration: none;
-          font-size: 13px;
-          font-weight: 600;
-          transition: .25s;
-        }
-
-        .strip-item:nth-child(odd) {
-          border-right: 1px solid #dce2e7;
-        }
-
-        .strip-item svg {
-          color: #4a9df0;
-        }
-
-        .strip-item:hover {
-          padding-left: 22px;
-          background: white;
-        }
-
-        /* ================= CTA ================= */
-
-        .services-cta {
-          background: #dcecff;
-          min-height: 550px;
+        /* CTA */
+        .up-services-cta {
           position: relative;
           display: flex;
-          align-items: center;
           justify-content: center;
           overflow: hidden;
+          background: #eaf0f5;
+          color: #0b1a25;
+          text-align: center;
         }
 
-        .cta-grid {
-          position: absolute;
-          inset: 0;
-          opacity: .35;
+        .up-cta-grid {
+          opacity: .18;
           background-image:
-            linear-gradient(#9ec4e8 1px, transparent 1px),
-            linear-gradient(90deg, #9ec4e8 1px, transparent 1px);
-          background-size: 60px 60px;
+            linear-gradient(#8da5b6 1px, transparent 1px),
+            linear-gradient(90deg, #8da5b6 1px, transparent 1px);
+          background-size: 65px 65px;
           mask-image: radial-gradient(circle at center, black, transparent 75%);
         }
 
-        .cta-inner {
+        .up-cta-content {
           position: relative;
-          z-index: 2;
-          text-align: center;
-          padding: 100px 20px;
+          z-index: 1;
+          padding: 105px 20px;
         }
 
-        .cta-inner > span {
-          font-size: 9px;
-          letter-spacing: 2px;
-          font-weight: 700;
-          color: #5d7382;
-        }
-
-        .cta-inner h2 {
-          font-size: clamp(58px, 8vw, 115px);
-          line-height: .88;
-          letter-spacing: -6px;
+        .up-cta-content h2 {
+          font-size: clamp(49px, 7vw, 86px);
+          line-height: .96;
+          letter-spacing: -4px;
           margin: 25px 0;
         }
 
-        .cta-inner h2 em {
-          color: #318be0;
-          font-style: normal;
+        .up-cta-content h2 span {
+          color: #5b829f;
         }
 
-        .cta-inner p {
-          color: #607483;
+        /* INCREASED CTA SUBTEXT */
+        .up-cta-content p {
+          color: #647685;
           font-size: 16px;
-          margin: 0 0 35px;
+          line-height: 1.8;
+          margin: 0 0 28px;
         }
 
-        .cta-button {
-          display: inline-flex;
-          align-items: center;
-          gap: 13px;
-          padding: 17px 24px;
-          background: #071018;
-          color: white;
-          text-decoration: none;
-          font-size: 12px;
-          font-weight: 700;
-          transition: .3s;
+        .up-cta-content .up-primary-button {
+          background: #0b1a25;
+          color: #fff;
         }
 
-        .cta-button:hover {
-          background: #318be0;
-          transform: translateY(-3px);
+        .up-cta-content .up-primary-button:hover {
+          background: #28485d;
         }
 
-        /* ================= RESPONSIVE ================= */
+        /* DARK MODE */
+        body.dark-mode .up-services {
+          --up-bg: #080d12;
+          --up-text: #f4f7fa;
+          --up-muted: #a4b1bc;
+          --up-line: rgba(255,255,255,.13);
+        }
 
+        body.dark-mode .up-section-heading h2 span {
+          color: #8798a6;
+        }
+
+        body.dark-mode .up-services-cta {
+          background: #111d27;
+          color: #f4f7fa;
+        }
+
+        body.dark-mode .up-cta-content h2 span {
+          color: #91b9d8;
+        }
+
+        body.dark-mode .up-cta-content p {
+          color: #aab8c4;
+        }
+
+        body.dark-mode .up-cta-content .up-primary-button {
+          background: #edf3f7;
+          color: #0b1a25;
+        }
+
+        /* TABLET */
         @media (max-width: 900px) {
-          .hero-content h1 {
-            letter-spacing: -4px;
-          }
-
-          .services-intro,
-          .explorer-layout,
-          .service-strip {
-            grid-template-columns: 1fr;
-            gap: 50px;
-          }
-
-          .intro-right {
-            padding-top: 0;
-          }
-
-          .featured-service {
-            min-height: 500px;
-          }
-
-          .capability-grid {
-            grid-template-columns: 1fr 1fr;
-          }
-
-          .capability-card:nth-child(3) {
-            border-left: 1px solid #26353f;
-          }
-
-          .capability-card:nth-child(odd) {
-            border-right: 1px solid #26353f;
-          }
-
-          .service-strip {
-            gap: 40px;
-          }
-        }
-
-        @media (max-width: 600px) {
-          .services-hero {
-            min-height: 760px;
-          }
-
-          .hero-content {
-            padding-top: 100px;
-          }
-
-          .hero-content h1 {
-            font-size: 62px;
-            letter-spacing: -4px;
-          }
-
-          .hero-bottom {
-            flex-direction: column;
+          .up-section-heading {
             align-items: flex-start;
-            gap: 30px;
+            flex-direction: column;
+            gap: 20px;
           }
 
-          .hero-scroll {
+          .up-section-intro {
+            max-width: 500px;
+          }
+
+          .up-service-card {
+            width: 78%;
+          }
+
+          .up-card-next {
+            transform: translateX(42%) scale(.9);
+          }
+
+          .up-card-previous {
+            transform: translateX(-142%) scale(.9);
+          }
+
+          .up-service-row {
+            grid-template-columns: 38px minmax(180px, 1fr) 22px;
+          }
+
+          .up-row-description {
             display: none;
           }
+        }
 
-          .services-intro {
-            padding: 85px 0;
+        /* MOBILE */
+        @media (max-width: 600px) {
+          .up-services-hero {
+            min-height: 600px;
           }
 
-          .services-intro h2 {
-            font-size: 48px;
+          .up-hero-inner {
+            padding: 120px 0 85px;
           }
 
-          .mini-stats {
-            grid-template-columns: 1fr;
+          .up-hero-inner h1 {
+            font-size: clamp(45px, 11vw, 68px);
+            letter-spacing: -2.8px;
           }
 
-          .mini-stats div,
-          .mini-stats div:last-child {
-            border-right: 0;
-            border-bottom: 1px solid #d8dfe5;
-            padding: 18px 0;
-          }
-
-          .mini-stats div:last-child {
-            border-bottom: 0;
-          }
-
-          .explorer-heading {
+          .up-hero-bottom {
             align-items: flex-start;
+            flex-direction: column;
+            gap: 24px;
           }
 
-          .explorer-heading h2 {
-            font-size: 40px;
+          .up-hero-bottom p {
+            font-size: 15px;
+            line-height: 1.8;
           }
 
-          .featured-service {
-            min-height: 490px;
-            padding: 25px;
+          .up-hero-index {
+            font-size: 8px;
           }
 
-          .featured-content h3 {
-            font-size: 48px;
+          .up-service-section {
+            padding-top: 78px;
+          }
+
+          .up-section-heading h2 {
+            font-size: 43px;
             letter-spacing: -2px;
           }
 
-          .service-row {
-            grid-template-columns: 30px 42px 1fr 20px;
-            gap: 10px;
-            padding: 13px;
+          .up-section-intro {
+            font-size: 15px;
+            line-height: 1.8;
           }
 
-          .service-row-info h3 {
+          .up-carousel-track {
+            height: 385px;
+          }
+
+          .up-service-card {
+            width: 86%;
+            height: 360px;
+            padding: 21px;
+          }
+
+          .up-card-next {
+            transform: translateX(48%) scale(.88);
+          }
+
+          .up-card-previous {
+            transform: translateX(-148%) scale(.88);
+          }
+
+          .up-card-main h3 {
+            font-size: clamp(29px, 7vw, 43px);
+            letter-spacing: -1.5px;
+          }
+
+          .up-card-main p {
+            font-size: 14px;
+            line-height: 1.7;
+          }
+
+          .up-card-points {
+            gap: 8px 12px;
+            margin-top: 17px;
+          }
+
+          .up-card-points span {
+            font-size: 10px;
+          }
+
+          .up-card-link {
+            margin-top: 18px;
+            font-size: 12px;
+          }
+
+          .up-carousel-footer {
+            gap: 10px;
+            font-size: 8px;
+            letter-spacing: .6px;
+          }
+
+          .up-carousel-progress {
+            max-width: 90px;
+          }
+
+          .up-all-services {
+            padding: 55px 0 80px;
+          }
+
+          .up-all-services-heading h2 {
+            font-size: 36px;
+            letter-spacing: -1.5px;
+          }
+
+          .up-service-row {
+            min-height: 72px;
+            grid-template-columns: 27px minmax(0, 1fr) 20px;
+            gap: 10px;
+          }
+
+          .up-row-name {
             font-size: 14px;
           }
 
-          .service-row-info p {
-            display: none;
+          .up-cta-content {
+            padding: 80px 18px;
           }
 
-          .capabilities {
-            padding-top: 85px;
+          .up-cta-content h2 {
+            font-size: 48px;
+            letter-spacing: -2.5px;
           }
 
-          .capabilities h2 {
-            font-size: 61px;
-            letter-spacing: -4px;
-            margin-bottom: 60px;
-          }
-
-          .capability-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .capability-card,
-          .capability-card:nth-child(3) {
-            border-left: 0;
-            border-right: 0;
-            border-bottom: 1px solid #26353f;
-            min-height: 190px;
-          }
-
-          .capability-footer {
-            flex-direction: column;
-            gap: 12px;
-          }
-
-          .strip-items {
-            grid-template-columns: 1fr;
-          }
-
-          .strip-item:nth-child(odd) {
-            border-right: 0;
-          }
-
-          .services-cta {
-            min-height: 500px;
-          }
-
-          .cta-inner h2 {
-            font-size: 60px;
-            letter-spacing: -4px;
+          .up-cta-content p {
+            font-size: 15px;
+            line-height: 1.8;
           }
         }
-        /* SERVICES PAGE — DARK MODE */
-body.dark-mode .services-page {
-  background: #080d12 !important;
-  color: #f4f7fa !important;
-}
 
-body.dark-mode .services-page section,
-body.dark-mode .services-page .services-section {
-  background: #080d12 !important;
-  color: #f4f7fa !important;
-}
+        @media (prefers-reduced-motion: reduce) {
+          .up-service-card {
+            transition: none;
+          }
 
-body.dark-mode .services-page h1,
-body.dark-mode .services-page h2,
-body.dark-mode .services-page h3 {
-  color: #f4f7fa !important;
-}
-
-body.dark-mode .services-page p {
-  color: #aeb9c5 !important;
-}
-
-body.dark-mode .services-page .service-card {
-  background: #101820 !important;
-  color: #f4f7fa !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-body.dark-mode .services-page .service-card p {
-  color: #aeb9c5 !important;
-}
+          .up-carousel-progress-fill {
+            animation: none;
+          }
+        }
       `}</style>
     </>
   );
