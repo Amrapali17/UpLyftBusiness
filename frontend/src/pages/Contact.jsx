@@ -8,6 +8,7 @@ import {
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import logo from "../assets/logo.png";
 
 function Contact() {
   return (
@@ -21,6 +22,14 @@ function Contact() {
 
           <div className="contact-container">
             <div className="contact-top">
+              <Link to="/" className="contact-brand">
+                <img
+                  src={logo}
+                  alt="UpLyftBusiness"
+                  className="contact-brand-logo"
+                />
+              </Link>
+
               <div className="contact-label">
                 <span></span>
                 CONTACT
@@ -60,7 +69,6 @@ function Contact() {
         <section className="contact-main">
           <div className="contact-container">
             <div className="contact-layout">
-
               {/* LEFT */}
               <div className="contact-info">
                 <div className="contact-label dark-label">
@@ -111,10 +119,13 @@ function Contact() {
                 <div className="contact-socials">
                   <span>FOLLOW</span>
 
+                  {/* LINKEDIN */}
                   <a
                     href="https://www.linkedin.com/company/uplyftbusiness"
                     aria-label="LinkedIn"
                     className="social-icon"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <svg
                       width="16"
@@ -126,13 +137,14 @@ function Contact() {
                       <path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2.01 2.01 0 0 0 3.24 5c0 1.1.9 2 2.01 2a2 2 0 1 0 0-4ZM20.76 13.41c0-3.47-1.85-5.09-4.32-5.09-1.98 0-2.87 1.09-3.36 1.86V8.5H9.7V20h3.38v-5.69c0-1.5.29-2.95 2.14-2.95 1.82 0 1.85 1.71 1.85 3.04V20h3.38l.31-6.59Z" />
                     </svg>
                   </a>
+
+                  {/* INSTAGRAM */}
                   <a
                     href="https://www.instagram.com/uplyftbusiness/"
                     className="social-icon"
                     aria-label="Instagram"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ position: "relative", zIndex: 9999, cursor: "pointer" }}
                   >
                     <svg
                       width="16"
@@ -165,10 +177,29 @@ function Contact() {
                       />
                     </svg>
                   </a>
+
+                  {/* WHATSAPP */}
+                  <a
+                    href="https://wa.me/91YOUR10DIGITNUMBER"
+                    className="social-icon whatsapp-icon"
+                    aria-label="WhatsApp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <svg
+                      width="17"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M20.52 3.48A11.82 11.82 0 0 0 12.1 0C5.53 0 .18 5.35.18 11.92c0 2.1.55 4.15 1.6 5.96L.08 24l6.27-1.64a11.9 11.9 0 0 0 5.75 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.51-8.43ZM12.1 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.72.97.99-3.63-.24-.37a9.85 9.85 0 0 1-1.52-5.26c0-5.46 4.45-9.91 9.92-9.91 2.64 0 5.13 1.03 7 2.9a9.85 9.85 0 0 1 2.91 7.01c0 5.46-4.45 9.91-9.93 9.91Zm5.44-7.42c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15-.2.3-.78.97-.95 1.17-.18.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.74-1.65-2.04-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.68-1.63-.93-2.23-.25-.59-.5-.51-.68-.52h-.58c-.2 0-.52.07-.8.37-.28.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.12 3.23 5.14 4.53.72.31 1.28.5 1.71.64.72.23 1.37.2 1.88.12.58-.09 1.77-.73 2.02-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35Z" />
+                    </svg>
+                  </a>
                 </div>
               </div>
 
-              {/* FORM */}
+              {/* PROJECT ENQUIRY FORM */}
               <div className="contact-form-wrapper">
                 <div className="form-heading">
                   <span>01</span>
@@ -187,22 +218,24 @@ function Contact() {
                   <div className="form-row">
                     <div className="form-field">
                       <label htmlFor="name">Name *</label>
-
                       <input
                         id="name"
+                        name="name"
                         type="text"
                         placeholder="Your name"
+                        autoComplete="name"
                         required
                       />
                     </div>
 
                     <div className="form-field">
                       <label htmlFor="email">Email *</label>
-
                       <input
                         id="email"
+                        name="email"
                         type="email"
                         placeholder="you@company.com"
+                        autoComplete="email"
                         required
                       />
                     </div>
@@ -211,48 +244,39 @@ function Contact() {
                   <div className="form-row">
                     <div className="form-field">
                       <label htmlFor="company">Company</label>
-
                       <input
                         id="company"
+                        name="company"
                         type="text"
                         placeholder="Company name"
+                        autoComplete="organization"
                       />
                     </div>
 
                     <div className="form-field">
-                      <label htmlFor="service">
-                        What do you need?
-                      </label>
-
-                      <select id="service" defaultValue="">
+                      <label htmlFor="service">What do you need?</label>
+                      <select id="service" name="service" defaultValue="">
                         <option value="" disabled>
                           Select a service
                         </option>
-
                         <option value="website">
                           Website Development
                         </option>
-
                         <option value="marketing">
                           Digital Marketing
                         </option>
-
                         <option value="social">
                           Social Media Management
                         </option>
-
                         <option value="advertising">
                           Performance Advertising
                         </option>
-
                         <option value="branding">
                           Creative & Branding
                         </option>
-
                         <option value="strategy">
                           Growth & Strategy
                         </option>
-
                         <option value="other">
                           Something else
                         </option>
@@ -260,55 +284,22 @@ function Contact() {
                     </div>
                   </div>
 
-                  <div className="form-field">
-                    <label htmlFor="budget">
-                      Estimated budget
-                    </label>
-
-                    <select id="budget" defaultValue="">
-                      <option value="" disabled>
-                        Select a range
-                      </option>
-
-                      <option value="under-50k">
-                        Under ₹50,000
-                      </option>
-
-                      <option value="50k-1l">
-                        ₹50,000 – ₹1,00,000
-                      </option>
-
-                      <option value="1l-3l">
-                        ₹1,00,000 – ₹3,00,000
-                      </option>
-
-                      <option value="3l-plus">
-                        ₹3,00,000+
-                      </option>
-
-                      <option value="not-sure">
-                        Not sure yet
-                      </option>
-                    </select>
-                  </div>
+                  {/* ESTIMATED BUDGET FIELD REMOVED */}
 
                   <div className="form-field">
                     <label htmlFor="message">
                       Tell us about the project *
                     </label>
-
                     <textarea
                       id="message"
+                      name="message"
                       rows="6"
                       placeholder="What are you looking to build, improve or achieve?"
                       required
                     ></textarea>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="contact-submit"
-                  >
+                  <button type="submit" className="contact-submit">
                     Send Enquiry
                     <ArrowUpRight size={18} />
                   </button>
@@ -340,10 +331,7 @@ function Contact() {
                 </h2>
               </div>
 
-              <Link
-                to="/services"
-                className="contact-services-link"
-              >
+              <Link to="/services" className="contact-services-link">
                 View our services
                 <ArrowRight size={18} />
               </Link>
@@ -438,8 +426,24 @@ function Contact() {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 20px;
           padding-bottom: 32px;
           border-bottom: 1px solid rgba(17, 20, 24, 0.09);
+        }
+
+        .contact-brand {
+          display: inline-flex;
+          align-items: center;
+          text-decoration: none;
+          flex-shrink: 0;
+        }
+
+        .contact-brand-logo {
+          display: block;
+          width: 150px;
+          max-height: 55px;
+          object-fit: contain;
+          object-position: left center;
         }
 
         .contact-index {
@@ -503,6 +507,7 @@ function Contact() {
 
         .contact-main {
           padding: 145px 0;
+          background: #ffffff;
         }
 
         .contact-layout {
@@ -549,6 +554,7 @@ function Contact() {
         .contact-detail-icon {
           width: 42px;
           height: 42px;
+          flex-shrink: 0;
           border-radius: 50%;
           background: #edf7fc;
           color: #2f79a8;
@@ -561,6 +567,7 @@ function Contact() {
           display: flex;
           flex-direction: column;
           gap: 5px;
+          min-width: 0;
         }
 
         .contact-detail span {
@@ -574,6 +581,7 @@ function Contact() {
         .contact-detail strong {
           font-size: 13px;
           font-weight: 600;
+          overflow-wrap: anywhere;
         }
 
         /* SOCIALS */
@@ -594,14 +602,16 @@ function Contact() {
         }
 
         .contact-socials a {
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
+          flex-shrink: 0;
           border: 1px solid rgba(17, 20, 24, 0.1);
           border-radius: 50%;
           color: #5d6872;
           display: flex;
           align-items: center;
           justify-content: center;
+          text-decoration: none;
           transition: 0.25s ease;
         }
 
@@ -609,6 +619,13 @@ function Contact() {
           background: #111418;
           color: #ffffff;
           border-color: #111418;
+          transform: translateY(-2px);
+        }
+
+        .contact-socials .whatsapp-icon:hover {
+          background: #25d366;
+          color: #ffffff;
+          border-color: #25d366;
         }
 
         .social-icon svg {
@@ -619,6 +636,7 @@ function Contact() {
 
         .contact-form-wrapper {
           border-top: 1px solid rgba(17, 20, 24, 0.12);
+          min-width: 0;
         }
 
         .form-heading {
@@ -657,6 +675,7 @@ function Contact() {
           display: flex;
           flex-direction: column;
           margin-bottom: 25px;
+          min-width: 0;
         }
 
         .form-field label {
@@ -728,7 +747,7 @@ function Contact() {
           line-height: 1.6;
         }
 
-        /* BOTTOM */
+        /* BOTTOM CTA */
 
         .contact-bottom {
           padding: 115px 0;
@@ -772,11 +791,93 @@ function Contact() {
           gap: 14px;
         }
 
+        /* DARK MODE */
+
+        body.dark-mode .contact-page {
+          background: #080d12 !important;
+          color: #f4f7fa !important;
+        }
+
+        body.dark-mode .contact-page .contact-hero,
+        body.dark-mode .contact-page .contact-main,
+        body.dark-mode .contact-page .contact-bottom {
+          background: #080d12 !important;
+          color: #f4f7fa !important;
+        }
+
+        body.dark-mode .contact-page h1,
+        body.dark-mode .contact-page h2,
+        body.dark-mode .contact-page h3,
+        body.dark-mode .contact-page label {
+          color: #f4f7fa !important;
+        }
+
+        body.dark-mode .contact-page p {
+          color: #aeb9c5 !important;
+        }
+
+        body.dark-mode .contact-page input,
+        body.dark-mode .contact-page textarea,
+        body.dark-mode .contact-page select {
+          background: #101820 !important;
+          color: #f4f7fa !important;
+          border-color: rgba(255, 255, 255, 0.16) !important;
+        }
+
+        body.dark-mode .contact-page input::placeholder,
+        body.dark-mode .contact-page textarea::placeholder {
+          color: #8a99a6 !important;
+        }
+
+        body.dark-mode .contact-page .contact-detail,
+        body.dark-mode .contact-page .contact-form-wrapper,
+        body.dark-mode .contact-page .contact-top,
+        body.dark-mode .contact-page .form-heading {
+          border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        body.dark-mode .contact-page .contact-email-link,
+        body.dark-mode .contact-page .contact-services-link {
+          color: #f4f7fa;
+          border-color: #f4f7fa;
+        }
+
+        body.dark-mode .contact-page .contact-detail-icon {
+          background: #142b3a;
+          color: #8ecfff;
+        }
+
+        body.dark-mode .contact-page .contact-socials a {
+          border-color: rgba(255, 255, 255, 0.18);
+          color: #d4dde5;
+        }
+
+        body.dark-mode .contact-page .contact-socials a:hover {
+          background: #f4f7fa;
+          color: #080d12;
+        }
+
+        body.dark-mode .contact-page .contact-socials .whatsapp-icon:hover {
+          background: #25d366;
+          color: #ffffff;
+          border-color: #25d366;
+        }
+
+        body.dark-mode .contact-page .contact-submit {
+          background: #f4f7fa;
+          color: #080d12;
+        }
+
+        body.dark-mode .contact-page .contact-submit:hover {
+          background: #69b2e6;
+          color: #080d12;
+        }
+
         /* RESPONSIVE */
 
         @media (max-width: 950px) {
           .contact-container {
-            width: min(100% - 40px, 1240px);
+            width: min(calc(100% - 40px), 1240px);
           }
 
           .contact-hero-main,
@@ -808,12 +909,23 @@ function Contact() {
             padding-top: 90px;
           }
 
+          .contact-top {
+            flex-wrap: wrap;
+            gap: 16px;
+          }
+
+          .contact-brand-logo {
+            width: 110px;
+            max-height: 42px;
+          }
+
           .contact-hero-main {
             padding-top: 60px;
+            gap: 40px;
           }
 
           .contact-hero h1 {
-            font-size: 55px;
+            font-size: clamp(46px, 12vw, 65px);
           }
 
           .contact-main,
@@ -830,42 +942,15 @@ function Contact() {
             grid-template-columns: 1fr;
             gap: 0;
           }
+
+          .contact-socials {
+            flex-wrap: wrap;
+          }
+
+          .contact-email-link {
+            overflow-wrap: anywhere;
+          }
         }
-        /* CONTACT PAGE — DARK MODE */
-body.dark-mode .contact-page {
-  background: #080d12 !important;
-  color: #f4f7fa !important;
-}
-
-body.dark-mode .contact-page section {
-  background: #080d12 !important;
-  color: #f4f7fa !important;
-}
-
-body.dark-mode .contact-page h1,
-body.dark-mode .contact-page h2,
-body.dark-mode .contact-page h3,
-body.dark-mode .contact-page label {
-  color: #f4f7fa !important;
-}
-
-body.dark-mode .contact-page p {
-  color: #aeb9c5 !important;
-}
-
-body.dark-mode .contact-page article,
-body.dark-mode .contact-page input,
-body.dark-mode .contact-page textarea,
-body.dark-mode .contact-page select {
-  background: #101820 !important;
-  color: #f4f7fa !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-body.dark-mode .contact-page input::placeholder,
-body.dark-mode .contact-page textarea::placeholder {
-  color: #8a99a6 !important;
-}
       `}</style>
     </div>
   );
