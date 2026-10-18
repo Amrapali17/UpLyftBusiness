@@ -900,6 +900,33 @@ import {
               bottom: 22px;
             }
           }
+            /* WORK PAGE — DARK MODE */
+body.dark-mode .work-page {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .work-page section {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .work-page h1,
+body.dark-mode .work-page h2,
+body.dark-mode .work-page h3 {
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .work-page p {
+  color: #aeb9c5 !important;
+}
+
+body.dark-mode .work-page article,
+body.dark-mode .work-page .work-card {
+  background: #101820 !important;
+  color: #f4f7fa !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
         `}</style>
   
         <Navbar />

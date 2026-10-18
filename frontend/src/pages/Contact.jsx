@@ -831,6 +831,41 @@ function Contact() {
             gap: 0;
           }
         }
+        /* CONTACT PAGE — DARK MODE */
+body.dark-mode .contact-page {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .contact-page section {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .contact-page h1,
+body.dark-mode .contact-page h2,
+body.dark-mode .contact-page h3,
+body.dark-mode .contact-page label {
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .contact-page p {
+  color: #aeb9c5 !important;
+}
+
+body.dark-mode .contact-page article,
+body.dark-mode .contact-page input,
+body.dark-mode .contact-page textarea,
+body.dark-mode .contact-page select {
+  background: #101820 !important;
+  color: #f4f7fa !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .contact-page input::placeholder,
+body.dark-mode .contact-page textarea::placeholder {
+  color: #8a99a6 !important;
+}
       `}</style>
     </div>
   );

@@ -1748,6 +1748,53 @@ function About() {
             transition: none !important;
           }
         }
+        /* ABOUT PAGE — DARK MODE */
+body.dark-mode .about-page {
+  --white: #080d12;
+  --black: #f4f7fa;
+  --soft-black: #dbe3e9;
+  --blue-dark: #75b9df;
+  --blue-light: #14232d;
+  --blue-soft: #101820;
+  --text-soft: #aeb9c5;
+  --text-muted: #8a99a6;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-blue: rgba(117, 185, 223, 0.22);
+
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .about-page .about-hero,
+body.dark-mode .about-page .about-approach,
+body.dark-mode .about-page .about-principles,
+body.dark-mode .about-page .about-final-cta {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .about-page .about-floating-card,
+body.dark-mode .about-page .about-capability,
+body.dark-mode .about-page .about-principle-card,
+body.dark-mode .about-page .about-secondary-button {
+  background: #101820 !important;
+  color: #f4f7fa !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .about-page .about-hero-copy h1,
+body.dark-mode .about-page .about-section-heading h2,
+body.dark-mode .about-page .about-system-content h2,
+body.dark-mode .about-page .about-final-cta h2,
+body.dark-mode .about-page .about-principle-card h3 {
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .about-page .about-hero-description,
+body.dark-mode .about-page .about-principle-card p,
+body.dark-mode .about-page .about-final-cta-content > p {
+  color: #aeb9c5 !important;
+}
       `}</style>
 
       <Navbar />
@@ -2219,6 +2266,7 @@ function About() {
       <Footer />
 
     </div>
+    
   );
 }
 

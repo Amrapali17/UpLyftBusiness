@@ -1201,6 +1201,37 @@ export default function Services() {
             letter-spacing: -4px;
           }
         }
+        /* SERVICES PAGE — DARK MODE */
+body.dark-mode .services-page {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .services-page section,
+body.dark-mode .services-page .services-section {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .services-page h1,
+body.dark-mode .services-page h2,
+body.dark-mode .services-page h3 {
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .services-page p {
+  color: #aeb9c5 !important;
+}
+
+body.dark-mode .services-page .service-card {
+  background: #101820 !important;
+  color: #f4f7fa !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .services-page .service-card p {
+  color: #aeb9c5 !important;
+}
       `}</style>
     </>
   );

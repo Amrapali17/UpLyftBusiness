@@ -861,6 +861,33 @@ function Industries() {
             font-size: 52px;
           }
         }
+        /* INDUSTRIES PAGE — DARK MODE */
+body.dark-mode .industries-page {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .industries-page section {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .industries-page h1,
+body.dark-mode .industries-page h2,
+body.dark-mode .industries-page h3 {
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .industries-page p {
+  color: #aeb9c5 !important;
+}
+
+body.dark-mode .industries-page article,
+body.dark-mode .industries-page .industry-card {
+  background: #101820 !important;
+  color: #f4f7fa !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
       `}</style>
     </div>
   );

@@ -49,6 +49,7 @@ function Navbar() {
 
           {/* LOGO */}
           <Link to="/" className="logo">
+          <img src="/logo.png" alt="" className="logo-image" />
             UpLyftBusiness
           </Link>
 
@@ -117,29 +118,38 @@ function Navbar() {
 
         /* NAVBAR */
         .navbar {
-          position: relative;
-          z-index: 1000;
-          transition:
-            background-color 0.35s ease,
-            border-color 0.35s ease,
-            box-shadow 0.35s ease;
-        }
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1200px, calc(100% - 32px));
+      z-index: 1000;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+      transition:
+        background-color 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+    }
 
         .navbar-inner {
           transition: color 0.35s ease;
         }
 
         /* LOGO */
-        .logo {
-          font-size: 25px;
-          font-weight: 800;
-          letter-spacing: -0.8px;
-          white-space: nowrap;
-          text-decoration: none;
-          transition:
-            color 0.3s ease,
-            opacity 0.3s ease;
-        }
+      .logo {
+              display: inline-flex;
+              align-items: center;
+              gap: 10px;
+            }
+
+            .logo-image {
+              width: 40px;
+              height: px;
+              object-fit: contain;
+            }
 
         /* NAVIGATION LINKS */
         .nav-link,
@@ -443,6 +453,46 @@ function Navbar() {
           .nav-button span {
             display: none;
           }
+            /* Dark mode for the other pages */
+body.dark-mode .about-page,
+body.dark-mode .services-page,
+body.dark-mode .work-page,
+body.dark-mode .industries-page,
+body.dark-mode .contact-page {
+  background: #080d12 !important;
+  color: #f4f7fa !important;
+}
+
+body.dark-mode .about-page h1,
+body.dark-mode .about-page h2,
+body.dark-mode .services-page h1,
+body.dark-mode .services-page h2,
+body.dark-mode .work-page h1,
+body.dark-mode .work-page h2,
+body.dark-mode .industries-page h1,
+body.dark-mode .industries-page h2,
+body.dark-mode .contact-page h1,
+body.dark-mode .contact-page h2 {
+  color: #f7fafc !important;
+}
+
+body.dark-mode .about-page p,
+body.dark-mode .services-page p,
+body.dark-mode .work-page p,
+body.dark-mode .industries-page p,
+body.dark-mode .contact-page p {
+  color: #aeb9c5 !important;
+}
+
+body.dark-mode .about-page article,
+body.dark-mode .services-page article,
+body.dark-mode .work-page article,
+body.dark-mode .industries-page article,
+body.dark-mode .contact-page article {
+  background: #101820;
+  color: #f4f7fa;
+  border-color: rgba(255, 255, 255, 0.1);
+}
         }
       `}</style>
     </>
