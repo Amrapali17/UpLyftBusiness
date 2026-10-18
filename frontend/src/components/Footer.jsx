@@ -4,6 +4,7 @@ import {
   Mail,
   MapPin,
   MessageCircle,
+  Phone,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
@@ -25,8 +26,9 @@ function Footer() {
             build, grow and move forward.
           </p>
 
+          {/* SOCIAL LINKS */}
           <div className="footer-socials">
-            {/* LinkedIn */}
+            {/* LINKEDIN */}
             <a
               href="https://www.linkedin.com/company/uplyftbusiness/"
               aria-label="UpLyftBusiness on LinkedIn"
@@ -44,7 +46,7 @@ function Footer() {
               </svg>
             </a>
 
-            {/* Instagram */}
+            {/* INSTAGRAM */}
             <a
               href="https://www.instagram.com/uplyftbusiness/"
               aria-label="UpLyftBusiness on Instagram"
@@ -74,7 +76,7 @@ function Footer() {
               </svg>
             </a>
 
-            {/* WhatsApp */}
+            {/* WHATSAPP */}
             <a
               href="https://wa.me/918408820707"
               aria-label="Chat with UpLyftBusiness on WhatsApp"
@@ -111,17 +113,25 @@ function Footer() {
         <div className="footer-column footer-contact">
           <div className="footer-heading">LET'S TALK</div>
 
+          {/* EMAIL */}
           <a href="mailto:connect@uplyftbusiness.com">
             <Mail size={15} />
-            connect@uplyftbusiness.com
+            <span>connect@uplyftbusiness.com</span>
           </a>
 
+          {/* PHONE NUMBER */}
+          <a href="tel:+918408820707">
+            <Phone size={15} />
+            <span>+91 84088 20707</span>
+          </a>
+
+          {/* LOCATION */}
           <div className="footer-location">
             <MapPin size={15} />
             <span>India · Working Worldwide</span>
           </div>
 
-          
+          {/* PROJECT CTA */}
           <Link to="/enquire" className="footer-enquire">
             Start a Project
             <ArrowUpRight size={16} />
@@ -129,7 +139,7 @@ function Footer() {
         </div>
       </div>
 
-      {/* BOTTOM */}
+      {/* FOOTER BOTTOM */}
       <div className="footer-bottom">
         <div>
           © {currentYear} UpLyftBusiness. All rights reserved.
@@ -161,6 +171,7 @@ function Footer() {
           gap: 65px;
         }
 
+        /* BRAND */
         .footer-brand {
           max-width: 310px;
         }
@@ -221,6 +232,7 @@ function Footer() {
           transform: translateY(-3px);
         }
 
+        /* FOOTER COLUMNS */
         .footer-column {
           display: flex;
           flex-direction: column;
@@ -251,11 +263,16 @@ function Footer() {
           transform: translateX(2px);
         }
 
-        /* CONTACT */
-        .footer-contact > a:first-of-type {
+        /* EMAIL AND PHONE */
+        .footer-contact > a:first-of-type,
+        .footer-contact > a:nth-of-type(2) {
           display: flex;
           align-items: flex-start;
           gap: 8px;
+        }
+
+        .footer-contact > a span {
+          overflow-wrap: anywhere;
         }
 
         .footer-location {
@@ -274,6 +291,7 @@ function Footer() {
           margin-top: 2px;
         }
 
+        /* START A PROJECT */
         .footer-enquire {
           display: inline-flex !important;
           align-items: center;
@@ -293,7 +311,7 @@ function Footer() {
           transform: translateY(-2px) !important;
         }
 
-        /* BOTTOM */
+        /* BOTTOM BAR */
         .footer-bottom {
           width: min(1180px, calc(100% - 48px));
           margin: 0 auto;
@@ -378,7 +396,7 @@ function Footer() {
           color: rgba(255, 255, 255, 0.45);
         }
 
-        /* RESPONSIVE */
+        /* TABLET */
         @media (max-width: 950px) {
           .footer-main {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -399,6 +417,7 @@ function Footer() {
           }
         }
 
+        /* MOBILE */
         @media (max-width: 600px) {
           .footer-main,
           .footer-bottom {
