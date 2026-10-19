@@ -122,7 +122,7 @@ function Home() {
 
       number: "03",
 
-      image: "https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=1000&q=85",
+      image: "https://images.unsplash.com/photo-1724862936518-ae7fcfc052c1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
       icon: <Smartphone size={22} />,
 
       title: "Social Media",
@@ -188,80 +188,43 @@ function Home() {
 
   ];
 
-  const team = [
-
-    {
-
-      number: "01",
-
-      role: "Founder & CEO",
-
-      name: "Vedant Somnath Ghuge",
-
-      description:
-
-        "Leading UpLyftBusiness's vision, direction and overall business growth.",
-
-    },
-
-    {
-
-      number: "02",
-
-      role: "Co-Founder & Tech Lead",
-
-      name: "Amrapali Pandurang Dhobe",
-
-      description:
-
-        "Driving operations, execution and building strong client relationships.",
-
-    },
-
-    {
-
-      number: "03",
-
-      role: "Growth & Marketing Director",
-
-      name: "Maitreya Milind Ranjanikar",
-
-      description:
-
-        "Building growth strategies, marketing systems and opportunities for expansion.",
-
-    },
-
-    {
-
-      number: "04",
-
-      role: "Chief Technology Officer",
-
-      name: "Om Navneet Patil",
-
-      description:
-
-        "Leading technology, development and the technical direction of UpLyftBusiness.",
-
-    },
-
-    {
-
-      number: "05",
-
-      role: "Chief Strategy Officer",
-
-      name: "Avanti Kailash Zore",
-    image: "/avi.png",
-
-      description:
-
-        "Shaping business strategy, market opportunities and long-term growth.",
-
-    },
-
-  ];
+ const team = [
+  {
+    role: "Founder & CEO",
+    name: "Vedant Somnath Ghuge",
+    image: "/vedant.png",
+    description:
+      "Leading UpLyftBusiness's vision, direction and overall business growth.",
+  },
+  {
+    role: "Co-Founder & Tech Lead",
+    name: "Amrapali Pandurang Dhobe",
+    image: "/amrapali.png",
+    description:
+      "Driving operations, execution and building strong client relationships.",
+  },
+  {
+    role: "Growth & Marketing Director",
+    name: "Maitreya Milind Ranjanikar",
+    image: "/matty.png",
+    description:
+      "Building growth strategies, marketing systems and opportunities for expansion.",
+  },
+  {
+    role: "Chief Technology Officer",
+    name: "Om Navneet Patil",
+    image: "/om2.png",
+    description:
+      "Leading technology, development and the technical direction of UpLyftBusiness.",
+  },
+  {
+    role: "Chief Strategy Officer",
+    name: "Avanti Kailash Zore",
+    image: "/avanti.png",
+    description:
+      "Shaping business strategy, market opportunities and long-term growth.",
+  },
+];
 
   useEffect(() => {
     if (!team.length) return undefined;
@@ -751,17 +714,34 @@ function Home() {
                   >
                     <div className="team-card-top">
                       <span className="team-number">{member.number}</span>
+                      
                       {member.image ? (
-                        <div className="team-avatar team-avatar-photo">
-                          <img
-                            src={member.image}
-                            alt={member.name}
-                            loading="lazy"
-                            onError={(event) => {
-                              event.currentTarget.style.display = "none";
-                            }}
-                          />
-                        </div>
+                        <div className="team-card-top">
+  <span className="team-number">{member.number}</span>
+
+  <div className="team-avatar team-avatar-photo">
+    <img
+      src={member.image}
+      alt={`${member.name} - ${member.role}`}
+      loading="lazy"
+      onError={(event) => {
+        const img = event.currentTarget;
+        const avatar = img.parentElement;
+
+        img.style.display = "none";
+        avatar.classList.remove("team-avatar-photo");
+        avatar.classList.add("team-avatar-fallback");
+
+        avatar.textContent = member.name
+          .split(" ")
+          .map((word) => word[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase();
+      }}
+    />
+  </div>
+</div>
                       ) : (
                         <div className="team-avatar" aria-hidden="true">
                           {member.name.split(" ").map((word) => word[0]).join("").slice(0, 2)}
@@ -2275,250 +2255,384 @@ function Home() {
         }
 
         /* =====================================================
-
-           TEAM
-
-        \====================================================== */
-
-        .team-section {
-
-          padding: 150px 0;
-
-          background: #ffffff;
-
-          border-top: 1px solid rgba(17, 20, 24, 0.06);
-
-        }
-
-        .team-carousel-window {
-          width: min(1240px, calc(100% - 48px));
-          margin: 0 auto;
-          perspective: 1200px;
-        }
-
-        .team-carousel-track {
-          position: relative;
-          height: 390px;
-          isolation: isolate;
-        }
-
-        .team-card {
-          position: absolute;
-          top: 12px;
-          left: 50%;
-          width: min(360px, 64%);
-          min-height: 340px;
-          padding: 25px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          overflow: hidden;
-          background: #f7fbfe;
-          border: 1px solid rgba(105, 178, 230,  0.2);
-          border-radius: 20px;
-          box-shadow: 0 14px 38px rgba(30, 70, 95, 0.06);
-          transform-origin: center center;
-          transition:
-            transform 750ms cubic-bezier(0.22, 0.75, 0.2, 1),
-            opacity 650ms ease,
-            filter 650ms ease,
-            box-shadow 300ms ease,
-            border-color 300ms ease;
-          will-change: transform, opacity;
-        }
-
-        .team-card-active {
-          z-index: 3;
-          opacity: 1;
-          filter: none;
-          transform: translateX(-50%) scale(1);
-          border-color: rgba(47, 121, 168, 0.36);
-          box-shadow: 0 26px 65px rgba(30, 70, 95, 0.14);
-        }
-
-        .team-card-next {
-          z-index: 2;
-          opacity: 0.62;
-          filter: saturate(0.78);
-          transform: translateX(35%) scale(0.88);
-        }
-
-        .team-card-previous {
-          z-index: 2;
-          opacity: 0.62;
-          filter: saturate(0.78);
-          transform: translateX(-135%) scale(0.88);
-        }
-
-        .team-card-hidden {
-          z-index: 1;
-          opacity: 0;
-          pointer-events: none;
-          filter: blur(2px);
-          transform: translateX(calc(-50% + var(--hidden-direction, 1) * 115%)) scale(0.78);
-        }
-
-        .team-card-active:hover {
-          border-color: rgba(47, 121, 168, 0.48);
-          box-shadow: 0 30px 72px rgba(30, 70, 95, 0.17);
-        }
-
-        .team-card-top {
-
-          display: flex;
-
-          align-items: flex-start;
-
-          justify-content: space-between;
-
-        }
-
-        .team-number {
-
-          color: #8a949d;
-
-          font-size: 10px;
-
-          font-weight: 700;
-
-          letter-spacing: 0.12em;
-
-        }
-
-        .team-avatar {
-
-          width: 54px;
-
-          animation: teamAvatarPop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-
-          animation-delay: calc(var(--card-index, 0) * 0.16s + 0.16s);
-
-          height: 54px;
-
-          display: flex;
-
-          align-items: center;
-
-          justify-content: center;
-
-          border-radius: 50%;
-
-          background: #123b52;
-
-          color: #ffffff;
-
-          font-size: 13px;
-
-          font-weight: 700;
-
-          letter-spacing: 0.04em;
-
-        }
-
-        .team-info {
-
-          margin-top: auto;
-
-        }
-
-        .team-role {
-
-          margin-bottom: 10px;
-
-          color: #2f79a8;
-
-          font-size: 10px;
-
-          font-weight: 700;
-
-          letter-spacing: 0.1em;
-
-          text-transform: uppercase;
-
-          line-height: 1.5;
-
-        }
-
-        .team-info h3 {
-
-          margin: 0 0 12px;
-
-          color: #111418;
-
-          font-size: 21px;
-
-          letter-spacing: -0.03em;
-
-        }
-
-        .team-info p {
-
-          margin: 0;
-
-          color: #68737c;
-
-          font-size: 12px;
-
-          line-height: 1.7;
-
-        }
-
-        .team-line {
-
-          width: 35px;
-
-          height: 2px;
-
-          margin-top: 22px;
-
-          background: #69b2e6;
-
-          border-radius: 2px;
-
-        }
-
-
-        .team-carousel-footer {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 22px;
-          margin-top: 4px;
-        }
-
-        .team-carousel-dots {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .team-carousel-dot {
-          width: 7px;
-          height: 7px;
-          padding: 0;
-          border: 0;
-          border-radius: 99px;
-          background: #c6dce8;
-          cursor: pointer;
-          transition: width 250ms ease, background 250ms ease;
-        }
-
-        .team-carousel-dot.is-active {
-          width: 26px;
-          background: #2f79a8;
-        }
-
-        .team-carousel-count {
-          color: #123b52;
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: 0.12em;
-        }
-
-        .team-carousel-count span {
-          padding: 0 4px;
-          color: #9ab7c7;
-        }
+   TEAM
+====================================================== */
+
+.team-section {
+  padding: 150px 0;
+  background: #ffffff;
+  border-top: 1px solid rgba(17, 20, 24, 0.06);
+}
+
+.team-carousel-window {
+  width: min(1240px, calc(100% - 48px));
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.team-carousel-track {
+  position: relative;
+  height: 390px;
+  isolation: isolate;
+}
+
+/* Team cards */
+
+.team-card {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: min(420px, 64%);
+  min-height: 400px;
+  padding: 25px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  background: #f7fbfe;
+  border: 1px solid rgba(105, 178, 230, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 14px 38px rgba(30, 70, 95, 0.06);
+  transform-origin: center center;
+  transition:
+    transform 750ms cubic-bezier(0.22, 0.75, 0.2, 1),
+    opacity 650ms ease,
+    filter 650ms ease,
+    box-shadow 300ms ease,
+    border-color 300ms ease;
+  will-change: transform, opacity;
+
+  /* Center horizontally and move upward */
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateY(-30px);
+}
+
+.team-card-active {
+  z-index: 3;
+  opacity: 1;
+  filter: none;
+  transform: translateX(-50%) scale(1);
+  border-color: rgba(47, 121, 168, 0.36);
+  box-shadow: 0 26px 65px rgba(30, 70, 95, 0.14);
+}
+
+.team-card-next {
+  z-index: 2;
+  opacity: 0.62;
+  filter: saturate(0.78);
+  transform: translateX(35%) scale(0.88);
+}
+
+.team-card-previous {
+  z-index: 2;
+  opacity: 0.62;
+  filter: saturate(0.78);
+  transform: translateX(-135%) scale(0.88);
+}
+
+.team-card-hidden {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(2px);
+  transform: translateX(
+    calc(-50% + var(--hidden-direction, 1) * 115%)
+  ) scale(0.78);
+}
+
+.team-card-active:hover {
+  border-color: rgba(47, 121, 168, 0.48);
+  box-shadow: 0 30px 72px rgba(30, 70, 95, 0.17);
+}
+
+/* Card header */
+
+.team-card-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+}
+.team-card-top > .team-number {
+  align-self: flex-start;
+}
+
+.team-number {
+  color: #8a949d;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+/* =====================================================
+   TEAM MEMBER PROFILE PHOTOS
+====================================================== */
+
+.team-avatar {
+  width: 210px;
+  height: 210px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #69b2e6;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateY(-20px);
+}
+
+.team-avatar-photo img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+/* Photo container */
+
+.team-avatar-photo {
+  padding: 0;
+  background: #edf7fc;
+}
+
+/* Actual profile image */
+
+.team-avatar-photo img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  object-fit: cover;
+  object-position: center;
+  border: none;
+  border-radius: 50%;
+}
+
+/* Initials fallback */
+
+.team-avatar-fallback {
+  background: #123b52;
+  color: #ffffff;
+}
+
+/* =====================================================
+   TEAM MEMBER INFORMATION
+====================================================== */
+
+.team-info h3 {
+  margin: 0 0 12px;
+  color: #111418;
+  font-size: 21px;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.team-role {
+  margin-bottom: 12px;
+  color: #2f79a8;
+  font-size: 16px; /* Increased from 10px */
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.team-info h3 {
+  margin: 0 0 12px;
+  color: #111418;
+  font-size: 21px;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.team-info p {
+  margin: 0;
+  color: #68737c;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.team-line {
+  width: 35px;
+  height: 2px;
+  margin-top: 22px;
+  background: #69b2e6;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* =====================================================
+   CAROUSEL NAVIGATION
+====================================================== */
+
+.team-carousel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 4px;
+}
+
+.team-carousel-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-carousel-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: #c6dce8;
+  cursor: pointer;
+  transition:
+    width 250ms ease,
+    background 250ms ease;
+}
+
+.team-carousel-dot.is-active {
+  width: 26px;
+  background: #2f79a8;
+}
+
+.team-carousel-dot:focus-visible {
+  outline: 2px solid #2f79a8;
+  outline-offset: 4px;
+}
+
+.team-carousel-count {
+  color: #123b52;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.team-carousel-count span {
+  padding: 0 4px;
+  color: #9ab7c7;
+}
+
+/* =====================================================
+   TABLET
+====================================================== */
+
+@media (max-width: 800px) {
+  .team-section {
+    padding: 110px 0;
+  }
+
+  .team-carousel-window {
+    width: calc(100% - 32px);
+  }
+
+  .team-carousel-track {
+    height: 370px;
+  }
+
+  .team-card {
+    width: min(340px, 72%);
+    min-height: 325px;
+    padding: 23px;
+  }
+
+  .team-card-next {
+    transform: translateX(18%) scale(0.84);
+    opacity: 0.42;
+  }
+
+  .team-card-previous {
+    transform: translateX(-118%) scale(0.84);
+    opacity: 0.42;
+  }
+}
+
+/* =====================================================
+   MOBILE
+====================================================== */
+
+@media (max-width: 600px) {
+  .team-section {
+    padding: 90px 0;
+  }
+
+  .team-carousel-window {
+    width: calc(100% - 32px);
+  }
+
+  .team-carousel-track {
+    height: 380px;
+  }
+
+  .team-card {
+    top: 8px;
+    width: min(330px, 86%);
+    min-height: 335px;
+    padding: 22px;
+  }
+
+  .team-card-next {
+    transform: translateX(5%) scale(0.82);
+    opacity: 0.22;
+  }
+
+  .team-card-previous {
+    transform: translateX(-105%) scale(0.82);
+    opacity: 0.22;
+  }
+
+  .team-card-hidden {
+    transform: translateX(
+      calc(-50% + var(--hidden-direction, 1) * 125%)
+    ) scale(0.76);
+  }
+
+  .team-avatar {
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #69b2e6;
+  border-radius: 50%;
+  transform: translateY(-50px);
+}
+
+  .team-info h3 {
+    font-size: 19px;
+  }
+
+  .team-info p {
+    font-size: 12px;
+  }
+}
+
+/* =====================================================
+   REDUCED MOTION
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .team-card,
+  .team-carousel-dot {
+    transition: none !important;
+  }
+}
 
         /* =====================================================
 
@@ -3118,7 +3232,19 @@ function Home() {
             opacity: 1;
             translate: none;
           }
-
+          @media (max-width: 600px) {
+  .team-avatar {
+  width: 170px;
+  height: 170px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  border: 3px solid #69b2e6;
+  border-radius: 50%;
+  transform: translateY(-30px); /* Move photo up or down */
+}
           .service-image,
           .team-card,
           .team-carousel-dot {
