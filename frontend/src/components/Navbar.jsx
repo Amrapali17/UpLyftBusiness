@@ -42,7 +42,7 @@ function Navbar() {
         darkMode ? "dark" : "light"
       );
     } catch {
-      // The theme still works if localStorage is unavailable.
+      // Theme still works when localStorage is unavailable.
     }
   }, [darkMode]);
 
@@ -103,6 +103,7 @@ function Navbar() {
               </NavLink>
             ))}
 
+            {/* CONTACT DROPDOWN — NO FEEDBACK */}
             <div
               className="contact-dropdown"
               onMouseEnter={() => setContactDropdownOpen(true)}
@@ -111,9 +112,7 @@ function Navbar() {
               <button
                 type="button"
                 className={`nav-link contact-trigger${
-                  ["/contact", "/feedback"].includes(location.pathname)
-                    ? " active"
-                    : ""
+                  location.pathname === "/contact" ? " active" : ""
                 }`}
                 aria-expanded={contactDropdownOpen}
                 onClick={() =>
@@ -135,15 +134,6 @@ function Navbar() {
                     onClick={closeMenus}
                   >
                     Contact Us
-                    <ArrowUpRight size={15} />
-                  </Link>
-
-                  <Link
-                    to="/feedback"
-                    className="dropdown-link"
-                    onClick={closeMenus}
-                  >
-                    Feedback
                     <ArrowUpRight size={15} />
                   </Link>
                 </div>
@@ -184,6 +174,7 @@ function Navbar() {
               aria-label={
                 darkMode ? "Switch to light mode" : "Switch to dark mode"
               }
+              title={darkMode ? "Light mode" : "Dark mode"}
             >
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -201,7 +192,7 @@ function Navbar() {
         </div>
       </header>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU BACKDROP */}
       <div
         className={`mobile-menu-backdrop${
           mobileMenuOpen ? " backdrop-visible" : ""
@@ -210,10 +201,12 @@ function Navbar() {
         aria-hidden="true"
       />
 
+      {/* MOBILE MENU */}
       <nav
         className={`mobile-menu${mobileMenuOpen ? " mobile-menu-open" : ""}`}
         aria-label="Mobile navigation"
         aria-hidden={!mobileMenuOpen}
+        inert={!mobileMenuOpen}
       >
         <div className="mobile-menu-heading">
           <span>Explore UpLyftBusiness</span>
@@ -239,6 +232,7 @@ function Navbar() {
           </NavLink>
         ))}
 
+        {/* MOBILE CONTACT LINKS — NO FEEDBACK */}
         <div className="mobile-contact-links">
           <Link
             to="/contact"
@@ -246,14 +240,6 @@ function Navbar() {
             onClick={closeMenus}
           >
             Contact Us
-          </Link>
-
-          <Link
-            to="/feedback"
-            tabIndex={mobileMenuOpen ? 0 : -1}
-            onClick={closeMenus}
-          >
-            Feedback
           </Link>
 
           <Link
@@ -277,10 +263,7 @@ function Navbar() {
       </nav>
 
       <style>{`
-        /* =========================================
-           FLOATING NAVBAR
-        ========================================= */
-
+        /* FLOATING NAVBAR */
         .navbar {
           position: fixed;
           top: 14px;
@@ -310,10 +293,7 @@ function Navbar() {
           gap: 22px;
         }
 
-        /* =========================================
-           BRAND
-        ========================================= */
-
+        /* BRAND */
         .logo {
           display: inline-flex;
           align-items: center;
@@ -357,10 +337,7 @@ function Navbar() {
           color: #64748b;
         }
 
-        /* =========================================
-           DESKTOP NAVIGATION
-        ========================================= */
-
+        /* DESKTOP NAVIGATION */
         .desktop-nav {
           display: flex;
           align-items: center;
@@ -418,7 +395,6 @@ function Navbar() {
         }
 
         /* CONTACT DROPDOWN */
-
         .contact-dropdown {
           position: relative;
         }
@@ -476,10 +452,7 @@ function Navbar() {
           }
         }
 
-        /* =========================================
-           NAVBAR ACTIONS
-        ========================================= */
-
+        /* NAVBAR ACTIONS */
         .navbar-actions {
           display: flex;
           align-items: center;
@@ -563,10 +536,7 @@ function Navbar() {
           gap: 8px;
         }
 
-        /* =========================================
-           MOBILE MENU
-        ========================================= */
-
+        /* MOBILE MENU BACKDROP */
         .mobile-menu-backdrop {
           position: fixed;
           inset: 0;
@@ -586,6 +556,7 @@ function Navbar() {
           pointer-events: auto;
         }
 
+        /* MOBILE MENU */
         .mobile-menu {
           position: fixed;
           top: 86px;
@@ -694,10 +665,7 @@ function Navbar() {
           margin-top: 4px;
         }
 
-        /* =========================================
-           DARK MODE
-        ========================================= */
-
+        /* DARK MODE */
         body.dark-mode .navbar {
           background: rgba(8, 13, 22, 0.90);
           border-color: rgba(255, 255, 255, 0.11);
@@ -780,14 +748,7 @@ function Navbar() {
           color: #93baff;
         }
 
-        body.dark-mode .logo-company {
-          color: #aeb9c8;
-        }
-
-        /* =========================================
-           TABLET
-        ========================================= */
-
+        /* TABLET */
         @media (max-width: 1120px) {
           .navbar-inner {
             padding: 0 16px;
@@ -816,10 +777,7 @@ function Navbar() {
           }
         }
 
-        /* =========================================
-           MOBILE / SMALL TABLET
-        ========================================= */
-
+        /* MOBILE / SMALL TABLET */
         @media (max-width: 860px) {
           .navbar {
             top: 10px;
@@ -856,10 +814,7 @@ function Navbar() {
           }
         }
 
-        /* =========================================
-           SMALL PHONES
-        ========================================= */
-
+        /* SMALL PHONES */
         @media (max-width: 480px) {
           .navbar {
             top: 8px;

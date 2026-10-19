@@ -421,7 +421,9 @@ function ServiceDetail() {
         <main className="sd-not-found">
           <span className="sd-eyebrow">SERVICE NOT FOUND</span>
           <h1>Let's find the right solution.</h1>
-          <p>The service you are looking for may have moved or is unavailable.</p>
+          <p>
+            The service you are looking for may have moved or is unavailable.
+          </p>
           <Link to="/services" className="sd-primary-button">
             Explore Services <ArrowRight size={17} />
           </Link>
@@ -631,17 +633,22 @@ function ServiceDetail() {
       <Footer />
 
       <style>{`
+        /* =========================================
+           SERVICE DETAIL — NAVY BRAND
+        ========================================= */
+
         .sd-page {
-          --sd-blue: #2563eb;
-          --sd-blue-dark: #1747b8;
-          --sd-text: #101828;
-          --sd-muted: #596579;
-          --sd-border: #e4e9f1;
-          --sd-surface: #ffffff;
-          --sd-soft: #f6f8fc;
+          --sd-blue: #0B1F3A;
+          --sd-blue-dark: #142D4E;
+          --sd-text: #111827;
+          --sd-muted: #526176;
+          --sd-border: #DCE3EC;
+          --sd-surface: #FFFFFF;
+          --sd-soft: #F3F6FA;
+
           color: var(--sd-text);
           background: var(--sd-surface);
-          overflow: hidden;
+          overflow: clip;
         }
 
         .sd-container {
@@ -649,12 +656,18 @@ function ServiceDetail() {
           margin-inline: auto;
         }
 
+        /* HERO */
+
         .sd-hero {
           position: relative;
           padding: 34px 0 0;
           background:
-            radial-gradient(ellipse at 82% 22%, rgba(219, 234, 254, 0.6), transparent 35%),
-            linear-gradient(180deg, #fbfcff 0%, #ffffff 100%);
+            radial-gradient(
+              ellipse at 82% 22%,
+              rgba(130, 151, 176, 0.16),
+              transparent 36%
+            ),
+            linear-gradient(180deg, #F8FAFD 0%, #FFFFFF 100%);
           border-bottom: 1px solid var(--sd-border);
         }
 
@@ -663,10 +676,10 @@ function ServiceDetail() {
           inset: 0 0 auto;
           height: 410px;
           pointer-events: none;
-          opacity: 0.32;
+          opacity: 0.38;
           background-image:
-            linear-gradient(rgba(37, 99, 235, 0.055) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(37, 99, 235, 0.055) 1px, transparent 1px);
+            linear-gradient(rgba(11, 31, 58, 0.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(11, 31, 58, 0.045) 1px, transparent 1px);
           background-size: 44px 44px;
           mask-image: linear-gradient(to bottom, black, transparent);
         }
@@ -683,13 +696,12 @@ function ServiceDetail() {
           color: var(--sd-muted);
           font-size: 14px;
           font-weight: 600;
-          text-decoration: none;
           transition: color 180ms ease;
         }
 
         .sd-back-link:hover,
         .sd-secondary-link:hover {
-          color: var(--sd-blue);
+          color: var(--sd-blue-dark);
         }
 
         .sd-hero-layout {
@@ -717,8 +729,8 @@ function ServiceDetail() {
           height: 7px;
           flex: 0 0 7px;
           border-radius: 50%;
-          background: var(--sd-blue);
-          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+          background: var(--sd-secondary, #526B89);
+          box-shadow: 0 0 0 4px rgba(82, 107, 137, 0.12);
         }
 
         .sd-hero-copy h1 {
@@ -765,16 +777,21 @@ function ServiceDetail() {
           border: 1px solid var(--sd-blue);
           border-radius: 8px;
           background: var(--sd-blue);
-          color: #ffffff;
+          color: #FFFFFF;
           font-size: 14px;
           font-weight: 650;
+          text-align: center;
           text-decoration: none;
-          transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+          transition:
+            background 180ms ease,
+            transform 180ms ease,
+            box-shadow 180ms ease;
         }
 
         .sd-primary-button:hover {
           background: var(--sd-blue-dark);
-          box-shadow: 0 8px 22px rgba(37, 99, 235, 0.18);
+          border-color: var(--sd-blue-dark);
+          box-shadow: 0 8px 22px rgba(11, 31, 58, 0.16);
           transform: translateY(-2px);
         }
 
@@ -789,6 +806,8 @@ function ServiceDetail() {
           transition: color 180ms ease;
         }
 
+        /* HERO VISUAL */
+
         .sd-hero-visual {
           position: relative;
           min-height: 330px;
@@ -797,12 +816,12 @@ function ServiceDetail() {
           align-items: flex-start;
           justify-content: center;
           padding: 32px;
-          border: 1px solid rgba(191, 211, 244, 0.9);
+          border: 1px solid #D4DEE9;
           border-radius: 16px;
           background:
-            radial-gradient(circle at 90% 5%, rgba(147, 197, 253, 0.32), transparent 34%),
-            linear-gradient(145deg, #f4f8ff 0%, #ffffff 72%);
-          box-shadow: 0 22px 60px rgba(20, 53, 105, 0.07);
+            radial-gradient(circle at 90% 5%, rgba(130, 151, 176, 0.20), transparent 34%),
+            linear-gradient(145deg, #F0F4F9 0%, #FFFFFF 72%);
+          box-shadow: 0 22px 60px rgba(11, 31, 58, 0.07);
         }
 
         .sd-visual-topline {
@@ -813,7 +832,7 @@ function ServiceDetail() {
           display: flex;
           justify-content: space-between;
           gap: 12px;
-          color: #6b7c95;
+          color: #64748B;
           font-size: 10px;
           font-weight: 750;
           letter-spacing: 0.13em;
@@ -825,11 +844,11 @@ function ServiceDetail() {
           display: grid;
           place-items: center;
           margin-bottom: 25px;
-          border: 1px solid #d8e5fc;
+          border: 1px solid #DCE3EC;
           border-radius: 15px;
-          background: #ffffff;
+          background: #FFFFFF;
           color: var(--sd-blue);
-          box-shadow: 0 8px 20px rgba(37, 99, 235, 0.09);
+          box-shadow: 0 8px 20px rgba(11, 31, 58, 0.07);
         }
 
         .sd-visual-label {
@@ -863,15 +882,17 @@ function ServiceDetail() {
           margin-top: 30px;
           padding-top: 17px;
           width: 100%;
-          border-top: 1px solid #dfe8f7;
-          color: #40516a;
+          border-top: 1px solid #DCE3EC;
+          color: #40516A;
           font-size: 12px;
           font-weight: 650;
         }
 
         .sd-visual-bottom svg {
-          color: #91a3bc;
+          color: #8297B0;
         }
+
+        /* OUTCOMES */
 
         .sd-outcomes {
           display: grid;
@@ -892,8 +913,10 @@ function ServiceDetail() {
 
         .sd-outcome svg {
           flex-shrink: 0;
-          color: var(--sd-blue);
+          color: #526B89;
         }
+
+        /* SECTION HEADINGS */
 
         .sd-offerings {
           padding: 100px 0;
@@ -920,6 +943,8 @@ function ServiceDetail() {
           font-size: 16px;
           line-height: 1.8;
         }
+
+        /* OFFERINGS */
 
         .sd-offering-grid {
           display: grid;
@@ -948,7 +973,7 @@ function ServiceDetail() {
         }
 
         .sd-offering-number {
-          color: #8a98ac;
+          color: #8290A4;
           font-size: 12px;
           font-weight: 650;
           font-variant-numeric: tabular-nums;
@@ -961,7 +986,7 @@ function ServiceDetail() {
         }
 
         .sd-offering-arrow {
-          color: #8a98ac;
+          color: #8290A4;
           transition: color 180ms ease, transform 180ms ease;
         }
 
@@ -970,11 +995,13 @@ function ServiceDetail() {
           transform: translate(2px, -2px);
         }
 
+        /* PACKAGES */
+
         .sd-packages {
           padding: 100px 0;
           background: var(--sd-soft);
-          border-top: 1px solid #edf0f5;
-          border-bottom: 1px solid #edf0f5;
+          border-top: 1px solid #E5EAF1;
+          border-bottom: 1px solid #E5EAF1;
         }
 
         .sd-package-grid {
@@ -990,22 +1017,25 @@ function ServiceDetail() {
           flex-direction: column;
           min-width: 0;
           padding: 28px;
-          border: 1px solid #e0e6ef;
+          border: 1px solid #DCE3EC;
           border-radius: 13px;
           background: var(--sd-surface);
-          box-shadow: 0 4px 14px rgba(16, 24, 40, 0.025);
-          transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+          box-shadow: 0 4px 14px rgba(11, 31, 58, 0.025);
+          transition:
+            transform 200ms ease,
+            border-color 200ms ease,
+            box-shadow 200ms ease;
         }
 
         .sd-package-card:hover {
           transform: translateY(-4px);
-          border-color: #bfd3fa;
-          box-shadow: 0 18px 36px rgba(16, 24, 40, 0.06);
+          border-color: #9BAFC7;
+          box-shadow: 0 18px 36px rgba(11, 31, 58, 0.07);
         }
 
         .sd-package-featured {
-          border-color: #9ebdfb;
-          box-shadow: 0 8px 28px rgba(37, 99, 235, 0.07);
+          border-color: #526B89;
+          box-shadow: 0 8px 28px rgba(11, 31, 58, 0.07);
         }
 
         .sd-popular-label {
@@ -1016,10 +1046,10 @@ function ServiceDetail() {
           align-items: center;
           gap: 6px;
           padding: 6px 11px;
-          border: 1px solid #c9dcff;
+          border: 1px solid #C8D4E2;
           border-radius: 100px;
-          background: #edf4ff;
-          color: #1d4ed8;
+          background: #E8EEF5;
+          color: #0B1F3A;
           font-size: 11px;
           font-weight: 750;
         }
@@ -1033,7 +1063,7 @@ function ServiceDetail() {
         }
 
         .sd-package-index {
-          color: #8996a9;
+          color: #8290A4;
           font-size: 11px;
           font-weight: 750;
           letter-spacing: 0.1em;
@@ -1044,14 +1074,14 @@ function ServiceDetail() {
           height: 42px;
           display: grid;
           place-items: center;
-          border: 1px solid #e1e9f8;
+          border: 1px solid #DCE3EC;
           border-radius: 10px;
-          background: #f5f8ff;
-          color: var(--sd-blue);
+          background: #F3F6FA;
+          color: #0B1F3A;
         }
 
         .sd-package-label {
-          color: var(--sd-blue);
+          color: #526B89;
           font-size: 12px;
           line-height: 1.5;
           font-weight: 700;
@@ -1081,7 +1111,7 @@ function ServiceDetail() {
 
         .sd-included-title {
           margin-bottom: 18px;
-          color: #68758a;
+          color: #64748B;
           font-size: 11px;
           font-weight: 750;
           letter-spacing: 0.1em;
@@ -1113,8 +1143,8 @@ function ServiceDetail() {
           place-items: center;
           margin-top: 1px;
           border-radius: 50%;
-          background: #edf4ff;
-          color: var(--sd-blue);
+          background: #E8EEF5;
+          color: #0B1F3A;
         }
 
         .sd-package-button {
@@ -1125,33 +1155,35 @@ function ServiceDetail() {
           min-height: 47px;
           margin-top: auto;
           padding: 10px 14px;
-          border: 1px solid #d9e1ed;
+          border: 1px solid #C8D4E2;
           border-radius: 7px;
-          color: #243247;
-          background: #ffffff;
+          color: #0B1F3A;
+          background: #FFFFFF;
           font-size: 13px;
           font-weight: 700;
           text-align: center;
           text-decoration: none;
-          transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+          transition:
+            border-color 180ms ease,
+            background 180ms ease,
+            color 180ms ease;
         }
 
         .sd-package-button:hover {
-          border-color: #9ebdfb;
-          background: #f5f8ff;
-          color: var(--sd-blue);
+          border-color: #526B89;
+          background: #F3F6FA;
         }
 
         .sd-package-button-primary {
-          border-color: var(--sd-blue);
-          background: var(--sd-blue);
-          color: #ffffff;
+          border-color: #0B1F3A;
+          background: #0B1F3A;
+          color: #FFFFFF;
         }
 
         .sd-package-button-primary:hover {
-          border-color: var(--sd-blue-dark);
-          background: var(--sd-blue-dark);
-          color: #ffffff;
+          border-color: #142D4E;
+          background: #142D4E;
+          color: #FFFFFF;
         }
 
         .sd-package-note {
@@ -1168,13 +1200,19 @@ function ServiceDetail() {
 
         .sd-package-note svg {
           flex-shrink: 0;
-          color: var(--sd-blue);
+          color: #526B89;
         }
+
+        /* FINAL CTA */
 
         .sd-process {
           padding: 76px 0;
           background:
-            radial-gradient(ellipse at 90% 20%, rgba(219, 234, 254, 0.55), transparent 36%),
+            radial-gradient(
+              ellipse at 90% 20%,
+              rgba(130, 151, 176, 0.16),
+              transparent 36%
+            ),
             var(--sd-surface);
         }
 
@@ -1186,7 +1224,7 @@ function ServiceDetail() {
           padding: 40px;
           border: 1px solid var(--sd-border);
           border-radius: 14px;
-          background: rgba(255, 255, 255, 0.72);
+          background: var(--sd-surface);
         }
 
         .sd-process-inner > div {
@@ -1211,6 +1249,8 @@ function ServiceDetail() {
           flex-shrink: 0;
         }
 
+        /* NOT FOUND */
+
         .sd-not-found {
           width: min(760px, calc(100% - 40px));
           min-height: 55vh;
@@ -1220,6 +1260,7 @@ function ServiceDetail() {
           justify-content: center;
           align-items: flex-start;
           gap: 16px;
+          padding-block: 50px;
         }
 
         .sd-not-found h1 {
@@ -1234,6 +1275,8 @@ function ServiceDetail() {
           font-size: 16px;
           line-height: 1.8;
         }
+
+        /* TABLET */
 
         @media (max-width: 1000px) {
           .sd-hero-layout {
@@ -1255,13 +1298,15 @@ function ServiceDetail() {
           }
         }
 
+        /* MOBILE AND SMALL TABLET */
+
         @media (max-width: 760px) {
           .sd-container {
-            width: min(100% - 36px, 600px);
+            width: calc(100% - 36px);
           }
 
           .sd-hero-layout {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 36px;
             padding: 48px 0 40px;
           }
@@ -1312,7 +1357,7 @@ function ServiceDetail() {
           }
 
           .sd-package-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 24px;
           }
 
@@ -1341,23 +1386,25 @@ function ServiceDetail() {
           }
         }
 
+        /* SMALL PHONES */
+
         @media (max-width: 420px) {
           .sd-container {
             width: calc(100% - 30px);
           }
 
           .sd-hero-actions {
-            align-items: flex-start;
+            align-items: stretch;
             flex-direction: column;
             gap: 18px;
           }
 
-          .sd-primary-button {
+          .sd-hero-actions .sd-primary-button {
             width: 100%;
           }
 
           .sd-offering-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
           }
 
           .sd-offering {
@@ -1372,7 +1419,146 @@ function ServiceDetail() {
           .sd-visual-bottom {
             font-size: 11px;
           }
+
+          .sd-process-inner .sd-primary-button {
+            width: 100%;
+          }
         }
+
+        /* DARK MODE — uses the theme set by the Navbar */
+
+        html[data-theme="dark"] .sd-page,
+        body.dark-mode .sd-page {
+          --sd-text: #F1F5F9;
+          --sd-muted: #A7B3C6;
+          --sd-border: #29364A;
+          --sd-surface: #101722;
+          --sd-soft: #151F2D;
+
+          background: var(--sd-surface);
+          color: var(--sd-text);
+        }
+
+        html[data-theme="dark"] .sd-hero,
+        body.dark-mode .sd-hero {
+          background:
+            radial-gradient(ellipse at 82% 22%, rgba(82, 107, 137, 0.16), transparent 36%),
+            linear-gradient(180deg, #111B29 0%, #101722 100%);
+        }
+
+        html[data-theme="dark"] .sd-hero-grid,
+        body.dark-mode .sd-hero-grid {
+          opacity: 0.13;
+        }
+
+        html[data-theme="dark"] .sd-hero-visual,
+        body.dark-mode .sd-hero-visual {
+          border-color: #34445A;
+          background:
+            radial-gradient(circle at 90% 5%, rgba(82, 107, 137, 0.22), transparent 34%),
+            linear-gradient(145deg, #182638 0%, #131D2B 72%);
+        }
+
+        html[data-theme="dark"] .sd-visual-icon,
+        html[data-theme="dark"] .sd-package-icon,
+        body.dark-mode .sd-visual-icon,
+        body.dark-mode .sd-package-icon {
+          border-color: #34445A;
+          background: #1D2B40;
+          color: #D0DCEC;
+        }
+
+        html[data-theme="dark"] .sd-visual-bottom,
+        body.dark-mode .sd-visual-bottom {
+          border-color: #34445A;
+          color: #C0CDE0;
+        }
+
+        html[data-theme="dark"] .sd-outcome,
+        html[data-theme="dark"] .sd-offering-name,
+        html[data-theme="dark"] .sd-feature-list li,
+        body.dark-mode .sd-outcome,
+        body.dark-mode .sd-offering-name,
+        body.dark-mode .sd-feature-list li {
+          color: #D4DCEB;
+        }
+
+        html[data-theme="dark"] .sd-offering,
+        body.dark-mode .sd-offering {
+          border-color: var(--sd-border);
+          background: var(--sd-surface);
+        }
+
+        html[data-theme="dark"] .sd-offering:hover,
+        body.dark-mode .sd-offering:hover {
+          background: #1A2637;
+        }
+
+        html[data-theme="dark"] .sd-package-card,
+        body.dark-mode .sd-package-card {
+          border-color: var(--sd-border);
+          background: #141E2B;
+          box-shadow: none;
+        }
+
+        html[data-theme="dark"] .sd-package-featured,
+        body.dark-mode .sd-package-featured {
+          border-color: #607A99;
+        }
+
+        html[data-theme="dark"] .sd-popular-label,
+        body.dark-mode .sd-popular-label {
+          border-color: #526B89;
+          background: #263B55;
+          color: #E5EDF7;
+        }
+
+        html[data-theme="dark"] .sd-package-button,
+        body.dark-mode .sd-package-button {
+          border-color: #34435A;
+          background: #1A2637;
+          color: #E2EAF6;
+        }
+
+        html[data-theme="dark"] .sd-package-button:hover,
+        body.dark-mode .sd-package-button:hover {
+          border-color: #8297B0;
+          background: #223249;
+          color: #FFFFFF;
+        }
+
+        html[data-theme="dark"] .sd-package-button-primary,
+        body.dark-mode .sd-package-button-primary {
+          border-color: #526B89;
+          background: #526B89;
+          color: #FFFFFF;
+        }
+
+        html[data-theme="dark"] .sd-package-button-primary:hover,
+        body.dark-mode .sd-package-button-primary:hover {
+          border-color: #657F9F;
+          background: #657F9F;
+          color: #FFFFFF;
+        }
+
+        html[data-theme="dark"] .sd-check,
+        body.dark-mode .sd-check {
+          background: #263B55;
+          color: #E5EDF7;
+        }
+
+        html[data-theme="dark"] .sd-process-inner,
+        body.dark-mode .sd-process-inner {
+          border-color: var(--sd-border);
+          background: #141E2B;
+        }
+
+        html[data-theme="dark"] .sd-package-divider,
+        body.dark-mode .sd-package-divider {
+          background: var(--sd-border);
+        }
+
+        /* ACCESSIBILITY */
 
         @media (prefers-reduced-motion: reduce) {
           .sd-page *,
@@ -1381,118 +1567,8 @@ function ServiceDetail() {
             scroll-behavior: auto !important;
             transition-duration: 0.01ms !important;
             animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
           }
-        }
-
-        /* Respect the site's dark theme when Navbar toggles a dark class. */
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-page {
-          --sd-text: #edf2fb;
-          --sd-muted: #a7b3c6;
-          --sd-border: #29364a;
-          --sd-surface: #101722;
-          --sd-soft: #151f2d;
-          background: var(--sd-surface);
-          color: var(--sd-text);
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-hero {
-          background:
-            radial-gradient(ellipse at 82% 22%, rgba(37, 99, 235, 0.13), transparent 35%),
-            linear-gradient(180deg, #111b29 0%, #101722 100%);
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-hero-grid {
-          opacity: 0.16;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-hero-visual {
-          border-color: #2d405b;
-          background:
-            radial-gradient(circle at 90% 5%, rgba(37, 99, 235, 0.2), transparent 34%),
-            linear-gradient(145deg, #18263a 0%, #131d2b 72%);
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-visual-icon,
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-icon {
-          border-color: #2e4059;
-          background: #1d2b40;
-          color: #8bb5ff;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-visual-bottom {
-          border-color: #2c3b50;
-          color: #c0cde0;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-outcome,
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-offering-name,
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-feature-list li {
-          color: #d4dceb;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-offering-grid {
-          border-color: var(--sd-border);
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-offering {
-          border-color: var(--sd-border);
-          background: var(--sd-surface);
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-offering:hover {
-          background: #1a2637;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-card {
-          border-color: var(--sd-border);
-          background: #141e2b;
-          box-shadow: none;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-featured {
-          border-color: #446cae;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-popular-label {
-          border-color: #365787;
-          background: #1b3152;
-          color: #b7d1ff;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-button {
-          border-color: #34435a;
-          background: #1a2637;
-          color: #e2eaf6;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-button:hover {
-          border-color: #628fd8;
-          color: #b7d1ff;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-button-primary {
-          border-color: var(--sd-blue);
-          background: var(--sd-blue);
-          color: #ffffff;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-button-primary:hover {
-          background: var(--sd-blue-dark);
-          color: #ffffff;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-check {
-          background: #1d3150;
-          color: #9dc1ff;
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-process-inner {
-          border-color: var(--sd-border);
-          background: rgba(20, 30, 43, 0.8);
-        }
-
-        :is(html.dark, body.dark, [data-theme="dark"]) .sd-package-divider {
-          background: var(--sd-border);
         }
       `}</style>
     </>

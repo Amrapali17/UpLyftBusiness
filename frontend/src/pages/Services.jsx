@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
+  ArrowLeft,
+  ArrowRight,
   ArrowUpRight,
   Code2,
   Megaphone,
@@ -10,6 +12,8 @@ import {
   Palette,
   TrendingUp,
   Check,
+  Sparkles,
+  MoveUpRight,
 } from "lucide-react";
 
 import Navbar from "../components/Navbar";
@@ -25,6 +29,8 @@ const services = [
       "Modern websites and digital platforms designed around your business goals.",
     icon: Code2,
     points: ["Business Websites", "Web Applications", "Landing Pages"],
+    tag: "BUILD",
+    accent: "#9dc8ee",
   },
   {
     id: "digital-marketing",
@@ -35,6 +41,8 @@ const services = [
       "Build your online visibility and connect with the right audience.",
     icon: Megaphone,
     points: ["SEO", "Marketing Strategy", "Online Visibility"],
+    tag: "REACH",
+    accent: "#b6c8ff",
   },
   {
     id: "social-media-management",
@@ -45,6 +53,8 @@ const services = [
       "Build a consistent and recognisable presence across social platforms.",
     icon: Share2,
     points: ["Content Strategy", "Content Creation", "Community"],
+    tag: "CONNECT",
+    accent: "#a9ded5",
   },
   {
     id: "advertising-performance",
@@ -55,6 +65,8 @@ const services = [
       "Create and manage advertising campaigns focused on measurable outcomes.",
     icon: Target,
     points: ["Meta Ads", "Google Ads", "Campaign Tracking"],
+    tag: "PERFORM",
+    accent: "#e2c4a3",
   },
   {
     id: "creative-branding",
@@ -65,6 +77,8 @@ const services = [
       "Create a consistent visual identity that makes your business stand out.",
     icon: Palette,
     points: ["Brand Identity", "Creative Design", "Visual Systems"],
+    tag: "CREATE",
+    accent: "#d2b9ef",
   },
   {
     id: "growth-strategy",
@@ -75,20 +89,34 @@ const services = [
       "Identify opportunities and build a practical direction for business growth.",
     icon: TrendingUp,
     points: ["Growth Strategy", "Business Consulting", "Market Research"],
+    tag: "GROW",
+    accent: "#a9d7f4",
   },
 ];
 
 export default function Services() {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
   const total = services.length;
+  const current = services[active];
+
+  const nextSlide = () => {
+    setActive((index) => (index + 1) % total);
+  };
+
+  const previousSlide = () => {
+    setActive((index) => (index - 1 + total) % total);
+  };
 
   useEffect(() => {
+    if (paused) return undefined;
+
     const timer = window.setInterval(() => {
-      setActive((current) => (current + 1) % total);
-    }, 2500);
+      setActive((index) => (index + 1) % total);
+    }, 4500);
 
     return () => window.clearInterval(timer);
-  }, [total]);
+  }, [paused, total]);
 
   return (
     <>
@@ -98,40 +126,82 @@ export default function Services() {
         {/* HERO */}
         <section className="up-services-hero">
           <div className="up-hero-grid" />
+          <div className="up-hero-orb up-orb-one" />
+          <div className="up-hero-orb up-orb-two" />
 
           <div className="up-hero-inner">
-            <div className="up-eyebrow">
+            <div className="up-eyebrow up-reveal">
               <span className="up-eyebrow-dot" />
-              UPLYFTBUSINESS / SERVICES
+              UPLYFTBUSINESS
+              <span className="up-eyebrow-divider">/</span>
+              OUR SERVICES
             </div>
 
-            <h1>
+            <h1 className="up-reveal up-reveal-delay">
               Digital solutions
               <br />
-              that move business <span>forward.</span>
+              that move business
+              <br />
+              <span>forward.</span>
             </h1>
 
-            <div className="up-hero-bottom">
+            <div className="up-hero-bottom up-reveal up-reveal-delay-two">
               <p>
                 Technology, creativity and strategy — working together to
-                help your business move forward.
+                turn your ideas into meaningful digital progress.
               </p>
 
               <Link to="/enquire" className="up-primary-button">
-                Start a Project
+                Let's build something
                 <ArrowUpRight size={18} />
               </Link>
+            </div>
+
+            <div className="up-hero-bottom-line">
+              <span>STRATEGY</span>
+              <span className="up-line-dot" />
+              <span>TECHNOLOGY</span>
+              <span className="up-line-dot" />
+              <span>CREATIVITY</span>
             </div>
           </div>
 
           <div className="up-hero-index">01 — OUR EXPERTISE</div>
+          <div className="up-hero-scroll">EXPLORE WHAT WE DO ↓</div>
         </section>
 
-        {/* SERVICE CAROUSEL */}
+        {/* INTRODUCTION */}
+        <section className="up-intro-section">
+          <div className="up-intro-label">
+            <Sparkles size={15} />
+            MORE THAN JUST SERVICES
+          </div>
+
+          <div className="up-intro-grid">
+            <h2>
+              The right tools.
+              <br />
+              <span>The right direction.</span>
+            </h2>
+
+            <div className="up-intro-copy">
+              <p>
+                Every business has a different story. We bring together the
+                digital capabilities to help you tell yours, reach the right
+                people and build for what comes next.
+              </p>
+              <span className="up-intro-signature">
+                BUILT AROUND YOUR BUSINESS.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* INTERACTIVE SERVICES CAROUSEL */}
         <section className="up-service-section">
           <div className="up-section-heading">
             <div>
-              <span className="up-section-label">WHAT WE DO</span>
+              <span className="up-section-label">01 / WHAT WE DO</span>
               <h2>
                 One partner.
                 <br />
@@ -140,92 +210,171 @@ export default function Services() {
             </div>
 
             <p className="up-section-intro">
-              Explore the services that help businesses build, grow and
-              scale their digital presence.
+              Explore our capabilities. Select any service to discover how
+              it can support your business.
             </p>
           </div>
 
-          <div className="up-carousel-window">
-            <div className="up-carousel-track">
-              {services.map((service, index) => {
-                const Icon = service.icon;
-                const position = (index - active + total) % total;
+          <div
+            className="up-carousel"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocusCapture={() => setPaused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                setPaused(false);
+              }
+            }}
+          >
+            <div className="up-carousel-topline">
+              <span>EXPLORE OUR CAPABILITIES</span>
+              <span className="up-carousel-auto">
+                <span className={`up-live-dot ${paused ? "is-paused" : ""}`} />
+                {paused ? "PAUSED" : "AUTO EXPLORING"}
+              </span>
+            </div>
 
-                let positionClass = "up-card-hidden";
+            <div className="up-carousel-window">
+              <div className="up-carousel-track">
+                {services.map((service, index) => {
+                  const Icon = service.icon;
+                  const position = (index - active + total) % total;
 
-                if (position === 0) {
-                  positionClass = "up-card-active";
-                } else if (position === 1) {
-                  positionClass = "up-card-next";
-                } else if (position === total - 1) {
-                  positionClass = "up-card-previous";
-                }
+                  let positionClass = "up-card-hidden";
 
-                return (
-                  <article
-                    key={service.id}
-                    className={`up-service-card ${positionClass}`}
-                    aria-hidden={position !== 0}
-                    aria-label={service.title}
-                  >
-                    <div className="up-card-top">
-                      <span>
-                        {service.number}{" "}
-                        <span className="up-card-slash">/</span> 06
-                      </span>
+                  if (position === 0) {
+                    positionClass = "up-card-active";
+                  } else if (position === 1) {
+                    positionClass = "up-card-next";
+                  } else if (position === total - 1) {
+                    positionClass = "up-card-previous";
+                  }
 
-                      <Icon size={29} strokeWidth={1.5} />
-                    </div>
+                  return (
+                    <Link
+                      key={service.id}
+                      to={`/services/${service.id}`}
+                      className={`up-service-card ${positionClass}`}
+                      style={{ "--service-accent": service.accent }}
+                      aria-label={`Explore ${service.title}`}
+                      aria-current={position === 0 ? "true" : undefined}
+                      onClick={() => setActive(index)}
+                      onKeyDown={(event) => {
+                        if (event.key === " ") {
+                          event.preventDefault();
+                          window.location.href = `/services/${service.id}`;
+                        }
+                      }}
+                    >
+                      <div className="up-card-glow" />
 
-                    <div className="up-card-main">
-                      <span className="up-card-kicker">
-                        DIGITAL & TECHNOLOGY
-                      </span>
+                      <div className="up-card-top">
+                        <span className="up-card-number">
+                          {service.number}
+                          <span className="up-card-slash">/</span> 06
+                        </span>
 
-                      <h3>{service.title}</h3>
-                      <p>{service.short}</p>
-
-                      <div className="up-card-points">
-                        {service.points.map((point) => (
-                          <span key={point}>
-                            <Check size={14} />
-                            {point}
-                          </span>
-                        ))}
+                        <span className="up-card-icon">
+                          <Icon size={28} strokeWidth={1.5} />
+                        </span>
                       </div>
 
-                      <Link
-                        to={`/services/${service.id}`}
-                        className="up-card-link"
-                        tabIndex={position === 0 ? 0 : -1}
-                      >
-                        Explore service
-                        <ArrowUpRight size={18} />
-                      </Link>
-                    </div>
+                      <div className="up-card-main">
+                        <span className="up-card-kicker">
+                          <span className="up-kicker-line" />
+                          {service.tag} YOUR DIGITAL PRESENCE
+                        </span>
 
-                    <span className="up-card-watermark">
-                      {service.number}
-                    </span>
-                  </article>
-                );
-              })}
+                        <h3>{service.title}</h3>
+                        <p>{service.short}</p>
+
+                        <div className="up-card-points">
+                          {service.points.map((point) => (
+                            <span key={point}>
+                              <Check size={13} />
+                              {point}
+                            </span>
+                          ))}
+                        </div>
+
+                        <span className="up-card-link">
+                          Explore service
+                          <span className="up-card-link-icon">
+                            <ArrowUpRight size={18} />
+                          </span>
+                        </span>
+                      </div>
+
+                      <span className="up-card-watermark">
+                        {service.number}
+                      </span>
+
+                      <span className="up-card-bottom-line" />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="up-carousel-controls">
+              <div className="up-carousel-status">
+                <span className="up-status-number">
+                  {String(active + 1).padStart(2, "0")}
+                </span>
+                <span className="up-status-divider">/</span>
+                <span>06 SERVICES</span>
+              </div>
+
+              <div className="up-carousel-indicators" aria-label="Choose service">
+                {services.map((service, index) => (
+                  <button
+                    key={service.id}
+                    type="button"
+                    className={`up-indicator ${index === active ? "is-active" : ""}`}
+                    onClick={() => setActive(index)}
+                    aria-label={`Show ${service.title}`}
+                    aria-pressed={index === active}
+                  >
+                    <span />
+                  </button>
+                ))}
+              </div>
+
+              <div className="up-carousel-arrows">
+                <button
+                  type="button"
+                  onClick={previousSlide}
+                  aria-label="Previous service"
+                  className="up-arrow-button"
+                >
+                  <ArrowLeft size={19} />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextSlide}
+                  aria-label="Next service"
+                  className="up-arrow-button up-arrow-button-primary"
+                >
+                  <ArrowRight size={19} />
+                </button>
+              </div>
+            </div>
+
+            <div className="up-carousel-progress">
+              <span
+                key={active}
+                className={`up-carousel-progress-fill ${paused ? "is-paused" : ""}`}
+                style={{ animationDuration: "4.5s" }}
+              />
             </div>
           </div>
 
-          <div className="up-carousel-footer">
-            <span>CONTINUOUSLY EXPLORING OUR SERVICES</span>
-
-            <div className="up-carousel-progress" aria-hidden="true">
-              <span
-                key={active}
-                className="up-carousel-progress-fill"
-              />
-            </div>
-
-            <span className="up-carousel-count">
-              {String(active + 1).padStart(2, "0")} / 06
-            </span>
+          <div className="up-carousel-caption">
+            <span className="up-caption-number">{current.number}</span>
+            <p>{current.description}</p>
+            <Link to={`/services/${current.id}`} className="up-caption-link">
+              Discover this service <MoveUpRight size={16} />
+            </Link>
           </div>
         </section>
 
@@ -233,54 +382,84 @@ export default function Services() {
         <section className="up-all-services">
           <div className="up-all-services-heading">
             <div>
-              <span className="up-section-label">OUR CAPABILITIES</span>
-              <h2>Everything we do.</h2>
+              <span className="up-section-label">02 / OUR CAPABILITIES</span>
+              <h2>
+                Everything we do.
+                <br />
+                <span>One clear purpose.</span>
+              </h2>
             </div>
 
-            <span className="up-total-services">06 SERVICES</span>
+            <span className="up-total-services">06 CAPABILITIES</span>
           </div>
 
-          <div className="up-services-list">
-            {services.map((service) => (
-              <Link
-                key={service.id}
-                to={`/services/${service.id}`}
-                className="up-service-row"
-              >
-                <span className="up-row-number">{service.number}</span>
-                <span className="up-row-name">{service.title}</span>
-                <span className="up-row-description">{service.short}</span>
+          <div className="up-services-grid">
+            {services.map((service) => {
+              const Icon = service.icon;
 
-                <ArrowUpRight
-                  size={20}
-                  className="up-row-arrow"
-                />
-              </Link>
-            ))}
+              return (
+                <Link
+                  key={service.id}
+                  to={`/services/${service.id}`}
+                  className="up-capability-card"
+                  style={{ "--service-accent": service.accent }}
+                >
+                  <div className="up-capability-top">
+                    <span>{service.number} / 06</span>
+                    <span className="up-capability-icon">
+                      <Icon size={23} strokeWidth={1.6} />
+                    </span>
+                  </div>
+
+                  <div className="up-capability-content">
+                    <h3>{service.title}</h3>
+                    <p>{service.description}</p>
+                  </div>
+
+                  <div className="up-capability-bottom">
+                    <span>Explore capability</span>
+                    <span className="up-capability-arrow">
+                      <ArrowUpRight size={18} />
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
         {/* CTA */}
         <section className="up-services-cta">
           <div className="up-cta-grid" />
+          <div className="up-cta-orb" />
 
           <div className="up-cta-content">
-            <span className="up-section-label">HAVE A PROJECT IN MIND?</span>
+            <span className="up-section-label">
+              <span className="up-cta-dot" />
+              03 / YOUR NEXT MOVE
+            </span>
 
             <h2>
-              Let's move your
+              Ready to move
               <br />
-              business <span>forward.</span>
+              your business
+              <br />
+              <span>forward?</span>
             </h2>
 
             <p>
-              Tell us what you're building. Let's explore what's possible.
+              Have an idea, a challenge or a goal? Let's figure out the
+              right digital solution together.
             </p>
 
-            <Link to="/enquire" className="up-primary-button">
-              Start a Project
-              <ArrowUpRight size={18} />
+            <Link to="/enquire" className="up-primary-button up-cta-button">
+              Tell us about your project
+              <ArrowUpRight size={19} />
             </Link>
+
+            <span className="up-cta-footnote">
+              YOUR VISION. OUR CAPABILITIES. ONE NEXT STEP.
+            </span>
           </div>
         </section>
       </main>
@@ -289,13 +468,18 @@ export default function Services() {
 
       <style>{`
         .up-services {
-          --up-bg: #f6f8fa;
-          --up-text: #111c25;
-          --up-muted: #73808b;
-          --up-line: #dce3e9;
+          --up-bg: #f5f7fa;
+          --up-surface: #ffffff;
+          --up-text: #111d2a;
+          --up-muted: #6e7d8c;
+          --up-line: #dce4eb;
+          --up-navy: #091725;
+          --up-steel: #91b9d9;
+          position: relative;
+          overflow: hidden;
           background: var(--up-bg);
           color: var(--up-text);
-          overflow: hidden;
+          font-family: inherit;
           transition: background .3s ease, color .3s ease;
         }
 
@@ -305,15 +489,29 @@ export default function Services() {
           box-sizing: border-box;
         }
 
+        .up-services a,
+        .up-services button {
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .up-services a:focus-visible,
+        .up-services button:focus-visible {
+          outline: 2px solid #80b5df;
+          outline-offset: 5px;
+        }
+
         /* HERO */
         .up-services-hero {
           position: relative;
-          min-height: 650px;
+          min-height: 690px;
           display: flex;
           align-items: center;
+          isolation: isolate;
           overflow: hidden;
-          background: #091722;
-          color: #f8fafc;
+          background:
+            radial-gradient(ellipse at 82% 28%, rgba(75, 119, 155, .2), transparent 36%),
+            linear-gradient(120deg, #081521 0%, #0b1d2d 55%, #10283a 100%);
+          color: #f8fbff;
         }
 
         .up-hero-grid,
@@ -322,10 +520,34 @@ export default function Services() {
           inset: 0;
           pointer-events: none;
           background-image:
-            linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
-          background-size: 64px 64px;
-          mask-image: linear-gradient(to bottom, black, transparent 90%);
+            linear-gradient(rgba(219, 235, 249, .055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(219, 235, 249, .055) 1px, transparent 1px);
+          background-size: 58px 58px;
+          mask-image: linear-gradient(to bottom, black, transparent 95%);
+        }
+
+        .up-hero-orb {
+          position: absolute;
+          width: 400px;
+          height: 400px;
+          border-radius: 50%;
+          filter: blur(100px);
+          pointer-events: none;
+          opacity: .14;
+          animation: upOrbFloat 9s ease-in-out infinite alternate;
+        }
+
+        .up-orb-one {
+          top: 10%;
+          right: -100px;
+          background: #7cb8e6;
+        }
+
+        .up-orb-two {
+          bottom: -250px;
+          left: 35%;
+          background: #6c92d1;
+          animation-delay: -4s;
         }
 
         .up-hero-inner {
@@ -339,82 +561,198 @@ export default function Services() {
         .up-eyebrow {
           display: flex;
           align-items: center;
-          gap: 10px;
-          color: #a7b7c4;
-          font-size: 15px;
-          font-weight: 700;
-          letter-spacing: 2px;
-          margin-bottom: 36px;
+          gap: 11px;
+          color: #b5c5d2;
+          font-size: 11px;
+          font-weight: 750;
+          letter-spacing: 2.2px;
+          margin-bottom: 37px;
         }
 
-        .up-eyebrow-dot {
+        .up-eyebrow-dot,
+        .up-cta-dot {
           width: 7px;
           height: 7px;
+          flex: 0 0 auto;
           border-radius: 50%;
-          background: #86b8dc;
+          background: #a4c9e7;
+          box-shadow: 0 0 15px rgba(145, 195, 231, .6);
+        }
+
+        .up-eyebrow-divider {
+          color: #5b7183;
         }
 
         .up-hero-inner h1 {
-          max-width: 1100px;
-          font-size: clamp(49px, 7.7vw, 100px);
+          max-width: 1050px;
+          font-size: clamp(52px, 7.5vw, 98px);
           line-height: .99;
-          letter-spacing: -4.5px;
+          letter-spacing: -5px;
           font-weight: 740;
           margin: 0;
+          animation: upTextReveal .8s both;
         }
 
         .up-hero-inner h1 span {
-          color: #8ab9dd;
+          color: #9bc5e5;
+          background: linear-gradient(100deg, #b7d9f3, #7da9ce);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
 
         .up-hero-bottom {
-          max-width: 930px;
-          margin-top: 40px;
+          max-width: 960px;
+          margin-top: 39px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 25px;
+          gap: 30px;
         }
 
-        /* INCREASED HERO SUBTEXT */
         .up-hero-bottom p {
           max-width: 430px;
-          color: #afbdc8;
-          font-size: 17px;
+          color: #b4c2ce;
+          font-size: 16px;
           line-height: 1.9;
           margin: 0;
         }
 
         .up-primary-button {
+          position: relative;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 13px;
+          gap: 14px;
           flex-shrink: 0;
-          padding: 16px 21px;
-          background: #f5f8fa;
-          color: #0b1a25;
+          padding: 17px 22px;
+          background: #f4f8fb;
+          color: #0b1a27;
           text-decoration: none;
-          font-size: 15px;
+          font-size: 13px;
           font-weight: 750;
-          transition: background .2s ease, transform .2s ease;
+          border: 1px solid rgba(255,255,255,.25);
+          transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+        }
+
+        .up-primary-button svg {
+          transition: transform .25s ease;
         }
 
         .up-primary-button:hover {
-          background: #dceaf4;
-          transform: translateY(-2px);
+          background: #dcecf8;
+          transform: translateY(-3px);
+          box-shadow: 0 12px 30px rgba(0,0,0,.18);
         }
 
-        .up-hero-index {
+        .up-primary-button:hover svg {
+          transform: translate(3px, -3px);
+        }
+
+        .up-hero-bottom-line {
+          display: flex;
+          align-items: center;
+          gap: 13px;
+          margin-top: 72px;
+          color: #8ea2b3;
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 2px;
+        }
+
+        .up-line-dot {
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background: #7695ad;
+        }
+
+        .up-hero-index,
+        .up-hero-scroll {
           position: absolute;
-          right: 5%;
-          bottom: 30px;
-          color: #8597a5;
+          bottom: 27px;
+          color: #8094a5;
           font-size: 9px;
           letter-spacing: 1.7px;
         }
 
-        /* SECTION HEADINGS */
+        .up-hero-index {
+          right: 5%;
+        }
+
+        .up-hero-scroll {
+          left: 5%;
+        }
+
+        .up-reveal {
+          animation: upTextReveal .7s both;
+        }
+
+        .up-reveal-delay {
+          animation-delay: .12s;
+        }
+
+        .up-reveal-delay-two {
+          animation-delay: .23s;
+        }
+
+        /* INTRO */
+        .up-intro-section {
+          width: min(1220px, 90%);
+          margin: auto;
+          padding: 92px 0 95px;
+          border-bottom: 1px solid var(--up-line);
+        }
+
+        .up-intro-label {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          color: #71869a;
+          font-size: 10px;
+          font-weight: 750;
+          letter-spacing: 1.8px;
+        }
+
+        .up-intro-label svg {
+          color: #739fc1;
+        }
+
+        .up-intro-grid {
+          display: grid;
+          grid-template-columns: 1.2fr .8fr;
+          align-items: end;
+          gap: 70px;
+          margin-top: 27px;
+        }
+
+        .up-intro-grid h2 {
+          font-size: clamp(42px, 5.6vw, 68px);
+          line-height: 1.02;
+          letter-spacing: -3.5px;
+          margin: 0;
+          font-weight: 730;
+        }
+
+        .up-intro-grid h2 span {
+          color: #8195a6;
+        }
+
+        .up-intro-copy p {
+          color: var(--up-muted);
+          font-size: 15px;
+          line-height: 1.95;
+          margin: 0 0 23px;
+        }
+
+        .up-intro-signature {
+          color: #71869a;
+          font-size: 9px;
+          font-weight: 750;
+          letter-spacing: 1.5px;
+        }
+
+        /* SHARED SECTION HEADINGS */
         .up-service-section,
         .up-all-services {
           width: min(1220px, 90%);
@@ -422,56 +760,98 @@ export default function Services() {
         }
 
         .up-service-section {
-          padding: 105px 0 55px;
+          padding: 105px 0 65px;
         }
 
         .up-section-label {
-          color: #7d8c98;
-          font-size: 11px;
+          color: #758797;
+          font-size: 10px;
           font-weight: 750;
           letter-spacing: 1.8px;
         }
 
-        .up-section-heading {
+        .up-section-heading,
+        .up-all-services-heading {
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
           gap: 40px;
-          margin-bottom: 43px;
+        }
+
+        .up-section-heading {
+          margin-bottom: 45px;
         }
 
         .up-section-heading h2,
         .up-all-services-heading h2 {
-          font-size: clamp(39px, 5vw, 65px);
-          line-height: .99;
-          letter-spacing: -3px;
-          margin: 19px 0 0;
+          font-size: clamp(42px, 5.4vw, 68px);
+          line-height: 1;
+          letter-spacing: -3.3px;
+          margin: 18px 0 0;
+          font-weight: 730;
         }
 
-        .up-section-heading h2 span {
-          color: #84939f;
+        .up-section-heading h2 span,
+        .up-all-services-heading h2 span {
+          color: #8396a7;
         }
 
-        /* INCREASED SECTION INTRO */
         .up-section-intro {
           max-width: 360px;
           color: var(--up-muted);
-          font-size: 16px;
+          font-size: 14px;
           line-height: 1.9;
           margin: 0 0 3px;
         }
 
         /* CAROUSEL */
+        .up-carousel {
+          position: relative;
+          padding: 0 0 5px;
+        }
+
+        .up-carousel-topline {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+          padding-bottom: 15px;
+          color: #82919d;
+          font-size: 9px;
+          font-weight: 750;
+          letter-spacing: 1.4px;
+        }
+
+        .up-carousel-auto {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .up-live-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #6fa6cd;
+          box-shadow: 0 0 0 4px rgba(111,166,205,.13);
+          animation: upPulse 1.8s ease-in-out infinite;
+        }
+
+        .up-live-dot.is-paused {
+          animation: none;
+          background: #8995a0;
+          box-shadow: none;
+        }
+
         .up-carousel-window {
           position: relative;
-          width: 100%;
           overflow: hidden;
-          padding: 12px 0 18px;
+          padding: 8px 0 14px;
         }
 
         .up-carousel-track {
           position: relative;
-          height: 435px;
+          height: 430px;
           isolation: isolate;
         }
 
@@ -479,21 +859,33 @@ export default function Services() {
           position: absolute;
           top: 0;
           left: 50%;
-          width: 72%;
-          height: 405px;
-          padding: clamp(23px, 3.5vw, 40px);
+          width: 73%;
+          height: 410px;
+          padding: clamp(24px, 3.5vw, 43px);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           overflow: hidden;
-          background: #0b1a25;
-          border: 1px solid #253a48;
-          color: #f7fafc;
+          isolation: isolate;
+          background:
+            radial-gradient(ellipse at 90% 10%, color-mix(in srgb, var(--service-accent) 13%, transparent), transparent 40%),
+            linear-gradient(135deg, #0a1927, #0e2435 70%, #10283a);
+          border: 1px solid rgba(159,192,219,.23);
+          color: #f7faff;
+          text-decoration: none;
+          box-shadow: 0 24px 65px rgba(9, 25, 39, .12);
           transition:
-            transform .8s cubic-bezier(.22,.8,.25,1),
-            opacity .8s ease,
-            filter .8s ease;
+            transform .7s cubic-bezier(.2,.8,.2,1),
+            opacity .7s ease,
+            filter .7s ease,
+            box-shadow .35s ease,
+            border-color .35s ease;
           will-change: transform, opacity;
+        }
+
+        .up-service-card:hover {
+          border-color: color-mix(in srgb, var(--service-accent) 70%, transparent);
+          box-shadow: 0 28px 80px rgba(9,25,39,.24);
         }
 
         .up-card-active {
@@ -506,25 +898,44 @@ export default function Services() {
 
         .up-card-next {
           z-index: 2;
-          opacity: .8;
-          transform: translateX(37%) scale(.92);
-          filter: brightness(.78);
-          pointer-events: none;
+          opacity: .75;
+          transform: translateX(36%) scale(.92);
+          filter: brightness(.76);
+          pointer-events: auto;
         }
 
         .up-card-previous {
           z-index: 1;
           opacity: .6;
-          transform: translateX(-137%) scale(.92);
-          filter: brightness(.7);
-          pointer-events: none;
+          transform: translateX(-136%) scale(.92);
+          filter: brightness(.72);
+          pointer-events: auto;
         }
 
         .up-card-hidden {
           z-index: 0;
           opacity: 0;
-          transform: translateX(150%) scale(.86);
+          transform: translateX(150%) scale(.84);
           pointer-events: none;
+        }
+
+        .up-card-glow {
+          position: absolute;
+          z-index: -1;
+          top: -130px;
+          right: -100px;
+          width: 320px;
+          height: 320px;
+          border-radius: 50%;
+          background: var(--service-accent);
+          filter: blur(105px);
+          opacity: .08;
+          transition: opacity .35s ease, transform .7s ease;
+        }
+
+        .up-service-card:hover .up-card-glow {
+          opacity: .2;
+          transform: scale(1.25);
         }
 
         .up-card-top {
@@ -534,48 +945,75 @@ export default function Services() {
           align-items: center;
           justify-content: space-between;
           gap: 16px;
-          color: #9cabb7;
-          font-size: 11px;
-          letter-spacing: 1.6px;
+          color: #9baebb;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 1.7px;
         }
 
-        .up-card-top svg {
-          color: #a3c9e6;
-          flex-shrink: 0;
+        .up-card-number {
+          display: inline-flex;
+          gap: 7px;
+          align-items: center;
         }
 
         .up-card-slash {
-          color: #536978;
-          padding: 0 5px;
+          color: #5d7486;
+        }
+
+        .up-card-icon {
+          display: grid;
+          place-items: center;
+          width: 53px;
+          height: 53px;
+          border: 1px solid color-mix(in srgb, var(--service-accent) 38%, transparent);
+          color: var(--service-accent);
+          background: color-mix(in srgb, var(--service-accent) 8%, transparent);
+          transition: transform .35s ease, background .35s ease;
+        }
+
+        .up-service-card:hover .up-card-icon {
+          transform: rotate(-7deg) scale(1.07);
+          background: color-mix(in srgb, var(--service-accent) 15%, transparent);
         }
 
         .up-card-main {
           position: relative;
           z-index: 1;
-          max-width: 580px;
+          max-width: 590px;
           padding-bottom: 3px;
         }
 
         .up-card-kicker {
-          color: #8db7d6;
-          font-size: 10px;
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          color: var(--service-accent);
+          font-size: 9px;
           font-weight: 750;
-          letter-spacing: 2px;
+          letter-spacing: 1.7px;
+        }
+
+        .up-kicker-line {
+          width: 20px;
+          height: 1px;
+          background: var(--service-accent);
         }
 
         .up-card-main h3 {
-          font-size: clamp(37px, 5.1vw, 67px);
-          line-height: .99;
+          max-width: 560px;
+          font-size: clamp(36px, 4.8vw, 64px);
+          line-height: 1;
           letter-spacing: -2.7px;
-          margin: 17px 0;
+          margin: 19px 0 14px;
+          font-weight: 730;
           overflow-wrap: anywhere;
         }
 
-        /* INCREASED FEATURED SERVICE SUBTEXT */
         .up-card-main p {
           max-width: 440px;
-          color: #b2c0ca;
-          font-size: 16px;
+          color: #b3c2ce;
+          font-size: 15px;
           line-height: 1.8;
           margin: 0;
         }
@@ -584,253 +1022,569 @@ export default function Services() {
           display: flex;
           flex-wrap: wrap;
           gap: 10px 18px;
-          margin-top: 23px;
+          margin-top: 22px;
         }
 
         .up-card-points span {
           display: inline-flex;
           align-items: center;
           gap: 7px;
-          color: #d0dae1;
-          font-size: 12px;
+          color: #d1dce5;
+          font-size: 11px;
         }
 
         .up-card-points svg {
-          color: #9cc5e2;
+          color: var(--service-accent);
           flex-shrink: 0;
         }
 
         .up-card-link {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          margin-top: 23px;
-          padding-bottom: 8px;
-          border-bottom: 1px solid #647b8b;
-          color: #fff;
-          text-decoration: none;
-          font-size: 13px;
-          font-weight: 700;
-          transition: gap .2s ease;
+          gap: 12px;
+          margin-top: 22px;
+          color: #f7fbff;
+          font-size: 12px;
+          font-weight: 750;
         }
 
-        .up-card-link:hover {
-          gap: 16px;
+        .up-card-link-icon {
+          display: grid;
+          place-items: center;
+          width: 31px;
+          height: 31px;
+          border: 1px solid rgba(255,255,255,.3);
+          border-radius: 50%;
+          transition: transform .25s ease, color .25s ease, background .25s ease;
+        }
+
+        .up-service-card:hover .up-card-link-icon {
+          transform: translate(3px, -3px);
+          background: #f2f7fb;
+          color: #0b1a27;
         }
 
         .up-card-watermark {
           position: absolute;
-          z-index: 0;
-          right: -8px;
-          bottom: -66px;
+          z-index: -1;
+          right: -7px;
+          bottom: -60px;
           color: rgba(255,255,255,.035);
-          font-size: clamp(180px, 24vw, 300px);
+          font-size: clamp(190px, 23vw, 300px);
           font-weight: 800;
           letter-spacing: -20px;
           line-height: 1;
           pointer-events: none;
+          transition: color .35s ease, transform .6s ease;
         }
 
-        .up-carousel-footer {
+        .up-service-card:hover .up-card-watermark {
+          color: color-mix(in srgb, var(--service-accent) 9%, transparent);
+          transform: translateY(-6px);
+        }
+
+        .up-card-bottom-line {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, var(--service-accent), transparent);
+          transform: scaleX(.25);
+          opacity: .6;
+          transition: transform .45s ease, opacity .45s ease;
+        }
+
+        .up-service-card:hover .up-card-bottom-line,
+        .up-card-active .up-card-bottom-line {
+          transform: scaleX(1);
+          opacity: 1;
+        }
+
+        .up-carousel-controls {
           display: flex;
           align-items: center;
-          gap: 20px;
-          color: #85939e;
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 1.2px;
+          justify-content: space-between;
+          gap: 22px;
+          padding: 22px 0 18px;
+          border-bottom: 1px solid var(--up-line);
+        }
+
+        .up-carousel-status {
+          display: flex;
+          align-items: baseline;
+          gap: 8px;
+          color: #82909c;
+          font-size: 9px;
+          font-weight: 750;
+          letter-spacing: 1.4px;
+          white-space: nowrap;
+        }
+
+        .up-status-number {
+          color: var(--up-text);
+          font-size: 20px;
+          letter-spacing: -.5px;
+        }
+
+        .up-status-divider {
+          color: #9aa7b1;
+        }
+
+        .up-carousel-indicators {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .up-indicator {
+          width: 23px;
+          height: 24px;
+          display: grid;
+          place-items: center;
+          padding: 0;
+          border: 0;
+          background: transparent;
+          cursor: pointer;
+        }
+
+        .up-indicator span {
+          width: 5px;
+          height: 5px;
+          border-radius: 5px;
+          background: #aebbc5;
+          transition: width .3s ease, background .3s ease;
+        }
+
+        .up-indicator.is-active span {
+          width: 22px;
+          background: #537fa3;
+        }
+
+        .up-carousel-arrows {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+        }
+
+        .up-arrow-button {
+          display: grid;
+          place-items: center;
+          width: 42px;
+          height: 42px;
+          border: 1px solid var(--up-line);
+          background: transparent;
+          color: var(--up-text);
+          cursor: pointer;
+          transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease;
+        }
+
+        .up-arrow-button:hover {
+          transform: translateY(-2px);
+          border-color: #8ba9c0;
+          background: rgba(110,154,190,.1);
+        }
+
+        .up-arrow-button-primary {
+          background: #0b1a27;
+          border-color: #0b1a27;
+          color: white;
+        }
+
+        .up-arrow-button-primary:hover {
+          background: #294b63;
+          border-color: #294b63;
+          color: white;
         }
 
         .up-carousel-progress {
-          position: relative;
-          flex: 1;
-          max-width: 200px;
           height: 2px;
           background: var(--up-line);
           overflow: hidden;
         }
 
         .up-carousel-progress-fill {
-          position: absolute;
-          inset: 0;
-          background: #6b9fc5;
+          display: block;
+          width: 100%;
+          height: 100%;
+          background: #739fc2;
           transform-origin: left;
-          animation: upProgress 2.5s linear forwards;
+          animation: upProgress linear forwards;
         }
 
-        .up-carousel-count {
-          margin-left: auto;
-          font-variant-numeric: tabular-nums;
-          white-space: nowrap;
+        .up-carousel-progress-fill.is-paused {
+          animation-play-state: paused;
         }
 
-        @keyframes upProgress {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
+        .up-carousel-caption {
+          display: grid;
+          grid-template-columns: 45px 1fr auto;
+          align-items: center;
+          gap: 18px;
+          padding: 24px 0 0;
         }
 
-        /* ALL SERVICES LIST */
+        .up-caption-number {
+          color: #799bb7;
+          font-size: 12px;
+          font-weight: 750;
+        }
+
+        .up-carousel-caption p {
+          color: var(--up-muted);
+          font-size: 13px;
+          line-height: 1.8;
+          margin: 0;
+        }
+
+        .up-caption-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--up-text);
+          font-size: 11px;
+          font-weight: 750;
+          text-decoration: none;
+          transition: color .2s ease, gap .2s ease;
+        }
+
+        .up-caption-link:hover {
+          color: #5e8db2;
+          gap: 12px;
+        }
+
+        /* ALL SERVICES GRID */
         .up-all-services {
-          padding: 70px 0 115px;
+          padding: 105px 0 120px;
         }
 
         .up-all-services-heading {
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 20px;
-          padding-bottom: 30px;
+          margin-bottom: 42px;
         }
 
         .up-all-services-heading h2 {
-          font-size: clamp(35px, 4.5vw, 53px);
-          letter-spacing: -2.5px;
+          font-size: clamp(40px, 5vw, 62px);
         }
 
         .up-total-services {
-          color: #87939d;
-          font-size: 10px;
+          padding-bottom: 7px;
+          color: #82919e;
+          font-size: 9px;
           font-weight: 750;
           letter-spacing: 1.5px;
           white-space: nowrap;
-          padding-bottom: 6px;
         }
 
-        .up-services-list {
-          border-top: 1px solid var(--up-line);
-        }
-
-        .up-service-row {
-          min-height: 82px;
+        .up-services-grid {
           display: grid;
-          grid-template-columns: 55px minmax(200px, .95fr) minmax(200px, 1fr) 24px;
-          align-items: center;
-          gap: 18px;
-          border-bottom: 1px solid var(--up-line);
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          border-top: 1px solid var(--up-line);
+          border-left: 1px solid var(--up-line);
+        }
+
+        .up-capability-card {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          min-height: 280px;
+          padding: 25px;
+          overflow: hidden;
           color: var(--up-text);
           text-decoration: none;
-          transition: padding .25s ease, background .25s ease;
+          background: var(--up-surface);
+          border-right: 1px solid var(--up-line);
+          border-bottom: 1px solid var(--up-line);
+          transition: transform .3s ease, background .3s ease, box-shadow .3s ease;
         }
 
-        .up-service-row:hover {
-          padding-left: 12px;
-          background: rgba(105, 150, 185, .06);
+        .up-capability-card::before {
+          position: absolute;
+          content: "";
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: var(--service-accent);
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform .35s ease;
         }
 
-        .up-row-number {
-          color: #8996a1;
-          font-size: 12px;
+        .up-capability-card:hover {
+          z-index: 1;
+          transform: translateY(-4px);
+          background: color-mix(in srgb, var(--service-accent) 5%, var(--up-surface));
+          box-shadow: 0 18px 35px rgba(13,34,52,.07);
         }
 
-        /* INCREASED SERVICE LIST TITLE */
-        .up-row-name {
-          font-size: 18px;
-          font-weight: 650;
+        .up-capability-card:hover::before {
+          transform: scaleX(1);
         }
 
-        /* INCREASED SERVICE LIST DESCRIPTION */
-        .up-row-description {
+        .up-capability-top,
+        .up-capability-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 15px;
+        }
+
+        .up-capability-top {
+          color: #82919e;
+          font-size: 9px;
+          font-weight: 750;
+          letter-spacing: 1.3px;
+        }
+
+        .up-capability-icon {
+          display: grid;
+          place-items: center;
+          width: 45px;
+          height: 45px;
+          border: 1px solid color-mix(in srgb, var(--service-accent) 45%, var(--up-line));
+          color: #5d85a4;
+          background: color-mix(in srgb, var(--service-accent) 15%, var(--up-surface));
+          transition: transform .3s ease;
+        }
+
+        .up-capability-card:hover .up-capability-icon {
+          transform: rotate(-7deg);
+        }
+
+        .up-capability-content {
+          flex: 1;
+          padding: 28px 0 23px;
+        }
+
+        .up-capability-content h3 {
+          font-size: clamp(19px, 2vw, 24px);
+          line-height: 1.2;
+          letter-spacing: -.7px;
+          margin: 0 0 13px;
+          font-weight: 700;
+        }
+
+        .up-capability-content p {
           color: var(--up-muted);
-          font-size: 14px;
-          line-height: 1.7;
+          font-size: 12px;
+          line-height: 1.85;
+          margin: 0;
         }
 
-        .up-row-arrow {
-          justify-self: end;
-          color: #6e8799;
-          transition: transform .2s ease;
+        .up-capability-bottom {
+          padding-top: 17px;
+          border-top: 1px solid var(--up-line);
+          color: #71879a;
+          font-size: 10px;
+          font-weight: 750;
         }
 
-        .up-service-row:hover .up-row-arrow {
-          transform: translate(3px, -3px);
+        .up-capability-arrow {
+          display: grid;
+          place-items: center;
+          width: 30px;
+          height: 30px;
+          border: 1px solid var(--up-line);
+          border-radius: 50%;
+          color: var(--up-text);
+          transition: transform .25s ease, background .25s ease, color .25s ease;
         }
 
-        /* CTA */
+        .up-capability-card:hover .up-capability-arrow {
+          transform: translate(2px, -2px);
+          background: #0b1a27;
+          border-color: #0b1a27;
+          color: white;
+        }
+
+        /* FINAL CTA */
         .up-services-cta {
           position: relative;
           display: flex;
           justify-content: center;
+          isolation: isolate;
           overflow: hidden;
-          background: #eaf0f5;
-          color: #0b1a25;
+          background:
+            radial-gradient(ellipse at 80% 45%, rgba(105,151,187,.17), transparent 36%),
+            linear-gradient(125deg, #e9eff4, #f4f7fa 60%, #e5edf4);
+          color: #0b1a27;
           text-align: center;
         }
 
         .up-cta-grid {
-          opacity: .18;
+          opacity: .24;
           background-image:
             linear-gradient(#8da5b6 1px, transparent 1px),
             linear-gradient(90deg, #8da5b6 1px, transparent 1px);
-          background-size: 65px 65px;
-          mask-image: radial-gradient(circle at center, black, transparent 75%);
+          background-size: 62px 62px;
+          mask-image: radial-gradient(ellipse at center, black, transparent 76%);
+        }
+
+        .up-cta-orb {
+          position: absolute;
+          z-index: -1;
+          width: 330px;
+          height: 330px;
+          top: 25%;
+          right: -150px;
+          border-radius: 50%;
+          background: #8cb5d6;
+          filter: blur(120px);
+          opacity: .25;
         }
 
         .up-cta-content {
           position: relative;
           z-index: 1;
-          padding: 105px 20px;
+          max-width: 900px;
+          padding: 115px 20px 105px;
+        }
+
+        .up-cta-content .up-section-label {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
         }
 
         .up-cta-content h2 {
-          font-size: clamp(49px, 7vw, 86px);
-          line-height: .96;
-          letter-spacing: -4px;
-          margin: 25px 0;
+          font-size: clamp(53px, 7.3vw, 88px);
+          line-height: .98;
+          letter-spacing: -4.5px;
+          margin: 27px 0 24px;
+          font-weight: 760;
         }
 
         .up-cta-content h2 span {
-          color: #5b829f;
+          color: #5b83a2;
         }
 
-        /* INCREASED CTA SUBTEXT */
         .up-cta-content p {
-          color: #647685;
-          font-size: 16px;
-          line-height: 1.8;
-          margin: 0 0 28px;
+          max-width: 470px;
+          margin: 0 auto 30px;
+          color: #647789;
+          font-size: 14px;
+          line-height: 1.95;
         }
 
-        .up-cta-content .up-primary-button {
-          background: #0b1a25;
+        .up-cta-button {
+          background: #0b1a27;
           color: #fff;
+          border-color: #0b1a27;
         }
 
-        .up-cta-content .up-primary-button:hover {
-          background: #28485d;
+        .up-cta-button:hover {
+          background: #294b63;
+          color: white;
+        }
+
+        .up-cta-footnote {
+          display: block;
+          margin-top: 43px;
+          color: #8395a4;
+          font-size: 9px;
+          font-weight: 750;
+          letter-spacing: 1.6px;
         }
 
         /* DARK MODE */
         body.dark-mode .up-services {
-          --up-bg: #080d12;
-          --up-text: #f4f7fa;
-          --up-muted: #a4b1bc;
-          --up-line: rgba(255,255,255,.13);
+          --up-bg: #080e15;
+          --up-surface: #0d1721;
+          --up-text: #f0f5fa;
+          --up-muted: #a2b0bd;
+          --up-line: rgba(218,233,245,.13);
         }
 
-        body.dark-mode .up-section-heading h2 span {
-          color: #8798a6;
+        body.dark-mode .up-intro-grid h2 span,
+        body.dark-mode .up-section-heading h2 span,
+        body.dark-mode .up-all-services-heading h2 span {
+          color: #91a8bb;
         }
 
         body.dark-mode .up-services-cta {
-          background: #111d27;
-          color: #f4f7fa;
+          background:
+            radial-gradient(ellipse at 80% 45%, rgba(105,151,187,.13), transparent 36%),
+            linear-gradient(125deg, #101d29, #0c1722 60%, #142637);
+          color: #f3f7fb;
         }
 
         body.dark-mode .up-cta-content h2 span {
-          color: #91b9d8;
+          color: #a3c7e4;
         }
 
         body.dark-mode .up-cta-content p {
-          color: #aab8c4;
+          color: #b2c0cc;
         }
 
-        body.dark-mode .up-cta-content .up-primary-button {
-          background: #edf3f7;
-          color: #0b1a25;
+        body.dark-mode .up-cta-content .up-cta-button {
+          background: #edf4f9;
+          border-color: #edf4f9;
+          color: #0b1a27;
+        }
+
+        body.dark-mode .up-cta-content .up-cta-button:hover {
+          background: #cddfec;
+        }
+
+        body.dark-mode .up-capability-card:hover {
+          box-shadow: 0 18px 35px rgba(0,0,0,.2);
+        }
+
+        body.dark-mode .up-capability-card:hover .up-capability-arrow {
+          background: #edf4f9;
+          border-color: #edf4f9;
+          color: #0b1a27;
+        }
+
+        body.dark-mode .up-arrow-button-primary {
+          background: #edf4f9;
+          border-color: #edf4f9;
+          color: #0b1a27;
+        }
+
+        body.dark-mode .up-arrow-button-primary:hover {
+          background: #cddfec;
+          border-color: #cddfec;
+        }
+
+        /* ANIMATIONS */
+        @keyframes upProgress {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+
+        @keyframes upPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: .4; }
+        }
+
+        @keyframes upOrbFloat {
+          from { transform: translate3d(0, -12px, 0); }
+          to { transform: translate3d(-20px, 20px, 0); }
+        }
+
+        @keyframes upTextReveal {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         /* TABLET */
         @media (max-width: 900px) {
+          .up-services-hero {
+            min-height: 640px;
+          }
+
+          .up-intro-grid {
+            gap: 35px;
+          }
+
           .up-section-heading {
             align-items: flex-start;
             flex-direction: column;
@@ -842,7 +1596,7 @@ export default function Services() {
           }
 
           .up-service-card {
-            width: 78%;
+            width: 79%;
           }
 
           .up-card-next {
@@ -853,152 +1607,300 @@ export default function Services() {
             transform: translateX(-142%) scale(.9);
           }
 
-          .up-service-row {
-            grid-template-columns: 38px minmax(180px, 1fr) 22px;
+          .up-services-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
-          .up-row-description {
-            display: none;
+          .up-capability-card {
+            min-height: 250px;
           }
         }
 
         /* MOBILE */
         @media (max-width: 600px) {
           .up-services-hero {
-            min-height: 600px;
+            min-height: 650px;
           }
 
           .up-hero-inner {
-            padding: 120px 0 85px;
+            padding: 115px 0 100px;
+          }
+
+          .up-eyebrow {
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 9px;
+            letter-spacing: 1.6px;
+            margin-bottom: 29px;
           }
 
           .up-hero-inner h1 {
-            font-size: clamp(45px, 11vw, 68px);
+            font-size: clamp(43px, 11.5vw, 65px);
             letter-spacing: -2.8px;
+            line-height: 1.02;
           }
 
           .up-hero-bottom {
             align-items: flex-start;
             flex-direction: column;
-            gap: 24px;
+            gap: 22px;
+            margin-top: 28px;
           }
 
           .up-hero-bottom p {
-            font-size: 15px;
-            line-height: 1.8;
+            max-width: 360px;
+            font-size: 14px;
+            line-height: 1.85;
+          }
+
+          .up-primary-button {
+            padding: 15px 17px;
+            font-size: 12px;
+          }
+
+          .up-hero-bottom-line {
+            gap: 9px;
+            margin-top: 48px;
+            font-size: 8px;
+            letter-spacing: 1.1px;
           }
 
           .up-hero-index {
+            right: 5%;
+            bottom: 22px;
             font-size: 8px;
           }
 
-          .up-service-section {
-            padding-top: 78px;
+          .up-hero-scroll {
+            left: 5%;
+            bottom: 22px;
+            font-size: 8px;
+            letter-spacing: 1px;
           }
 
-          .up-section-heading h2 {
+          .up-hero-orb {
+            opacity: .1;
+          }
+
+          .up-intro-section {
+            padding: 65px 0;
+          }
+
+          .up-intro-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-top: 22px;
+          }
+
+          .up-intro-grid h2 {
             font-size: 43px;
             letter-spacing: -2px;
           }
 
+          .up-intro-copy p {
+            font-size: 14px;
+          }
+
+          .up-service-section {
+            padding: 72px 0 45px;
+          }
+
+          .up-section-heading {
+            margin-bottom: 29px;
+          }
+
+          .up-section-heading h2,
+          .up-all-services-heading h2 {
+            font-size: 42px;
+            letter-spacing: -2px;
+          }
+
           .up-section-intro {
-            font-size: 15px;
-            line-height: 1.8;
+            font-size: 13px;
+            line-height: 1.85;
+          }
+
+          .up-carousel-topline {
+            font-size: 8px;
+            letter-spacing: .8px;
           }
 
           .up-carousel-track {
-            height: 385px;
+            height: 395px;
           }
 
           .up-service-card {
-            width: 86%;
-            height: 360px;
-            padding: 21px;
+            width: 91%;
+            height: 375px;
+            padding: 22px;
           }
 
           .up-card-next {
-            transform: translateX(48%) scale(.88);
+            transform: translateX(47%) scale(.87);
           }
 
           .up-card-previous {
-            transform: translateX(-148%) scale(.88);
+            transform: translateX(-147%) scale(.87);
+          }
+
+          .up-card-icon {
+            width: 43px;
+            height: 43px;
           }
 
           .up-card-main h3 {
-            font-size: clamp(29px, 7vw, 43px);
-            letter-spacing: -1.5px;
+            font-size: clamp(30px, 8vw, 43px);
+            letter-spacing: -1.7px;
+            margin: 16px 0 12px;
+          }
+
+          .up-card-kicker {
+            font-size: 8px;
+            letter-spacing: 1px;
           }
 
           .up-card-main p {
-            font-size: 14px;
-            line-height: 1.7;
+            font-size: 13px;
+            line-height: 1.75;
           }
 
           .up-card-points {
-            gap: 8px 12px;
-            margin-top: 17px;
+            gap: 8px 11px;
+            margin-top: 16px;
           }
 
           .up-card-points span {
-            font-size: 10px;
+            font-size: 9px;
           }
 
           .up-card-link {
-            margin-top: 18px;
+            margin-top: 17px;
+            font-size: 11px;
+          }
+
+          .up-card-watermark {
+            font-size: 180px;
+            bottom: -35px;
+          }
+
+          .up-carousel-controls {
+            gap: 10px;
+            padding-top: 15px;
+          }
+
+          .up-carousel-status {
+            gap: 5px;
+            font-size: 8px;
+            letter-spacing: .7px;
+          }
+
+          .up-status-number {
+            font-size: 17px;
+          }
+
+          .up-carousel-indicators {
+            gap: 2px;
+          }
+
+          .up-indicator {
+            width: 15px;
+            height: 24px;
+          }
+
+          .up-indicator.is-active span {
+            width: 15px;
+          }
+
+          .up-arrow-button {
+            width: 35px;
+            height: 35px;
+          }
+
+          .up-carousel-arrows {
+            gap: 5px;
+          }
+
+          .up-carousel-caption {
+            grid-template-columns: 26px 1fr;
+            gap: 10px;
+            padding-top: 18px;
+          }
+
+          .up-carousel-caption p {
             font-size: 12px;
           }
 
-          .up-carousel-footer {
-            gap: 10px;
-            font-size: 8px;
-            letter-spacing: .6px;
-          }
-
-          .up-carousel-progress {
-            max-width: 90px;
+          .up-caption-link {
+            grid-column: 2;
+            justify-self: start;
+            margin-top: 3px;
           }
 
           .up-all-services {
-            padding: 55px 0 80px;
+            padding: 75px 0 80px;
+          }
+
+          .up-all-services-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 27px;
           }
 
           .up-all-services-heading h2 {
-            font-size: 36px;
-            letter-spacing: -1.5px;
+            font-size: 38px;
           }
 
-          .up-service-row {
-            min-height: 72px;
-            grid-template-columns: 27px minmax(0, 1fr) 20px;
-            gap: 10px;
+          .up-services-grid {
+            grid-template-columns: 1fr;
           }
 
-          .up-row-name {
-            font-size: 14px;
+          .up-capability-card {
+            min-height: 220px;
+            padding: 23px;
+          }
+
+          .up-capability-content {
+            padding: 24px 0 20px;
+          }
+
+          .up-capability-content h3 {
+            font-size: 22px;
           }
 
           .up-cta-content {
-            padding: 80px 18px;
+            padding: 82px 19px;
           }
 
           .up-cta-content h2 {
-            font-size: 48px;
-            letter-spacing: -2.5px;
+            font-size: clamp(45px, 12vw, 60px);
+            letter-spacing: -2.8px;
           }
 
           .up-cta-content p {
-            font-size: 15px;
+            font-size: 13px;
+            line-height: 1.85;
+          }
+
+          .up-cta-footnote {
+            font-size: 8px;
+            letter-spacing: .9px;
             line-height: 1.8;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .up-service-card {
-            transition: none;
+          .up-services *,
+          .up-services *::before,
+          .up-services *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+            transition-duration: .01ms !important;
           }
 
-          .up-carousel-progress-fill {
-            animation: none;
+          .up-service-card {
+            will-change: auto;
           }
         }
       `}</style>
