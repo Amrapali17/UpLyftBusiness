@@ -284,8 +284,7 @@ function Navbar() {
     background-color 0.3s ease,
     border-color 0.3s ease,
     box-shadow 0.3s ease;
-}}
-
+}
         .navbar-inner {
           width: 100%;
           min-height: 76px;
