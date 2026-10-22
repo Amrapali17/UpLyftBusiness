@@ -120,7 +120,7 @@ function Footer() {
           </a>
 
           {/* PHONE NUMBER */}
-          <a href="tel:+918408820707">
+          <a href="tel:+91 8408820707">
             <Phone size={15} />
             <span>+91 84088 20707</span>
           </a>

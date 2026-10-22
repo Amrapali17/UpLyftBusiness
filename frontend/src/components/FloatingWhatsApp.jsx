@@ -6,7 +6,7 @@ export default function FloatingWhatsApp() {
 
   // Replace with your complete WhatsApp number:
   // India country code + 10-digit mobile number, without + or spaces.
-  const whatsappNumber = "8408820707";
+  const whatsappNumber = "918408820707";
 
   const whatsappMessage = encodeURIComponent(
     "Hi UpLyftBusiness! I'd like to know more about your services."

@@ -751,6 +751,8 @@ function Navbar() {
           color: #93baff;
         }
 
+        
+
         /* TABLET */
         @media (max-width: 1120px) {
           .navbar-inner {
@@ -880,6 +882,7 @@ function Navbar() {
             animation: none !important;
             transition: none !important;
           }
+            
         }
       `}</style>
     </>

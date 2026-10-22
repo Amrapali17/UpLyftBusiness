@@ -830,20 +830,32 @@ function Home() {
         \====================================================== */
 
         .site {
+width: 100%;
+min-height: 100vh;
+overflow-x: hidden;
+background: #ffffff;
+color: #111418;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-          width: 100%;
+/* Dark mode - homepage base */
+body.dark-mode .site {
+background: #0b1117;
+color: #e8eef4;
+}
 
-          min-height: 100vh;
+        /* Dark mode - Hero section */
+body.dark-mode .hero {
+background: #0b1117 !important;
+color: #e8eef4 !important;
+}
 
-          overflow-x: hidden;
+body.dark-mode .hero h1,
+body.dark-mode .hero h2,
+body.dark-mode .hero p {
+color: #e8eef4 !important;
+}
 
-          background: #ffffff;
-
-          color: #111418;
-
-        }
-
-        .hero,
 
         .statement,
 
@@ -3232,23 +3244,45 @@ function Home() {
             opacity: 1;
             translate: none;
           }
+        @media (prefers-reduced-motion: reduce) {
+         .service-card, 
+         .team-card {
+          animation: none !important;
+           opacity: 1;
+            translate: none;
+         } 
+            
+         .service-image,
+         .team-card,
+         .team-carousel-dot,
+         .industry-card,
+         .primary-button,
+         .secondary-button {
+           transition: none !important; 
+         } 
+         .growth-bars span, 
+         .hero-growth-message, 
+         .growth-word, 
+         .growth-divider, 
+         .growth-hindi {
+          animation: none !important; opacity: 1 !important; transform: none !important;
+          } 
+        } 
           @media (max-width: 600px) {
-  .team-avatar {
-  width: 170px;
-  height: 170px;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-  margin-left: auto;
-  margin-right: auto;
-  border: 3px solid #69b2e6;
-  border-radius: 50%;
-  transform: translateY(-30px); /* Move photo up or down */
-}
-          .service-image,
-          .team-card,
-          .team-carousel-dot {
-            transition: none !important;
+           .team-avatar {
+            width: 170px; height: 170px;
+            flex-shrink: 
+            0; 
+            position: relative; 
+            overflow: hidden; 
+            margin-left: 
+            auto; 
+            margin-right: 
+            auto; border: 
+            3px solid #69b2e6; 
+            border-radius: 50%; 
+            transform: translateY(-30px); 
+            } 
           }
 
 
@@ -3284,7 +3318,94 @@ function Home() {
 
           }
 
+
         }
+
+        /* =====================================
+DARK MODE - ALL HOMEPAGE SECTIONS
+===================================== */
+
+body.dark-mode .site,
+body.dark-mode .site .hero,
+body.dark-mode .site .statement,
+body.dark-mode .site .industries-section,
+body.dark-mode .site .services-section,
+body.dark-mode .site .about-section,
+body.dark-mode .site .team-section,
+body.dark-mode .site .cta-section {
+background-color: #0b1117 !important;
+color: #e8eef4 !important;
+}
+
+/* Headings and paragraphs */
+body.dark-mode .site h1,
+body.dark-mode .site h2,
+body.dark-mode .site h3,
+body.dark-mode .site h4,
+body.dark-mode .site p,
+body.dark-mode .site .statement-text,
+body.dark-mode .site .about-content h2,
+body.dark-mode .site .team-info h3,
+body.dark-mode .site .cta-section h2 {
+color: #e8eef4 !important;
+}
+
+/* Service and industry cards */
+body.dark-mode .site .service-card,
+body.dark-mode .site .industry-card,
+body.dark-mode .site .team-card {
+background-color: #131d27 !important;
+border-color: #293b4a !important;
+}
+
+/* Card text */
+body.dark-mode .site .service-card h3,
+body.dark-mode .site .service-card p,
+body.dark-mode .site .industry-card h3,
+body.dark-mode .site .team-info h3,
+body.dark-mode .site .team-info p,
+body.dark-mode .site .team-carousel-count {
+color: #e8eef4 !important;
+}
+
+/* Service tags and icon backgrounds */
+body.dark-mode .site .service-tags span,
+body.dark-mode .site .icon-box {
+background-color: #1c2a37 !important;
+color: #dceaf5 !important;
+border-color: #34495a !important;
+}
+
+/* About section visual */
+body.dark-mode .site .about-visual,
+body.dark-mode .site .visual-grid {
+background-color: #131d27 !important;
+}
+
+/* About logo and badge */
+body.dark-mode .site .about-logo-circle,
+body.dark-mode .site .visual-badge {
+background-color: #1c2a37 !important;
+color: #e8eef4 !important;
+}
+
+/* Buttons */
+body.dark-mode .site .secondary-button {
+background-color: #17232e !important;
+color: #e8eef4 !important;
+border-color: #34495a !important;
+}
+
+/* Keep blue accent text blue */
+body.dark-mode .site .section-label,
+body.dark-mode .site .section-heading h2 span,
+body.dark-mode .site .statement-text span,
+body.dark-mode .site .about-content h2 span,
+body.dark-mode .site .cta-section h2 span,
+body.dark-mode .site .service-arrow {
+color: #69b2e6 !important;
+}
+
 
       `}</style>
 
