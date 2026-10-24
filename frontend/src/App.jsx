@@ -16,6 +16,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 
 import "./App.css";
+import "./responsive.css";
 
 function App() {
   return (
