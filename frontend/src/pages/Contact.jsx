@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
   Mail,
+  Phone,
   MapPin,
   ArrowRight,
 } from "lucide-react";
@@ -11,6 +13,55 @@ import Footer from "../components/Footer";
 import logo from "../assets/logo.png";
 
 function Contact() {
+  const [submitting, setSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState({ type: "", message: "" });
+
+  async function handleContactSubmit(e) {
+    e.preventDefault();
+    if (submitting) return;
+
+    const form = e.currentTarget;
+    const values = new FormData(form);
+    const payload = {
+      name: String(values.get("name") || "").trim(),
+      phone: String(values.get("phone") || "").trim(),
+      email: String(values.get("email") || "").trim(),
+      company: String(values.get("company") || "").trim(),
+      service: "",
+      message: String(values.get("message") || "").trim(),
+    };
+
+    setSubmitting(true);
+    setFormStatus({ type: "", message: "" });
+
+    try {
+      const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+      const response = await fetch(`${apiBase}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "We couldn't send your message. Please try again.");
+      }
+
+      form.reset();
+      setFormStatus({
+        type: "success",
+        message: "Thank you for connecting with UpLyftBusiness! We've received your message and will get back to you soon.",
+      });
+    } catch (error) {
+      setFormStatus({
+        type: "error",
+        message: error.message || "Unable to send your message. Please try again.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <div className="contact-page">
       <Navbar />
@@ -54,6 +105,13 @@ function Contact() {
                 </p>
 
                 <a
+                  href="tel:+918408820707"
+                  className="contact-email-link"
+                >
+                  +91 84088 20707
+                  <Phone size={17} />
+                </a>
+                <a
                   href="mailto:connect@uplyftbusiness.com"
                   className="contact-email-link"
                 >
@@ -89,6 +147,19 @@ function Contact() {
                 </p>
 
                 <div className="contact-details">
+                  <a
+                    href="tel:+918408820707"
+                    className="contact-detail"
+                  >
+                    <div className="contact-detail-icon">
+                      <Phone size={20} />
+                    </div>
+                    <div>
+                      <span>Call us</span>
+                      <strong>+91 84088 20707</strong>
+                    </div>
+                    <ArrowUpRight size={17} />
+                  </a>
                   <a
                     href="mailto:connect@uplyftbusiness.com"
                     className="contact-detail"
@@ -180,7 +251,7 @@ function Contact() {
 
                   {/* WHATSAPP */}
                   <a
-                    href="https://wa.me/91YOUR10DIGITNUMBER"
+                    href="https://wa.me/918408820707"
                     className="social-icon whatsapp-icon"
                     aria-label="WhatsApp"
                     target="_blank"
@@ -206,15 +277,21 @@ function Contact() {
                   <p>PROJECT ENQUIRY</p>
                 </div>
 
-                <form
-                  className="contact-form"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    alert(
-                      "Thank you! Your enquiry has been received."
-                    );
-                  }}
-                >
+                <form className="contact-form" onSubmit={handleContactSubmit}>
+                  {formStatus.message && (
+                    <p
+                      role="status"
+                      aria-live="polite"
+                      style={{
+                        margin: "0 0 20px",
+                        color: formStatus.type === "success" ? "#16803c" : "#c62828",
+                        fontSize: "13px",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {formStatus.message}
+                    </p>
+                  )}
                   <div className="form-row">
                     <div className="form-field">
                       <label htmlFor="name">Name *</label>
@@ -229,59 +306,49 @@ function Contact() {
                     </div>
 
                     <div className="form-field">
-                      <label htmlFor="email">Email *</label>
+                      <label htmlFor="phone">Phone number *</label>
                       <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="you@company.com"
-                        autoComplete="email"
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="Enter 10-digit mobile number"
+                        autoComplete="tel-national"
+                        inputMode="numeric"
+                        pattern="[6-9][0-9]{9}"
+                        maxLength={10}
+                        minLength={10}
+                        title="Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9."
+                        onInput={(e) => {
+                          e.currentTarget.value = e.currentTarget.value
+                            .replace(/\D/g, "")
+                            .slice(0, 10);
+                        }}
                         required
                       />
                     </div>
                   </div>
 
-                  <div className="form-row">
-                    <div className="form-field">
-                      <label htmlFor="company">Company</label>
-                      <input
-                        id="company"
-                        name="company"
-                        type="text"
-                        placeholder="Company name"
-                        autoComplete="organization"
-                      />
-                    </div>
+                  <div className="form-field">
+                    <label htmlFor="email">Email *</label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="you@company.com"
+                      autoComplete="email"
+                      required
+                    />
+                  </div>
 
-                    <div className="form-field">
-                      <label htmlFor="service">What do you need?</label>
-                      <select id="service" name="service" defaultValue="">
-                        <option value="" disabled>
-                          Select a service
-                        </option>
-                        <option value="website">
-                          Website Development
-                        </option>
-                        <option value="marketing">
-                          Digital Marketing
-                        </option>
-                        <option value="social">
-                          Social Media Management
-                        </option>
-                        <option value="advertising">
-                          Performance Advertising
-                        </option>
-                        <option value="branding">
-                          Creative & Branding
-                        </option>
-                        <option value="strategy">
-                          Growth & Strategy
-                        </option>
-                        <option value="other">
-                          Something else
-                        </option>
-                      </select>
-                    </div>
+                  <div className="form-field">
+                    <label htmlFor="company">Company</label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      placeholder="Company name"
+                      autoComplete="organization"
+                    />
                   </div>
 
                   {/* ESTIMATED BUDGET FIELD REMOVED */}
@@ -299,8 +366,8 @@ function Contact() {
                     ></textarea>
                   </div>
 
-                  <button type="submit" className="contact-submit">
-                    Send Enquiry
+                  <button type="submit" className="contact-submit" disabled={submitting}>
+                    {submitting ? "Sending..." : "Send Enquiry"}
                     <ArrowUpRight size={18} />
                   </button>
 
@@ -735,9 +802,14 @@ function Contact() {
           transition: 0.25s ease;
         }
 
-        .contact-submit:hover {
+        .contact-submit:hover:not(:disabled) {
           background: #2f79a8;
           transform: translateY(-2px);
+        }
+
+        .contact-submit:disabled {
+          opacity: 0.65;
+          cursor: not-allowed;
         }
 
         .form-note {
