@@ -31,6 +31,8 @@ function Enquire() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const services = [
     { value: "web-development", label: "Web Development" },
@@ -53,11 +55,54 @@ function Enquire() {
   const updateField = (event) => {
     const { name, value } = event.target;
     setForm((previous) => ({ ...previous, [name]: value }));
+    if (error) setError("");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitted(true);
+    setError("");
+
+    const normalizedPhone = form.phone.replace(/\D/g, "");
+    if (!/^[6-9]\d{9}$/.test(normalizedPhone)) {
+      setError("Enter a valid 10-digit Indian mobile number starting with 6, 7, 8 or 9.");
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(form.email.trim())) {
+      setError("Please use a valid Gmail address ending in @gmail.com.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/enquiries`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        
+     
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to submit your enquiry.");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err.message ||
+          "Unable to submit your enquiry. Please check your connection and try again."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -204,8 +249,10 @@ function Enquire() {
                             name="email"
                             value={form.email}
                             onChange={updateField}
-                            placeholder="you@company.com"
+                            placeholder="you@gmail.com"
                             autoComplete="email"
+                            pattern="[a-zA-Z0-9._%+-]+@gmail\.com"
+                            title="Please enter a valid Gmail address ending in @gmail.com"
                             required
                           />
                         </label>
@@ -223,14 +270,24 @@ function Enquire() {
                         </label>
 
                         <label className="form-field">
-                          <span>Phone number</span>
+                          <span>Phone number <b>*</b></span>
                           <input
                             type="tel"
                             name="phone"
                             value={form.phone}
-                            onChange={updateField}
-                            placeholder="Your contact number"
-                            autoComplete="tel"
+                            onChange={(event) => {
+                              const digits = event.target.value.replace(/\D/g, "").slice(0, 10);
+                              setForm((previous) => ({ ...previous, phone: digits }));
+                              if (error) setError("");
+                            }}
+                            placeholder="10-digit mobile number"
+                            autoComplete="tel-national"
+                            inputMode="numeric"
+                            pattern="[6-9][0-9]{9}"
+                            title="Enter a 10-digit Indian mobile number starting with 6, 7, 8 or 9"
+                            minLength={10}
+                            maxLength={10}
+                            required
                           />
                         </label>
                       </div>
@@ -343,22 +400,44 @@ function Enquire() {
                         />
                       </label>
 
+                      {error && (
+                        <p
+                          role="alert"
+                          style={{
+                            margin: "20px 0 0",
+                            color: "#b42318",
+                            fontSize: "13px",
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {error}
+                        </p>
+                      )}
+
                       <div className="form-submit-row">
                         <p>
                           <ShieldCheck size={15} />
                           Your details are used to understand your enquiry.
                         </p>
 
-                        <button type="submit" className="enquire-submit">
-                          Submit Enquiry
-                          <ArrowUpRight size={17} />
+                        <button
+                          type="submit"
+                          className="enquire-submit"
+                          disabled={submitting}
+                          style={{
+                            opacity: submitting ? 0.7 : 1,
+                            cursor: submitting ? "wait" : "pointer",
+                          }}
+                        >
+                          {submitting ? "Submitting..." : "Submit Enquiry"}
+                          {!submitting && <ArrowUpRight size={17} />}
                         </button>
                       </div>
 
                       <p className="form-disclaimer">
-                        This form is currently a frontend demo. Submissions
-                        aren't sent or stored until a backend or form service
-                        is connected.
+                        Your enquiry will be sent to our team when you submit
+                        this form. Please do not include passwords or other
+                        sensitive information.
                       </p>
                     </form>
                   </>
@@ -368,7 +447,7 @@ function Enquire() {
                       <CheckCircle2 size={35} />
                     </div>
 
-                    <span className="form-step">ENQUIRY FORM COMPLETED</span>
+                    <span className="form-step">ENQUIRY SUBMITTED</span>
 
                     <h2>
                       Thank you,
@@ -377,9 +456,9 @@ function Enquire() {
                     </h2>
 
                     <p>
-                      Your information has been entered in this form, but it
-                      has not been sent or stored. Contact us directly by email
-                      to submit your enquiry.
+                      Thank you for contacting UpLyftBusiness. Your enquiry has
+                      been submitted successfully, and our team can now review
+                      your project details.
                     </p>
 
                     <a

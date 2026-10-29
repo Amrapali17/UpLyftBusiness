@@ -1,577 +1,558 @@
 
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowUpRight,
   CheckCircle2,
+  KeyRound,
+  LoaderCircle,
   LockKeyhole,
   Mail,
+  Moon,
   Phone,
-  RefreshCw,
   ShieldCheck,
-  User,
+  Sun,
+  UserRound,
 } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
-const API_BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
-
-async function postJSON(path, payload) {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(payload),
-  });
-
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(data.message || "Something went wrong. Please try again.");
-  }
-
-  return data;
-}
-
+const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL || ""
+).replace(/\/$/, "");
 export default function Login() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const [isDark, setIsDark] = useState(
+    () => localStorage.getItem("uplyft_theme") === "dark"
+  );
 
   const [mode, setMode] = useState("login");
   const [method, setMethod] = useState("email");
-
-  const [fullName, setFullName] = useState("");
-  const [contact, setContact] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
-
-  const [requestId, setRequestId] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
-
+  const [resendCountdown, setResendCountdown] = useState(0);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const [resendSeconds, setResendSeconds] = useState(0);
-
-  const service = location.state?.service || "";
-  const packageName = location.state?.packageName || "";
+  useEffect(() => {
+    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+    localStorage.setItem("uplyft_theme", isDark ? "dark" : "light");
+  }, [isDark]);
 
   useEffect(() => {
-    if (resendSeconds <= 0) return undefined;
+    if (resendCountdown <= 0) return;
 
-    const timer = window.setTimeout(() => {
-      setResendSeconds((seconds) => Math.max(0, seconds - 1));
+    const timer = setTimeout(() => {
+      setResendCountdown((current) => Math.max(0, current - 1));
     }, 1000);
 
-    return () => window.clearTimeout(timer);
-  }, [resendSeconds]);
+    return () => clearTimeout(timer);
+  }, [resendCountdown]);
 
-  function resetOTP() {
-    setOtp("");
-    setRequestId("");
-    setOtpSent(false);
-    setOtpVerified(false);
-    setResendSeconds(0);
+  const clearNotices = () => {
     setMessage("");
     setError("");
-  }
+  };
 
-  function changeMode(nextMode) {
+  const resetOtp = () => {
+    setOtp("");
+    setOtpSent(false);
+    setOtpVerified(false);
+    setResendCountdown(0);
+  };
+
+  const changeMode = (nextMode) => {
     setMode(nextMode);
-    resetOTP();
-  }
+    resetOtp();
+    setLoginPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    clearNotices();
+  };
 
-  function changeMethod(nextMethod) {
+  const changeMethod = (nextMethod) => {
     setMethod(nextMethod);
-    setContact("");
-    resetOTP();
-  }
+    resetOtp();
+    clearNotices();
+  };
 
-  function changeContact(value) {
-    setContact(value);
-    resetOTP();
-  }
-
-  function validateDetails() {
-    if (mode === "register" && !fullName.trim()) {
-      setError("Please enter your full name.");
-      return false;
-    }
-
-    if (!contact.trim()) {
-      setError(
-        method === "email"
-          ? "Please enter your email address."
-          : "Please enter your mobile number."
-      );
+  const validateDestination = () => {
+    if (mode === "register" && !name.trim()) {
+      setError("Please enter your name to create an account.");
       return false;
     }
 
     if (method === "email") {
+      const value = email.trim();
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (!emailPattern.test(contact.trim())) {
+      if (!value) {
+        setError("Please enter your email address.");
+        return false;
+      }
+
+      if (!emailPattern.test(value)) {
         setError("Please enter a valid email address.");
         return false;
       }
-    }
+    } else {
+      const cleanedPhone = phone.replace(/[\s()-]/g, "");
 
-    if (method === "phone") {
-      const digits = contact.replace(/\D/g, "");
-
-      if (digits.length < 10 || digits.length > 15) {
-        setError("Please enter a valid mobile number with country code if needed.");
+      if (!/^\+?[1-9]\d{7,14}$/.test(cleanedPhone)) {
+        setError(
+          "Enter a valid phone number with country code, such as +919876543210."
+        );
         return false;
       }
     }
 
     return true;
-  }
+  };
 
-  async function handleSendOTP(event) {
-    event.preventDefault();
-    setError("");
-    setMessage("");
+  const getOtpPayload = () => ({
+    method,
+    type: method,
+    email: method === "email" ? email.trim() : undefined,
+    phone:
+      method === "phone"
+        ? phone.replace(/[\s()-]/g, "")
+        : undefined,
+    mode,
 
-    if (!validateDetails()) return;
+    // Name is required only during registration.
+    name: mode === "register" ? name.trim() : undefined,
+
+    // Compatibility with backends that still expect fullName.
+    fullName: mode === "register" ? name.trim() : undefined,
+  });
+
+  const sendOtp = async () => {
+    clearNotices();
+
+    if (!validateDestination()) return;
 
     setLoading(true);
 
     try {
-      const payload = {
-        mode,
-        method,
-        name: mode === "register" ? fullName.trim() : undefined,
-        email: method === "email" ? contact.trim().toLowerCase() : undefined,
-        phone: method === "phone" ? contact.trim() : undefined,
-      };
+      const response = await fetch(
+        `${API_BASE_URL}/api/auth/send-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(getOtpPayload()),
+        }
+      );
 
-      const data = await postJSON("/api/auth/send-otp", payload);
+      const data = await response.json().catch(() => ({}));
 
-      if (!data.requestId) {
-        throw new Error("The server did not return an OTP request ID.");
+      if (!response.ok) {
+        throw new Error(
+          data.message || data.error || "Unable to send OTP."
+        );
       }
 
-      setRequestId(data.requestId);
       setOtpSent(true);
       setOtpVerified(false);
-      setOtp("");
-      setResendSeconds(30);
+      setResendCountdown(30);
+
       setMessage(
         data.message ||
-          `We've sent a verification code to your ${
-            method === "email" ? "email address" : "mobile number"
+          `Verification code sent. Check your ${
+            method === "email" ? "email inbox" : "phone"
           }.`
       );
     } catch (err) {
       setError(
         err.message ||
-          "Unable to send the verification code. Please try again."
+          "Could not send the verification code. Please try again."
       );
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  async function handleVerifyOTP(event) {
-    event.preventDefault();
-    setError("");
-    setMessage("");
+  const verifyOtp = async () => {
+    clearNotices();
 
-    if (!otpSent || !requestId) {
+    if (!otpSent) {
       setError("Please request a verification code first.");
       return;
     }
 
     if (!/^\d{4,8}$/.test(otp.trim())) {
-      setError("Enter the verification code sent to you.");
+      setError("Enter the verification code you received.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const payload = {
-        requestId,
-        otp: otp.trim(),
-        mode,
-        method,
-        name: mode === "register" ? fullName.trim() : undefined,
-        email: method === "email" ? contact.trim().toLowerCase() : undefined,
-        phone: method === "phone" ? contact.trim() : undefined,
-      };
+      const response = await fetch(
+        `${API_BASE_URL}/api/auth/verify-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            ...getOtpPayload(),
+            otp: otp.trim(),
+            token: otp.trim(),
+          }),
+        }
+      );
 
-      const data = await postJSON("/api/auth/verify-otp", payload);
+      const data = await response.json().catch(() => ({}));
 
-      if (!data.success) {
-        throw new Error(data.message || "Verification failed.");
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+            data.error ||
+            "The verification code is invalid."
+        );
+      }
+
+      if (data.user) {
+        localStorage.setItem("uplyft_user", JSON.stringify(data.user));
       }
 
       setOtpVerified(true);
-      setMessage("Verification successful. Redirecting...");
-
-      const redirectTo = location.state?.from || "/enquire";
-
-      window.setTimeout(() => {
-        navigate(redirectTo, {
-          replace: true,
-          state: {
-            ...location.state,
-            authenticated: true,
-            user: data.user || null,
-            service,
-            packageName,
-          },
-        });
-      }, 700);
+      if (mode === "register") {
+        setMessage("Email verified. Create a password to finish setting up your account.");
+      } else {
+        setMessage(data.message || "You have been signed in successfully.");
+        window.setTimeout(() => {
+          navigate(data.redirectTo || "/", { replace: true });
+        }, 900);
+      }
     } catch (err) {
       setError(
-        err.message || "Invalid or expired code. Please try again."
+        err.message ||
+          "Verification failed. Please check the code and retry."
       );
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  async function handleResendOTP() {
-    if (resendSeconds > 0 || loading) return;
+  const loginWithPassword = async () => {
+    clearNotices();
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (!loginPassword) {
+      setError("Please enter your password.");
+      return;
+    }
 
-    setError("");
-    setMessage("");
     setLoading(true);
-
     try {
-      const payload = {
-        mode,
-        method,
-        name: mode === "register" ? fullName.trim() : undefined,
-        email: method === "email" ? contact.trim().toLowerCase() : undefined,
-        phone: method === "phone" ? contact.trim() : undefined,
-      };
-
-      const data = await postJSON("/api/auth/send-otp", payload);
-
-      if (!data.requestId) {
-        throw new Error("The server did not return an OTP request ID.");
-      }
-
-      setRequestId(data.requestId);
-      setOtp("");
-      setOtpVerified(false);
-      setResendSeconds(30);
-      setMessage(data.message || "A new verification code has been sent.");
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password: loginPassword }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || data.error || "Unable to sign in.");
+      if (data.user) localStorage.setItem("uplyft_user", JSON.stringify(data.user));
+      setMessage(data.message || "Signed in successfully. Redirecting...");
+      window.setTimeout(() => navigate(data.redirectTo || "/", { replace: true }), 700);
     } catch (err) {
-      setError(err.message || "Could not resend the code. Please try again.");
+      setError(err.message || "Sign in failed. Please try again.");
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const createPassword = async () => {
+    clearNotices();
+    if (newPassword.length < 8) {
+      setError("Create a password with at least 8 characters.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError("Your passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/set-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password: newPassword, confirmPassword }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || data.error || "Unable to save your password.");
+      setNewPassword("");
+      setConfirmPassword("");
+      resetOtp();
+      setMode("login");
+      setLoginPassword("");
+      setMessage("Account created successfully. Please sign in with your email and new password.");
+    } catch (err) {
+      setError(err.message || "Unable to create your password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    clearNotices();
+    if (mode === "login") {
+      await loginWithPassword();
+      return;
+    }
+    if (otpVerified) {
+      await createPassword();
+      return;
+    }
+    if (!otpSent) {
+      await sendOtp();
+      return;
+    }
+    await verifyOtp();
+  };
+
+  const canEditDestination = !otpSent || otpVerified;
 
   return (
-    <>
+    <div className={`login-page ${isDark ? "dark" : ""}`}>
       <Navbar />
 
-      <main className="auth-page">
-        <div className="auth-background-glow auth-glow-one" />
-        <div className="auth-background-glow auth-glow-two" />
+      <main className="login-main">
+        <div className="login-background-shape shape-one" />
+        <div className="login-background-shape shape-two" />
 
-        <div className="auth-layout">
-          <section className="auth-intro">
-            <div className="auth-eyebrow">
-              <span className="auth-eyebrow-dot" />
-              DIGITAL & TECHNOLOGY
+        <div className="login-layout">
+          <section className="login-intro">
+            <Link to="/" className="back-home">
+              <ArrowLeft size={16} />
+              Back to home
+            </Link>
+
+            <div className="intro-content">
+              <div className="brand-mark">
+                <span>U</span>
+              </div>
+
+              <p className="eyebrow">WELCOME TO UPLYFTBUSINESS</p>
+
+              <h1>
+                Your next stage
+                <br />
+                <span>starts here.</span>
+              </h1>
+
+              <p className="intro-description">
+                Access your UpLyftBusiness account and stay connected
+                with the digital solutions that help your business move
+                forward.
+              </p>
+
+              <div className="trust-points">
+                <div className="trust-point">
+                  <span className="trust-icon">
+                    <ShieldCheck size={19} />
+                  </span>
+                  <div>
+                    <strong>Secure verification</strong>
+                    <p>Verify your identity with a one-time code.</p>
+                  </div>
+                </div>
+
+                <div className="trust-point">
+                  <span className="trust-icon">
+                    <KeyRound size={19} />
+                  </span>
+                  <div>
+                    <strong>Simple access</strong>
+                    <p>Choose email or mobile verification.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <h1>
-              Your next step
-              <br />
-              starts <span>here.</span>
-            </h1>
-
-            <p className="auth-intro-description">
-              Access your UpLyftBusiness account to continue your journey
-              toward smarter digital solutions and business growth.
+            <p className="intro-footer">
+              Build. Grow. Scale.
+              <span> &nbsp;|&nbsp; UpLyftBusiness</span>
             </p>
-
-            <div className="auth-benefits">
-              <div className="auth-benefit">
-                <span className="auth-benefit-icon">
-                  <ShieldCheck size={19} />
-                </span>
-                <div>
-                  <strong>Secure verification</strong>
-                  <p>Verify with an email or mobile OTP.</p>
-                </div>
-              </div>
-
-              <div className="auth-benefit">
-                <span className="auth-benefit-icon">
-                  <LockKeyhole size={19} />
-                </span>
-                <div>
-                  <strong>Simple access</strong>
-                  <p>One verification step to get started.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="auth-intro-footer">
-              <span>Build.</span>
-              <span className="auth-footer-separator">•</span>
-              <span>Grow.</span>
-              <span className="auth-footer-separator">•</span>
-              <span>Scale.</span>
-            </div>
           </section>
 
-          <section className="auth-card">
-            <div className="auth-card-top">
-              <div className="auth-brand-mark">U</div>
+          <section className="login-form-section">
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={() => setIsDark((current) => !current)}
+              aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+              title={`Switch to ${isDark ? "light" : "dark"} theme`}
+            >
+              {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
 
-              <div className="auth-card-heading">
+            <div className="login-card">
+              <div className="mobile-brand-mark">
+                <span>U</span>
+              </div>
+
+              <div className="form-heading">
+                <p className="eyebrow">
+                  {mode === "register" ? "GET STARTED" : "YOUR ACCOUNT"}
+                </p>
+
                 <h2>
-                  {mode === "login" ? "Welcome back" : "Create your account"}
+                  {mode === "register"
+                    ? "Create your account"
+                    : "Welcome back"}
                 </h2>
+
                 <p>
-                  {mode === "login"
-                    ? "Sign in to continue to your account."
-                    : "Join us and get started with UpLyftBusiness."}
+                  {mode === "register"
+                    ? "Verify your email, create a password, and set up your account."
+                    : "Sign in securely with your email and password."}
                 </p>
               </div>
-            </div>
 
-            <div className="auth-mode-toggle">
-              <button
-                type="button"
-                className={mode === "login" ? "active" : ""}
-                onClick={() => changeMode("login")}
+              <div
+                className="mode-switch"
+                role="group"
+                aria-label="Account mode"
               >
-                Login
-              </button>
+                <button
+                  type="button"
+                  className={mode === "login" ? "active" : ""}
+                  onClick={() => changeMode("login")}
+                >
+                  Sign in
+                </button>
 
-              <button
-                type="button"
-                className={mode === "register" ? "active" : ""}
-                onClick={() => changeMode("register")}
-              >
-                Register
-              </button>
-            </div>
-
-            <div className="auth-method-heading">
-              <span>Continue with</span>
-              <span className="auth-method-line" />
-            </div>
-
-            <div className="auth-method-toggle">
-              <button
-                type="button"
-                className={method === "email" ? "active" : ""}
-                onClick={() => changeMethod("email")}
-              >
-                <Mail size={16} />
-                Email OTP
-              </button>
-
-              <button
-                type="button"
-                className={method === "phone" ? "active" : ""}
-                onClick={() => changeMethod("phone")}
-              >
-                <Phone size={16} />
-                Mobile OTP
-              </button>
-            </div>
-
-            <form
-              className="auth-form"
-              onSubmit={otpSent ? handleVerifyOTP : handleSendOTP}
-            >
-              {mode === "register" && (
-                <div className="auth-field">
-                  <label htmlFor="auth-name">Full name</label>
-
-                  <div className="auth-input-wrap">
-                    <User size={18} />
-                    <input
-                      id="auth-name"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={fullName}
-                      onChange={(event) => setFullName(event.target.value)}
-                      autoComplete="name"
-                      required
-                      disabled={otpSent || loading}
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div className="auth-field">
-                <label htmlFor="auth-contact">
-                  {method === "email" ? "Email address" : "Mobile number"}
-                </label>
-
-                <div className="auth-input-wrap">
-                  {method === "email" ? (
-                    <Mail size={18} />
-                  ) : (
-                    <Phone size={18} />
-                  )}
-
-                  <input
-                    id="auth-contact"
-                    type={method === "email" ? "email" : "tel"}
-                    placeholder={
-                      method === "email"
-                        ? "you@example.com"
-                        : "Enter mobile number"
-                    }
-                    value={contact}
-                    onChange={(event) => changeContact(event.target.value)}
-                    autoComplete={
-                      method === "email" ? "email" : "tel"
-                    }
-                    required
-                    disabled={otpSent || loading}
-                  />
-
-                  {otpSent && (
-                    <button
-                      type="button"
-                      className="auth-change-button"
-                      onClick={() => {
-                        setOtpSent(false);
-                        setOtpVerified(false);
-                        setOtp("");
-                        setRequestId("");
-                        setMessage("");
-                        setError("");
-                      }}
-                      disabled={loading}
-                    >
-                      Change
-                    </button>
-                  )}
-                </div>
+                <button
+                  type="button"
+                  className={mode === "register" ? "active" : ""}
+                  onClick={() => changeMode("register")}
+                >
+                  Create account
+                </button>
               </div>
 
-              {otpSent && (
-                <div className="auth-field auth-otp-field">
-                  <div className="auth-otp-label-row">
-                    <label htmlFor="auth-otp">Verification code</label>
-
-                    <button
-                      type="button"
-                      className="auth-resend-button"
-                      onClick={handleResendOTP}
-                      disabled={resendSeconds > 0 || loading}
-                    >
-                      <RefreshCw size={13} />
-                      {resendSeconds > 0
-                        ? `Resend in ${resendSeconds}s`
-                        : "Resend code"}
-                    </button>
-                  </div>
-
-                  <div className="auth-input-wrap auth-otp-input-wrap">
-                    <ShieldCheck size={18} />
-
-                    <input
-                      id="auth-otp"
-                      type="text"
-                      inputMode="numeric"
-                      autoComplete="one-time-code"
-                      placeholder="Enter OTP"
-                      value={otp}
-                      onChange={(event) =>
-                        setOtp(
-                          event.target.value.replace(/\D/g, "").slice(0, 8)
-                        )
-                      }
-                      maxLength={8}
-                      required
-                      disabled={loading || otpVerified}
-                    />
-                  </div>
-
-                  <p className="auth-otp-hint">
-                    Enter the code sent to your{" "}
-                    {method === "email" ? "email" : "mobile"}.
-                  </p>
-                </div>
-              )}
-
-              {error && (
-                <div className="auth-alert auth-alert-error" role="alert">
-                  {error}
-                </div>
-              )}
-
-              {message && (
-                <div className="auth-alert auth-alert-success" role="status">
-                  <CheckCircle2 size={16} />
-                  <span>{message}</span>
-                </div>
-              )}
-
-              <button
-                className="auth-submit"
-                type="submit"
-                disabled={loading || otpVerified}
-              >
-                {loading ? (
+              <form onSubmit={handleSubmit}>
+                {mode === "login" ? (
                   <>
-                    <span className="auth-spinner" />
-                    Please wait...
+                    <div className="form-field">
+                      <label htmlFor="email">Email address</label>
+                      <div className="input-wrap">
+                        <Mail size={18} />
+                        <input id="email" name="email" type="email" placeholder="you@example.com" value={email}
+                          onChange={(event) => { setEmail(event.target.value); clearNotices(); }}
+                          autoComplete="email" required />
+                      </div>
+                    </div>
+                    <div className="form-field">
+                      <label htmlFor="loginPassword">Password</label>
+                      <div className="input-wrap">
+                        <LockKeyhole size={18} />
+                        <input id="loginPassword" name="password" type="password" placeholder="Enter your password"
+                          value={loginPassword} onChange={(event) => { setLoginPassword(event.target.value); clearNotices(); }}
+                          autoComplete="current-password" required />
+                      </div>
+                    </div>
                   </>
-                ) : otpSent ? (
+                ) : otpVerified ? (
                   <>
-                    Verify OTP
-                    <ArrowRight size={17} />
+                    <div className="otp-heading">
+                      <div><h3>Create your password</h3><p>Your email is verified. Set a password to finish registration.</p></div>
+                      <span className="secure-label"><LockKeyhole size={13} /> Secure</span>
+                    </div>
+                    <div className="form-field">
+                      <label htmlFor="newPassword">Create password</label>
+                      <div className="input-wrap">
+                        <LockKeyhole size={18} />
+                        <input id="newPassword" name="newPassword" type="password" placeholder="At least 8 characters"
+                          value={newPassword} onChange={(event) => { setNewPassword(event.target.value); clearNotices(); }}
+                          autoComplete="new-password" minLength={8} required />
+                      </div>
+                      <p className="field-hint">Use at least 8 characters. Avoid using a password you use elsewhere.</p>
+                    </div>
+                    <div className="form-field">
+                      <label htmlFor="confirmPassword">Confirm password</label>
+                      <div className="input-wrap">
+                        <LockKeyhole size={18} />
+                        <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Enter password again"
+                          value={confirmPassword} onChange={(event) => { setConfirmPassword(event.target.value); clearNotices(); }}
+                          autoComplete="new-password" minLength={8} required />
+                      </div>
+                    </div>
                   </>
                 ) : (
                   <>
-                    Send OTP
-                    <ArrowUpRight size={17} />
+                    <div className="form-field">
+                      <label htmlFor="name">Full name</label>
+                      <div className="input-wrap"><UserRound size={18} /><input id="name" name="name" type="text"
+                        placeholder="Enter your full name" value={name}
+                        onChange={(event) => { setName(event.target.value); clearNotices(); }}
+                        autoComplete="name" required /></div>
+                    </div>
+                    <div className="form-field">
+                      <label htmlFor="registerEmail">Email address</label>
+                      <div className="input-wrap"><Mail size={18} /><input id="registerEmail" name="email" type="email"
+                        placeholder="you@example.com" value={email}
+                        onChange={(event) => { setEmail(event.target.value); if (otpSent) resetOtp(); clearNotices(); }}
+                        autoComplete="email" required disabled={otpSent} /></div>
+                    </div>
+                    {otpSent && <div className="form-field otp-field">
+                      <label htmlFor="otp">Email verification code</label>
+                      <div className="input-wrap"><KeyRound size={18} /><input id="otp" name="otp" type="text" inputMode="numeric"
+                        autoComplete="one-time-code" placeholder="Enter 6-digit code" value={otp}
+                        onChange={(event) => { setOtp(event.target.value.replace(/\D/g, "").slice(0, 6)); clearNotices(); }}
+                        maxLength={6} required /></div>
+                      <div className="otp-actions"><span>Didn't receive the code?</span>
+                        <button type="button" className="resend-button" onClick={sendOtp} disabled={loading || resendCountdown > 0}>
+                          {resendCountdown > 0 ? `Resend in ${resendCountdown}s` : "Resend OTP"}
+                        </button>
+                      </div>
+                    </div>}
                   </>
                 )}
-              </button>
 
-              {otpSent && (
-                <button
-                  type="button"
-                  className="auth-back-button"
-                  onClick={() => {
-                    setOtpSent(false);
-                    setOtpVerified(false);
-                    setOtp("");
-                    setRequestId("");
-                    setMessage("");
-                    setError("");
-                  }}
-                  disabled={loading}
-                >
-                  <ArrowLeft size={15} />
-                  Back to details
+                {message && <div className="notice success-notice" role="status"><CheckCircle2 size={17} /><span>{message}</span></div>}
+                {error && <div className="notice error-notice" role="alert"><span>{error}</span></div>}
+
+                <button type="submit" className="primary-button" disabled={loading}>
+                  {loading ? <><LoaderCircle className="spinner" size={18} /> Please wait...</> : mode === "login" ? <>{"Sign in"}<ArrowRight size={18} /></> : otpVerified ? <>Create password <ArrowRight size={18} /></> : otpSent ? <>Verify email <ArrowRight size={18} /></> : <>Send verification code <ArrowRight size={18} /></>}
                 </button>
-              )}
-            </form>
+                <p className="terms-text">
+                  By continuing, you agree to our{" "}
+                  <Link to="/terms">Terms of Service</Link> and{" "}
+                  <Link to="/privacy">Privacy Policy</Link>.
+                </p>
+              </form>
 
-            <div className="auth-card-bottom">
-              <LockKeyhole size={14} />
-              <span>Your verification details are protected.</span>
+              <div className="card-footer">
+                <span>Need help?</span>
+                <Link to="/contact">
+                  Contact our team <ArrowRight size={14} />
+                </Link>
+              </div>
             </div>
 
-            <p className="auth-terms">
-              By continuing, you agree to our{" "}
-              <Link to="/contact">Terms of Service</Link> and{" "}
-              <Link to="/contact">Privacy Policy</Link>.
+            <p className="copyright">
+              © {new Date().getFullYear()} UpLyftBusiness. All rights reserved.
             </p>
           </section>
         </div>
@@ -580,782 +561,716 @@ export default function Login() {
       <Footer />
 
       <style>{`
-        .auth-page {
-          --navy: #0B1F3A;
-          --navy-primary: #17365D;
-          --navy-hover: #102A4C;
-          --steel-blue: #496A91;
-          --blue-grey: #EAF0F7;
-          --border-color: #DCE4EE;
-          --text-primary: #14243A;
-          --text-secondary: #68778C;
-          --surface: #FFFFFF;
-
-          position: relative;
-          isolation: isolate;
-          overflow: hidden;
-          min-height: calc(100vh - 140px);
-          padding: 76px 24px 88px;
-          background: #F5F7FB;
-          color: var(--text-primary);
+        .login-page {
+          --login-blue: #234f91;
+          --login-blue-dark: #102b52;
+          --login-blue-soft: #e8eef8;
+          --login-text: #12213a;
+          --login-muted: #66758d;
+          --login-border: #d9e1ed;
+          --login-surface: #ffffff;
+          --login-page-bg: #f3f6fb;
+          --login-input-bg: #f8faff;
+          --login-shadow: 0 24px 70px rgba(10, 31, 66, 0.12);
+          min-height: 100vh;
+          background: var(--login-page-bg);
+          color: var(--login-text);
+          transition: background 0.25s ease, color 0.25s ease;
         }
 
-        .auth-page * {
+        .login-page *,
+        .login-page *::before,
+        .login-page *::after {
           box-sizing: border-box;
         }
 
-        .auth-background-glow {
+        .login-page.dark {
+          --login-blue: #91baff;
+          --login-blue-dark: #c0d7ff;
+          --login-blue-soft: #1b3153;
+          --login-text: #edf3ff;
+          --login-muted: #a6b5cc;
+          --login-border: #2c3c55;
+          --login-surface: #101d32;
+          --login-page-bg: #081426;
+          --login-input-bg: #0b172a;
+          --login-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-main {
+          position: relative;
+          isolation: isolate;
+          overflow: hidden;
+          min-height: 750px;
+          padding: 56px 24px 64px;
+          background:
+            radial-gradient(ellipse at 8% 12%, rgba(35, 79, 145, 0.09), transparent 34%),
+            radial-gradient(ellipse at 90% 90%, rgba(35, 79, 145, 0.08), transparent 34%),
+            var(--login-page-bg);
+        }
+
+        .login-background-shape {
           position: absolute;
           z-index: -1;
-          pointer-events: none;
+          border: 1px solid rgba(35, 79, 145, 0.09);
           border-radius: 50%;
-          filter: blur(2px);
+          pointer-events: none;
         }
 
-        .auth-glow-one {
-          width: 440px;
-          height: 440px;
-          top: -210px;
+        .shape-one {
+          width: 390px;
+          height: 390px;
+          top: -190px;
           right: -100px;
-          background: radial-gradient(
-            circle,
-            rgba(23, 54, 93, 0.10),
-            transparent 70%
-          );
         }
 
-        .auth-glow-two {
-          width: 400px;
-          height: 400px;
-          bottom: -220px;
-          left: -150px;
-          background: radial-gradient(
-            circle,
-            rgba(73, 106, 145, 0.09),
-            transparent 70%
-          );
+        .shape-two {
+          width: 270px;
+          height: 270px;
+          bottom: -150px;
+          left: -90px;
         }
 
-        .auth-layout {
-          width: 100%;
-          max-width: 1120px;
-          margin: 0 auto;
+        .login-layout {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
-          align-items: center;
-          gap: clamp(45px, 8vw, 110px);
+          grid-template-columns: 0.95fr 1.05fr;
+          width: 100%;
+          max-width: 1110px;
+          min-height: 620px;
+          margin: 0 auto;
+          overflow: hidden;
+          border: 1px solid var(--login-border);
+          border-radius: 28px;
+          background: var(--login-surface);
+          box-shadow: var(--login-shadow);
         }
 
-        .auth-intro {
-          max-width: 510px;
+        .login-intro {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-width: 0;
+          padding: 38px 42px 32px;
+          color: #fff;
+          background:
+            radial-gradient(circle at 100% 0%, rgba(90, 139, 205, 0.25), transparent 40%),
+            linear-gradient(145deg, #173c70 0%, #0d2850 48%, #071a35 100%);
         }
 
-        .auth-eyebrow {
+        .back-home {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          padding: 9px 13px;
-          border: 1px solid #D8E2EE;
-          border-radius: 50px;
-          background: rgba(255, 255, 255, 0.78);
-          color: var(--navy-primary);
-          font-size: 11px;
+          gap: 8px;
+          width: fit-content;
+          color: #dbe7fa;
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+        }
+
+        .back-home:hover {
+          color: #fff;
+        }
+
+        .intro-content {
+          margin: 50px 0;
+        }
+
+        .brand-mark,
+        .mobile-brand-mark {
+          display: grid;
+          place-items: center;
+          width: 54px;
+          height: 54px;
+          border: 1px solid rgba(255, 255, 255, 0.23);
+          border-radius: 17px;
+          background: linear-gradient(145deg, #315f9c, #071a35);
+          color: #fff;
+          font-size: 29px;
           font-weight: 800;
-          letter-spacing: 1.5px;
+          letter-spacing: -2px;
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
         }
 
-        .auth-eyebrow-dot {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: var(--steel-blue);
-          box-shadow: 0 0 0 4px rgba(73, 106, 145, 0.12);
-        }
-
-        .auth-intro h1 {
-          margin: 25px 0 18px;
-          color: var(--navy);
-          font-size: clamp(42px, 5.2vw, 66px);
-          line-height: 1.08;
-          letter-spacing: -2.8px;
+        .eyebrow {
+          margin: 24px 0 10px;
+          font-size: 10px;
           font-weight: 800;
+          letter-spacing: 2px;
         }
 
-        .auth-intro h1 span {
-          color: var(--steel-blue);
+        .login-intro .eyebrow {
+          color: #b8cdef;
         }
 
-        .auth-intro-description {
-          max-width: 450px;
+        .login-intro h1 {
           margin: 0;
-          color: var(--text-secondary);
-          font-size: 16px;
+          color: #fff;
+          font-size: clamp(36px, 4vw, 49px);
+          font-weight: 750;
+          letter-spacing: -2px;
+          line-height: 1.12;
+        }
+
+        .login-intro h1 span {
+          color: #b8d2ff;
+        }
+
+        .intro-description {
+          max-width: 360px;
+          margin: 22px 0 0;
+          color: #d3def0;
+          font-size: 14px;
           line-height: 1.85;
         }
 
-        .auth-benefits {
+        .trust-points {
           display: grid;
-          gap: 23px;
+          gap: 21px;
           margin-top: 38px;
         }
 
-        .auth-benefit {
+        .trust-point {
           display: flex;
           align-items: center;
-          gap: 14px;
+          gap: 13px;
         }
 
-        .auth-benefit-icon {
+        .trust-icon {
           display: grid;
           place-items: center;
-          width: 45px;
-          height: 45px;
-          flex-shrink: 0;
-          border: 1px solid #DCE5F0;
-          border-radius: 14px;
-          background: #FFFFFF;
-          color: var(--navy-primary);
+          flex: 0 0 42px;
+          width: 42px;
+          height: 42px;
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 13px;
+          background: rgba(255, 255, 255, 0.08);
+          color: #d3e2ff;
         }
 
-        .auth-benefit strong {
+        .trust-point strong {
           display: block;
-          margin-bottom: 4px;
-          color: var(--navy);
+          color: #fff;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .trust-point p {
+          margin: 5px 0 0;
+          color: #c2d0e6;
+          font-size: 11px;
+          line-height: 1.6;
+        }
+
+        .intro-footer {
+          margin: 0;
+          color: #fff;
+          font-size: 13px;
+          font-weight: 750;
+          letter-spacing: 0.2px;
+        }
+
+        .intro-footer span {
+          color: #b8cdef;
+          font-weight: 500;
+        }
+
+        .login-form-section {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-width: 0;
+          padding: 55px 40px 25px;
+          background: var(--login-surface);
+        }
+
+        .theme-toggle {
+          position: absolute;
+          top: 22px;
+          right: 24px;
+          display: grid;
+          place-items: center;
+          width: 40px;
+          height: 40px;
+          border: 1px solid var(--login-border);
+          border-radius: 12px;
+          background: var(--login-surface);
+          color: var(--login-text);
+          cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+          border-color: var(--login-blue);
+          background: var(--login-blue-soft);
+        }
+
+        .login-card {
+          width: 100%;
+          max-width: 410px;
+          margin: auto 0;
+        }
+
+        .mobile-brand-mark {
+          display: none;
+        }
+
+        .form-heading .eyebrow {
+          margin: 0 0 9px;
+          color: var(--login-blue);
+        }
+
+        .form-heading h2 {
+          margin: 0;
+          color: var(--login-text);
+          font-size: 29px;
+          font-weight: 760;
+          letter-spacing: -1px;
+          line-height: 1.25;
+        }
+
+        .form-heading > p:last-child {
+          margin: 9px 0 0;
+          color: var(--login-muted);
+          font-size: 13px;
+          line-height: 1.7;
+        }
+
+        .mode-switch {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 4px;
+          margin: 26px 0 24px;
+          padding: 4px;
+          border: 1px solid var(--login-border);
+          border-radius: 12px;
+          background: var(--login-input-bg);
+        }
+
+        .mode-switch button {
+          min-height: 40px;
+          border: 0;
+          border-radius: 9px;
+          background: transparent;
+          color: var(--login-muted);
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .mode-switch button.active {
+          background: var(--login-surface);
+          color: var(--login-blue);
+          box-shadow: 0 2px 8px rgba(10, 31, 66, 0.08);
+        }
+
+        .otp-heading {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-bottom: 13px;
+        }
+
+        .otp-heading h3 {
+          margin: 0;
+          color: var(--login-text);
           font-size: 14px;
           font-weight: 750;
         }
 
-        .auth-benefit p {
-          margin: 0;
-          color: var(--text-secondary);
-          font-size: 13px;
-          line-height: 1.6;
-        }
-
-        .auth-intro-footer {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-top: 42px;
-          color: var(--navy-primary);
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 1.1px;
-          text-transform: uppercase;
-        }
-
-        .auth-footer-separator {
-          color: #8A9DB4;
-        }
-
-        .auth-card {
-          width: 100%;
-          padding: 34px;
-          border: 1px solid #E1E7EF;
-          border-radius: 24px;
-          background: var(--surface);
-          box-shadow:
-            0 25px 75px rgba(11, 31, 58, 0.08),
-            0 3px 12px rgba(11, 31, 58, 0.025);
-        }
-
-        .auth-card-top {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          margin-bottom: 28px;
-        }
-
-        .auth-brand-mark {
-          display: grid;
-          place-items: center;
-          width: 49px;
-          height: 49px;
-          flex-shrink: 0;
-          border-radius: 15px;
-          background: var(--navy);
-          color: #FFFFFF;
-          font-size: 25px;
-          font-weight: 850;
-          letter-spacing: -1px;
-          box-shadow: 0 7px 18px rgba(11, 31, 58, 0.18);
-        }
-
-        .auth-card-heading h2 {
-          margin: 0 0 6px;
-          color: var(--navy);
-          font-size: 23px;
-          font-weight: 800;
-          letter-spacing: -0.7px;
-        }
-
-        .auth-card-heading p {
-          margin: 0;
-          color: var(--text-secondary);
-          font-size: 12px;
-          line-height: 1.6;
-        }
-
-        .auth-mode-toggle {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 5px;
-          padding: 5px;
-          border: 1px solid #E5EAF1;
-          border-radius: 12px;
-          background: #F3F6FA;
-        }
-
-        .auth-mode-toggle button {
-          min-height: 42px;
-          border: 1px solid transparent;
-          border-radius: 9px;
-          background: transparent;
-          color: #64748B;
-          font: inherit;
-          font-size: 13px;
-          font-weight: 700;
-          cursor: pointer;
-          transition:
-            background 0.2s ease,
-            color 0.2s ease,
-            box-shadow 0.2s ease;
-        }
-
-        .auth-mode-toggle button.active {
-          border-color: #E0E7F0;
-          background: #FFFFFF;
-          color: var(--navy);
-          box-shadow: 0 2px 8px rgba(11, 31, 58, 0.07);
-        }
-
-        .auth-method-heading {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin: 24px 0 14px;
-          color: #7B8798;
+        .otp-heading p {
+          margin: 5px 0 0;
+          color: var(--login-muted);
           font-size: 11px;
-          font-weight: 650;
+          line-height: 1.6;
         }
 
-        .auth-method-line {
-          height: 1px;
-          flex: 1;
-          background: #E8EDF3;
+        .secure-label {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          flex-shrink: 0;
+          padding: 6px 8px;
+          border: 1px solid var(--login-border);
+          border-radius: 7px;
+          color: var(--login-muted);
+          font-size: 10px;
+          font-weight: 700;
         }
 
-        .auth-method-toggle {
+        .method-switch {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 10px;
+          margin-bottom: 21px;
         }
 
-        .auth-method-toggle button {
+        .method-switch button {
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
-          min-height: 43px;
-          padding: 9px 8px;
-          border: 1px solid #DFE6EF;
-          border-radius: 10px;
-          background: #FFFFFF;
-          color: #526278;
-          font: inherit;
+          min-height: 46px;
+          padding: 10px;
+          border: 1px solid var(--login-border);
+          border-radius: 11px;
+          background: var(--login-surface);
+          color: var(--login-muted);
           font-size: 12px;
           font-weight: 700;
           cursor: pointer;
           transition: all 0.2s ease;
         }
 
-        .auth-method-toggle button.active {
-          border-color: var(--navy-primary);
-          background: #EEF2F8;
-          color: var(--navy-primary);
-          box-shadow: inset 0 0 0 1px rgba(23, 54, 93, 0.05);
+        .method-switch button.active {
+          border-color: var(--login-blue);
+          background: var(--login-blue-soft);
+          color: var(--login-blue);
+          box-shadow: inset 0 0 0 1px var(--login-blue);
         }
 
-        .auth-form {
-          display: grid;
-          gap: 18px;
-          margin-top: 25px;
+        .method-switch button:disabled {
+          cursor: not-allowed;
+          opacity: 0.6;
         }
 
-        .auth-field {
-          display: grid;
-          gap: 9px;
-          min-width: 0;
+        .form-field {
+          margin-bottom: 18px;
         }
 
-        .auth-field label {
-          color: #29394F;
+        .form-field label {
+          display: block;
+          margin-bottom: 8px;
+          color: var(--login-text);
           font-size: 12px;
-          font-weight: 750;
+          font-weight: 700;
         }
 
-        .auth-input-wrap {
+        .input-wrap {
           display: flex;
           align-items: center;
-          gap: 11px;
-          min-width: 0;
-          min-height: 49px;
-          padding: 0 14px;
-          border: 1px solid #DCE3EC;
-          border-radius: 10px;
-          background: #FFFFFF;
-          color: #7B8BA0;
-          transition:
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
+          gap: 10px;
+          min-height: 48px;
+          padding: 0 13px;
+          border: 1px solid var(--login-border);
+          border-radius: 11px;
+          background: var(--login-input-bg);
+          color: var(--login-muted);
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .auth-input-wrap:focus-within {
-          border-color: var(--navy-primary);
-          box-shadow: 0 0 0 3px rgba(23, 54, 93, 0.10);
+        .input-wrap:focus-within {
+          border-color: var(--login-blue);
+          box-shadow: 0 0 0 3px rgba(35, 79, 145, 0.1);
         }
 
-        .auth-input-wrap > svg {
-          flex-shrink: 0;
-        }
-
-        .auth-input-wrap input {
+        .input-wrap input {
           width: 100%;
           min-width: 0;
-          min-height: 45px;
+          min-height: 46px;
           padding: 0;
+          border: 0;
           outline: none;
-          border: none;
           background: transparent;
-          color: var(--text-primary);
-          font-family: inherit;
+          color: var(--login-text);
+          font: inherit;
           font-size: 13px;
         }
 
-        .auth-input-wrap input::placeholder {
-          color: #9AA6B6;
-        }
-
-        .auth-input-wrap input:disabled {
+        .input-wrap input::placeholder {
+          color: var(--login-muted);
           opacity: 0.7;
+        }
+
+        .input-wrap input:disabled {
           cursor: not-allowed;
+          opacity: 0.7;
         }
 
-        .auth-change-button {
-          flex-shrink: 0;
-          padding: 6px 0 6px 8px;
-          border: 0;
-          background: transparent;
-          color: var(--navy-primary);
-          font: inherit;
-          font-size: 11px;
-          font-weight: 800;
-          cursor: pointer;
+        .field-hint {
+          margin: 7px 0 0;
+          color: var(--login-muted);
+          font-size: 10px;
+          line-height: 1.5;
         }
 
-        .auth-otp-label-row {
+        .otp-field {
+          margin-top: 2px;
+        }
+
+        .otp-actions {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 10px;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 9px;
+          color: var(--login-muted);
+          font-size: 10px;
         }
 
-        .auth-resend-button {
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
+        .resend-button {
           padding: 0;
           border: 0;
           background: transparent;
-          color: var(--navy-primary);
+          color: var(--login-blue);
           font: inherit;
-          font-size: 11px;
           font-weight: 750;
           cursor: pointer;
         }
 
-        .auth-resend-button:disabled {
-          color: #9AA6B6;
+        .resend-button:disabled {
           cursor: not-allowed;
+          opacity: 0.55;
         }
 
-        .auth-otp-hint {
-          margin: 0;
-          color: var(--text-secondary);
-          font-size: 11px;
-          line-height: 1.6;
+        .verified-icon {
+          flex-shrink: 0;
+          color: #16a36a;
         }
 
-        .auth-alert {
+        .notice {
           display: flex;
           align-items: flex-start;
           gap: 8px;
+          margin: 12px 0;
           padding: 11px 12px;
-          border-radius: 9px;
-          font-size: 12px;
+          border: 1px solid transparent;
+          border-radius: 10px;
+          font-size: 11px;
           line-height: 1.6;
           overflow-wrap: anywhere;
         }
 
-        .auth-alert-error {
-          border: 1px solid #F0D3D3;
-          background: #FFF6F6;
-          color: #9F2D2D;
+        .success-notice {
+          border-color: #b9e7d1;
+          background: #edf9f2;
+          color: #176b47;
         }
 
-        .auth-alert-success {
-          border: 1px solid #CFE4D8;
-          background: #F2FAF5;
-          color: #236544;
+        .error-notice {
+          border-color: #f0c7c7;
+          background: #fff1f1;
+          color: #a52e2e;
         }
 
-        .auth-alert-success svg {
-          flex-shrink: 0;
-          margin-top: 1px;
+        .dark .success-notice {
+          border-color: #245e49;
+          background: #102c25;
+          color: #a9e8c8;
         }
 
-        .auth-submit {
+        .dark .error-notice {
+          border-color: #673b45;
+          background: #321c26;
+          color: #ffb9c2;
+        }
+
+        .primary-button {
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 10px;
           width: 100%;
           min-height: 49px;
-          margin-top: 2px;
-          padding: 12px 18px;
-          border: 1px solid var(--navy);
-          border-radius: 10px;
-          background: var(--navy);
-          color: #FFFFFF;
-          font-family: inherit;
+          margin-top: 22px;
+          padding: 12px 16px;
+          border: 0;
+          border-radius: 11px;
+          background: linear-gradient(105deg, #234f91, #102b52);
+          box-shadow: 0 8px 20px rgba(16, 43, 82, 0.22);
+          color: #fff;
           font-size: 13px;
           font-weight: 750;
           cursor: pointer;
-          box-shadow: 0 7px 18px rgba(11, 31, 58, 0.14);
-          transition:
-            background 0.2s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .auth-submit:hover:not(:disabled) {
+        .primary-button:hover:not(:disabled) {
           transform: translateY(-1px);
-          background: var(--navy-primary);
-          box-shadow: 0 10px 22px rgba(11, 31, 58, 0.19);
+          box-shadow: 0 11px 24px rgba(16, 43, 82, 0.28);
         }
 
-        .auth-submit:disabled {
-          opacity: 0.65;
+        .primary-button:disabled {
           cursor: not-allowed;
+          opacity: 0.7;
         }
 
-        .auth-spinner {
-          width: 16px;
-          height: 16px;
-          border: 2px solid rgba(255, 255, 255, 0.35);
-          border-top-color: #FFFFFF;
-          border-radius: 50%;
-          animation: auth-spin 0.7s linear infinite;
+        .verified-banner {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
+          width: 100%;
+          min-height: 49px;
+          margin-top: 22px;
+          padding: 12px;
+          border: 1px solid #b9e7d1;
+          border-radius: 11px;
+          background: #edf9f2;
+          color: #176b47;
+          font-size: 13px;
+          font-weight: 750;
         }
 
-        @keyframes auth-spin {
+        .dark .verified-banner {
+          border-color: #245e49;
+          background: #102c25;
+          color: #a9e8c8;
+        }
+
+        .spinner {
+          animation: login-spin 0.9s linear infinite;
+        }
+
+        @keyframes login-spin {
           to {
             transform: rotate(360deg);
           }
         }
 
-        .auth-back-button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 7px;
-          width: 100%;
-          padding: 5px;
-          border: 0;
-          background: transparent;
-          color: #66758A;
-          font: inherit;
-          font-size: 12px;
-          font-weight: 650;
-          cursor: pointer;
-        }
-
-        .auth-card-bottom {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 7px;
-          margin-top: 25px;
-          padding-top: 18px;
-          border-top: 1px solid #EDF0F5;
-          color: #7A8798;
-          font-size: 11px;
-        }
-
-        .auth-card-bottom svg {
-          color: var(--steel-blue);
-        }
-
-        .auth-terms {
+        .terms-text {
           margin: 15px 0 0;
-          color: #8792A1;
+          color: var(--login-muted);
           font-size: 10px;
-          line-height: 1.7;
+          line-height: 1.8;
           text-align: center;
         }
 
-        .auth-terms a {
-          color: var(--navy-primary);
+        .terms-text a,
+        .card-footer a {
+          color: var(--login-blue);
           font-weight: 700;
           text-decoration: none;
         }
 
-        .auth-terms a:hover {
+        .terms-text a:hover,
+        .card-footer a:hover {
           text-decoration: underline;
         }
 
-        .auth-page button:focus-visible,
-        .auth-page a:focus-visible {
-          outline: 3px solid rgba(73, 106, 145, 0.4);
-          outline-offset: 3px;
+        .card-footer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 7px;
+          margin-top: 24px;
+          padding-top: 19px;
+          border-top: 1px solid var(--login-border);
+          color: var(--login-muted);
+          font-size: 11px;
         }
 
-        body.dark-mode .auth-page {
-          --navy: #E7EDF6;
-          --navy-primary: #A8BCD5;
-          --navy-hover: #CAD7E7;
-          --steel-blue: #9AB1CD;
-          --text-primary: #E7EDF6;
-          --text-secondary: #A3B0C2;
-          --surface: #111D2D;
-          --border-color: #2C3C50;
-
-          background: #0B1422;
-          color: #E7EDF6;
+        .card-footer a {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
         }
 
-        body.dark-mode .auth-glow-one {
-          background: radial-gradient(
-            circle,
-            rgba(73, 106, 145, 0.16),
-            transparent 70%
-          );
+        .copyright {
+          margin: 24px 0 0;
+          color: var(--login-muted);
+          font-size: 10px;
+          text-align: center;
         }
 
-        body.dark-mode .auth-glow-two {
-          background: radial-gradient(
-            circle,
-            rgba(23, 54, 93, 0.22),
-            transparent 70%
-          );
-        }
-
-        body.dark-mode .auth-eyebrow {
-          border-color: #2C3C50;
-          background: #142236;
-          color: #C0D0E4;
-        }
-
-        body.dark-mode .auth-card {
-          border-color: #29394D;
-          background: #111D2D;
-          box-shadow: 0 25px 75px rgba(0, 0, 0, 0.22);
-        }
-
-        body.dark-mode .auth-benefit-icon {
-          border-color: #2C3C50;
-          background: #17263A;
-          color: #C0D0E4;
-        }
-
-        body.dark-mode .auth-mode-toggle {
-          border-color: #29394D;
-          background: #0C1726;
-        }
-
-        body.dark-mode .auth-mode-toggle button {
-          color: #9EADC0;
-        }
-
-        body.dark-mode .auth-mode-toggle button.active {
-          border-color: #34465D;
-          background: #1B2B40;
-          color: #E7EDF6;
-          box-shadow: none;
-        }
-
-        body.dark-mode .auth-method-line,
-        body.dark-mode .auth-card-bottom {
-          border-color: #29394D;
-        }
-
-        body.dark-mode .auth-method-toggle button {
-          border-color: #34465D;
-          background: #111D2D;
-          color: #A8B6C9;
-        }
-
-        body.dark-mode .auth-method-toggle button.active {
-          border-color: #617C9F;
-          background: #1A2B41;
-          color: #D7E3F2;
-        }
-
-        body.dark-mode .auth-field label {
-          color: #D7E1ED;
-        }
-
-        body.dark-mode .auth-input-wrap {
-          border-color: #34465D;
-          background: #0D1827;
-          color: #A8B6C9;
-        }
-
-        body.dark-mode .auth-input-wrap:focus-within {
-          border-color: #819AB9;
-          box-shadow: 0 0 0 3px rgba(129, 154, 185, 0.15);
-        }
-
-        body.dark-mode .auth-input-wrap input {
-          color: #E7EDF6;
-        }
-
-        body.dark-mode .auth-input-wrap input::placeholder {
-          color: #74849A;
-        }
-
-        body.dark-mode .auth-submit {
-          border-color: #D6E1EF;
-          background: #D6E1EF;
-          color: #0B1F3A;
-          box-shadow: 0 7px 18px rgba(0, 0, 0, 0.2);
-        }
-
-        body.dark-mode .auth-submit:hover:not(:disabled) {
-          border-color: #B8C9DE;
-          background: #B8C9DE;
-        }
-
-        body.dark-mode .auth-spinner {
-          border-color: rgba(11, 31, 58, 0.25);
-          border-top-color: #0B1F3A;
-        }
-
-        body.dark-mode .auth-terms a,
-        body.dark-mode .auth-change-button,
-        body.dark-mode .auth-resend-button {
-          color: #C0D0E4;
-        }
-
-        body.dark-mode .auth-alert-error {
-          border-color: #613B43;
-          background: #2B1B23;
-          color: #F0B9C0;
-        }
-
-        body.dark-mode .auth-alert-success {
-          border-color: #315B49;
-          background: #152B25;
-          color: #A8DEC0;
-        }
-
-        @media (max-width: 900px) {
-          .auth-page {
-            padding: 56px 22px 70px;
+        @media (max-width: 850px) {
+          .login-main {
+            min-height: auto;
+            padding: 35px 18px 45px;
           }
 
-          .auth-layout {
-            max-width: 520px;
+          .login-layout {
             grid-template-columns: 1fr;
-            gap: 38px;
+            max-width: 540px;
+            border-radius: 23px;
           }
 
-          .auth-intro {
-            max-width: 100%;
+          .login-intro {
+            display: none;
           }
 
-          .auth-intro h1 {
-            font-size: clamp(42px, 8vw, 58px);
+          .login-form-section {
+            padding: 55px 34px 26px;
           }
 
-          .auth-intro-description {
-            max-width: 520px;
+          .mobile-brand-mark {
+            display: grid;
+            width: 45px;
+            height: 45px;
+            margin-bottom: 23px;
+            border: 0;
+            border-radius: 13px;
+            background: linear-gradient(145deg, #173c70, #071a35);
+            font-size: 25px;
           }
 
-          .auth-benefits {
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+          .theme-toggle {
+            top: 17px;
+            right: 17px;
           }
 
-          .auth-intro-footer {
+          .login-card {
+            max-width: none;
+          }
+
+          .copyright {
             margin-top: 25px;
           }
         }
 
-        @media (max-width: 540px) {
-          .auth-page {
-            padding: 38px 15px 52px;
+        @media (max-width: 480px) {
+          .login-main {
+            padding: 20px 12px 30px;
           }
 
-          .auth-layout {
-            gap: 28px;
+          .login-layout {
+            border-radius: 18px;
           }
 
-          .auth-intro h1 {
-            margin-top: 20px;
-            font-size: 43px;
-            letter-spacing: -1.8px;
+          .login-form-section {
+            padding: 54px 20px 23px;
           }
 
-          .auth-intro-description {
-            font-size: 14px;
-            line-height: 1.75;
+          .form-heading h2 {
+            font-size: 25px;
           }
 
-          .auth-benefits {
-            grid-template-columns: 1fr;
-            gap: 18px;
-            margin-top: 27px;
+          .mode-switch {
+            margin: 22px 0;
           }
 
-          .auth-intro-footer {
-            margin-top: 25px;
-          }
-
-          .auth-card {
-            padding: 23px 18px;
-            border-radius: 19px;
-          }
-
-          .auth-card-heading h2 {
-            font-size: 20px;
-          }
-
-          .auth-card-heading p {
-            font-size: 11px;
-          }
-
-          .auth-method-toggle {
+          .method-switch {
             gap: 7px;
           }
 
-          .auth-method-toggle button {
+          .method-switch button {
             gap: 6px;
+            padding: 9px 6px;
             font-size: 11px;
+          }
+
+          .otp-heading {
+            align-items: flex-start;
+          }
+
+          .secure-label {
+            font-size: 9px;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .auth-page *,
-          .auth-page *::before,
-          .auth-page *::after {
+          .login-page *,
+          .login-page *::before,
+          .login-page *::after {
             animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            scroll-behavior: auto !important;
             transition-duration: 0.01ms !important;
           }
         }
       `}</style>
-    </>
+    </div>
   );
 }

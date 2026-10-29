@@ -6,3 +6,7 @@ node_modules/
 dist/
 build/
 .DS_Store
+
+# Local browser session files
+backend/cookies.txt
+backend/login-cookies.txt
