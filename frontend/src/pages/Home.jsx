@@ -86,6 +86,8 @@ function Home() {
 
     {
 
+      id: "web-development",
+
       number: "01",
 
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=85",
@@ -102,6 +104,8 @@ function Home() {
     },
 
     {
+
+      id: "digital-marketing",
 
       number: "02",
 
@@ -120,6 +124,8 @@ function Home() {
 
     {
 
+      id: "social-media-management",
+
       number: "03",
 
       image: "https://images.unsplash.com/photo-1724862936518-ae7fcfc052c1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
@@ -136,6 +142,8 @@ function Home() {
     },
 
     {
+
+      id: "advertising-performance",
 
       number: "04",
 
@@ -154,22 +162,26 @@ function Home() {
 
     {
 
+      id: "whatsapp-automation",
+
       number: "05",
 
-      image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1000&q=85",
+      image: "https://images.unsplash.com/photo-1610548822783-33fb5cb0e3a8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
       icon: <Palette size={22} />,
 
-      title: "Creative & Branding",
+      title: "WhatsApp Automation",
 
       description:
 
-        "Visual identities and creative systems that make your business memorable.",
+        "Automated conversations designed to engage leads and convert chats into customers.",
 
-      tags: ["Branding", "Design", "Creative"],
+      tags: ["Chatbots", "Auto-replies", "Lead Nurturing"],
 
     },
 
     {
+
+      id: "growth-strategy",
 
       number: "06",
 
@@ -537,7 +549,7 @@ function Home() {
           <div className="services-grid">
             {services.map((service, index) => (
               <Link
-                to="/services"
+                to={`/services/${service.id}`}
                 className="service-card"
                 key={service.number}
                 style={{ "--card-index": index }}
@@ -708,40 +720,32 @@ function Home() {
                 return (
                   <article
                     className={`team-card team-card-${positionClass}`}
-                    key={member.number}
+                    key={member.name}
                     style={{ "--hidden-direction": hiddenDirection }}
                     aria-hidden={positionClass === "hidden"}
                   >
                     <div className="team-card-top">
-                      <span className="team-number">{member.number}</span>
-                      
                       {member.image ? (
-                        <div className="team-card-top">
-  <span className="team-number">{member.number}</span>
-
-  <div className="team-avatar team-avatar-photo">
-    <img
-      src={member.image}
-      alt={`${member.name} - ${member.role}`}
-      loading="lazy"
-      onError={(event) => {
-        const img = event.currentTarget;
-        const avatar = img.parentElement;
-
-        img.style.display = "none";
-        avatar.classList.remove("team-avatar-photo");
-        avatar.classList.add("team-avatar-fallback");
-
-        avatar.textContent = member.name
-          .split(" ")
-          .map((word) => word[0])
-          .join("")
-          .slice(0, 2)
-          .toUpperCase();
-      }}
-    />
-  </div>
-</div>
+                        <div className="team-avatar team-avatar-photo">
+                          <img
+                            src={member.image}
+                            alt={`${member.name} - ${member.role}`}
+                            loading="lazy"
+                            onError={(event) => {
+                              const img = event.currentTarget;
+                              const avatar = img.parentElement;
+                              img.style.display = "none";
+                              avatar.classList.remove("team-avatar-photo");
+                              avatar.classList.add("team-avatar-fallback");
+                              avatar.textContent = member.name
+                                .split(" ")
+                                .map((word) => word[0])
+                                .join("")
+                                .slice(0, 2)
+                                .toUpperCase();
+                            }}
+                          />
+                        </div>
                       ) : (
                         <div className="team-avatar" aria-hidden="true">
                           {member.name.split(" ").map((word) => word[0]).join("").slice(0, 2)}
@@ -762,7 +766,7 @@ function Home() {
               <div className="team-carousel-dots" aria-label="Team member position">
                 {team.map((member, index) => (
                   <button
-                    key={member.number}
+                    key={member.name}
                     type="button"
                     className={`team-carousel-dot ${index === activeTeam ? "is-active" : ""}`}
                     aria-label={`Show ${member.name}`}

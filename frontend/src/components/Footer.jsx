@@ -96,17 +96,18 @@ function Footer() {
           <Link to="/work">Work</Link>
           <Link to="/industries">Industries</Link>
           <Link to="/contact">Contact</Link>
+          <Link to="/pricing">Pricing</Link>
         </div>
 
         {/* SERVICES */}
         <div className="footer-column">
           <div className="footer-heading">SERVICES</div>
-          <Link to="/services">Web Development</Link>
-          <Link to="/services">Digital Marketing</Link>
-          <Link to="/services">Social Media</Link>
-          <Link to="/services">Performance Advertising</Link>
-          <Link to="/services">Creative &amp; Branding</Link>
-          <Link to="/services">Growth &amp; Strategy</Link>
+          <Link to="/services/web-development">Web Development</Link>
+          <Link to="/services/digital-marketing">Digital Marketing</Link>
+          <Link to="/services/social-media-management">Social Media</Link>
+          <Link to="/services/advertising-performance">Performance Advertising</Link>
+          <Link to="/services/whatsapp-automation">WhatsApp Automation</Link>
+          <Link to="/services/growth-strategy">Growth &amp; Strategy</Link>
         </div>
 
         {/* CONTACT */}

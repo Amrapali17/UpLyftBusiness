@@ -180,7 +180,7 @@ function Contact() {
 
                   {/* WHATSAPP */}
                   <a
-                    href="https://wa.me/91YOUR10DIGITNUMBER"
+                    href="https://wa.me/918408820707"
                     className="social-icon whatsapp-icon"
                     aria-label="WhatsApp"
                     target="_blank"
