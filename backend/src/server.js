@@ -1,9 +1,10 @@
+
 import express from "express";
 import ws from "ws";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
 dotenv.config();
@@ -72,28 +73,14 @@ const supabaseAuth = createClient(
   }
 );
 
-// Email notifications
-const smtpPort = Number(process.env.SMTP_PORT || 465);
+// Email notifications using Resend
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 const emailConfigured = Boolean(
-  process.env.SMTP_USER &&
-  process.env.SMTP_PASS &&
-  process.env.NOTIFICATION_EMAIL
+  resend && process.env.NOTIFICATION_EMAIL
 );
-
-const transporter = emailConfigured
-  ? nodemailer.createTransport({
-      host:
-        process.env.SMTP_HOST ||
-        "smtpout.secureserver.net",
-      port: smtpPort,
-      secure: smtpPort === 465,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
-  : null;
 
 function validEmail(value) {
   return (
@@ -108,26 +95,28 @@ async function sendOwnerNotification({
   text,
   replyTo,
 }) {
-  if (!transporter) return false;
+  if (!emailConfigured) {
+    console.warn("Email notifications are not configured.");
+    return false;
+  }
 
   try {
-    await transporter.sendMail({
-      from: {
-        name: "UpLyftBusiness Website",
-        address: process.env.SMTP_USER,
-      },
-      to: process.env.NOTIFICATION_EMAIL,
+    const { error } = await resend.emails.send({
+      from: "UpLyftBusiness Website <connect@uplyftbusiness.com>",
+      to: [process.env.NOTIFICATION_EMAIL],
       ...(replyTo ? { replyTo } : {}),
       subject,
       text,
     });
 
+    if (error) {
+      console.error("Resend email failed:", error.message);
+      return false;
+    }
+
     return true;
   } catch (error) {
-    console.error(
-      "Notification email failed:",
-      error.message
-    );
+    console.error("Resend email failed:", error.message);
     return false;
   }
 }
@@ -171,7 +160,7 @@ app.get("/api/health", (req, res) => {
     success: true,
     message: "UpLyftBusiness backend is running!",
     timestamp: new Date().toISOString(),
-    emailConfigured: Boolean(transporter),
+    emailConfigured,
   });
 });
 
@@ -426,8 +415,8 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
- // Request a one-time email code
- app.post("/api/auth/send-otp", async (req, res) => {
+// Request a one-time email code
+app.post("/api/auth/send-otp", async (req, res) => {
   try {
     const { mode, method, name, email } = req.body ?? {};
 
@@ -816,6 +805,7 @@ app.use("/api", (req, res) => {
     message: "API route not found",
   });
 });
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`UpLyftBusiness API running on port ${PORT}`);
 });
