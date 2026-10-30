@@ -340,3 +340,54 @@ html[data-theme="dark"] .industry-card {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =========================================
+   11. GLOBAL BUTTON HOVER POLISH
+========================================= */
+
+/* Every native <button> gets a smooth lift + shadow unless overridden */
+button:not(:disabled) {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(7, 31, 45, 0.15);
+}
+
+button:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(7, 31, 45, 0.1);
+}
+
+/* Links styled as buttons get the same treatment */
+a.btn,
+a[class*="button"],
+a[class*="-btn"] {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+a.btn:hover,
+a[class*="button"]:hover,
+a[class*="-btn"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(7, 31, 45, 0.15);
+}
+
+a.btn:active,
+a[class*="button"]:active,
+a[class*="-btn"]:active {
+  transform: translateY(0);
+}

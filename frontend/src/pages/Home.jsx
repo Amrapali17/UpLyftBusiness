@@ -225,7 +225,7 @@ function Home() {
   {
     role: "Chief Technology Officer",
     name: "Om Navneet Patil",
-    image: "/om2.png",
+    image: "/omp.png",
     description:
       "Leading technology, development and the technical direction of UpLyftBusiness.",
   },

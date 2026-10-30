@@ -1351,6 +1351,10 @@ export default function Work() {
           background: var(--work-surface);
           text-align: left;
           cursor: pointer;
+        }
+
+        .work-project-preview-button:hover {
+          background: rgba(105, 178, 230, 0.06);
         }
 
         /* PROJECT PREVIEWS */
@@ -1500,6 +1504,12 @@ export default function Work() {
           background: #142b52;
           font-size: 7px;
           font-weight: 800;
+        }
+
+        .preview-button:hover {
+          background: #1e3f7a;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(7, 31, 45, 0.25);
         }
 
         .preview-visual {

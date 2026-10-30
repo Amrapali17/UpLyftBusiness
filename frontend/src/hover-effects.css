@@ -1,0 +1,445 @@
+
+/* =============================================================
+   GLOBAL HOVER EFFECTS — UpLyftBusiness
+   Covers every page / component. Matches brand theme:
+     #071f2d (dark navy)  |  #69b2e6 (accent blue)  |  #fff
+   All transitions respect prefers-reduced-motion.
+============================================================= */
+
+/* ─── UTILITIES ─────────────────────────────────────────────── */
+:root {
+  --hover-lift:       translateY(-4px);
+  --hover-lift-sm:    translateY(-2px);
+  --hover-lift-lg:    translateY(-6px);
+  --hover-shadow:     0 8px 24px rgba(7, 31, 45, 0.14);
+  --hover-shadow-sm:  0 4px 14px rgba(7, 31, 45, 0.10);
+  --hover-shadow-lg:  0 16px 40px rgba(7, 31, 45, 0.18);
+  --hover-glow:       0 0 0 3px rgba(105, 178, 230, 0.25);
+  --accent:           #69b2e6;
+  --accent-dark:      #4a9fd4;
+  --transition-fast:  0.2s ease;
+  --transition-base:  0.25s ease;
+  --transition-slow:  0.35s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   1. HOME PAGE
+═══════════════════════════════════════════════════════════════ */
+
+/* Service cards */
+.service-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base) !important;
+}
+.service-card:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--hover-shadow);
+  border-color: rgba(105, 178, 230, 0.4) !important;
+}
+.service-card:hover .service-arrow {
+  transform: translate(3px, -3px);
+  color: var(--accent);
+}
+.service-arrow {
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+/* Industry cards */
+.industry-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base) !important;
+}
+.industry-card:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--hover-shadow);
+}
+
+/* Team cards */
+.team-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base) !important;
+}
+.team-card:hover {
+  transform: var(--hover-lift-sm);
+  box-shadow: var(--hover-shadow);
+}
+
+/* CTA section buttons */
+.primary-button {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast) !important;
+}
+.primary-button:hover {
+  transform: var(--hover-lift-sm);
+  box-shadow: var(--hover-shadow);
+}
+
+.secondary-button {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast) !important;
+}
+.secondary-button:hover {
+  transform: var(--hover-lift-sm);
+  border-color: var(--accent) !important;
+  box-shadow: var(--hover-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   2. ABOUT PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.ab-service-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base) !important;
+}
+.ab-service-card:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--hover-shadow);
+  border-color: rgba(105, 178, 230, 0.4) !important;
+}
+
+.ab-value-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base) !important;
+}
+.ab-value-card:hover {
+  transform: var(--hover-lift-sm);
+  box-shadow: var(--hover-shadow-sm);
+}
+
+.ab-future-item {
+  transition: transform var(--transition-base), box-shadow var(--transition-base) !important;
+}
+.ab-future-item:hover {
+  transform: var(--hover-lift-sm);
+  box-shadow: var(--hover-shadow-sm);
+}
+
+.ab-system-node {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+.ab-system-node:hover {
+  transform: scale(1.06);
+  box-shadow: var(--hover-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   3. SERVICES PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.up-service-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base) !important;
+}
+.up-service-card:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--hover-shadow);
+  border-color: rgba(105, 178, 230, 0.35) !important;
+}
+.up-service-card:hover .up-card-link-icon {
+  transform: translate(3px, -3px);
+}
+.up-card-link-icon {
+  transition: transform var(--transition-fast);
+}
+
+.up-capability-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base) !important;
+}
+.up-capability-card:hover {
+  transform: var(--hover-lift-sm);
+  box-shadow: var(--hover-shadow-sm);
+}
+
+.up-carousel-indicators > * {
+  transition: transform var(--transition-fast), background var(--transition-fast) !important;
+}
+.up-carousel-indicators > *:hover {
+  transform: scale(1.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   4. SERVICE DETAIL PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.sd-package-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base) !important;
+}
+.sd-package-card:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--hover-shadow);
+  border-color: rgba(105, 178, 230, 0.4) !important;
+}
+
+.sd-offering {
+  transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast) !important;
+}
+.sd-offering:hover {
+  transform: var(--hover-lift-sm);
+  border-color: rgba(105, 178, 230, 0.35) !important;
+}
+.sd-offering:hover .sd-offering-arrow {
+  transform: translate(3px, -3px);
+}
+.sd-offering-arrow {
+  transition: transform var(--transition-fast);
+}
+
+.sd-outcome {
+  transition: transform var(--transition-fast), color var(--transition-fast) !important;
+}
+.sd-outcome:hover {
+  transform: translateX(4px);
+  color: var(--accent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   5. WORK PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.work-project-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base) !important;
+}
+.work-project-card:hover {
+  transform: var(--hover-lift-sm);
+  box-shadow: var(--hover-shadow);
+}
+
+.work-capability-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base) !important;
+}
+.work-capability-card:hover {
+  transform: var(--hover-lift-sm);
+  box-shadow: var(--hover-shadow-sm);
+  border-color: rgba(105, 178, 230, 0.35) !important;
+}
+
+.work-filter-button {
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast) !important;
+}
+.work-filter-button:hover {
+  transform: var(--hover-lift-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   6. PROCESS PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.process-item {
+  transition: transform var(--transition-base), box-shadow var(--transition-base) !important;
+}
+.process-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--hover-shadow-sm);
+}
+.process-item:hover .process-item-icon {
+  transform: scale(1.1);
+  background: var(--accent) !important;
+  color: #071f2d !important;
+}
+.process-item-icon {
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast) !important;
+}
+
+.principle {
+  transition: transform var(--transition-fast), border-color var(--transition-fast) !important;
+}
+.principle:hover {
+  transform: var(--hover-lift-sm);
+  border-color: rgba(105, 178, 230, 0.4) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   7. INDUSTRIES PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.ind-sector-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base) !important;
+}
+.ind-sector-card:hover {
+  transform: var(--hover-lift);
+  box-shadow: var(--hover-shadow);
+}
+.ind-sector-card:hover .ind-card-image {
+  transform: scale(1.04);
+}
+.ind-card-image {
+  transition: transform var(--transition-slow) !important;
+}
+.ind-card-image-link {
+  overflow: hidden;
+}
+
+.ind-capability-row {
+  transition: transform var(--transition-fast), color var(--transition-fast) !important;
+}
+.ind-capability-row:hover {
+  transform: translateX(4px);
+}
+.ind-capability-row:hover .ind-capability-icon {
+  color: var(--accent) !important;
+  transform: scale(1.15);
+}
+.ind-capability-icon {
+  transition: transform var(--transition-fast), color var(--transition-fast) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   8. CONTACT PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.contact-detail {
+  transition: transform var(--transition-fast), background var(--transition-fast) !important;
+}
+.contact-detail:hover {
+  transform: var(--hover-lift-sm);
+}
+.contact-detail:hover .contact-detail-icon {
+  background: var(--accent) !important;
+  color: #071f2d !important;
+  transform: scale(1.08);
+}
+.contact-detail-icon {
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast) !important;
+}
+
+.social-icon {
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast) !important;
+}
+.social-icon:hover {
+  transform: var(--hover-lift-sm) scale(1.1);
+  background: rgba(105, 178, 230, 0.15) !important;
+  color: var(--accent) !important;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(105, 178, 230, 0.18) !important;
+  outline: none;
+}
+.form-field input:hover:not(:focus),
+.form-field textarea:hover:not(:focus),
+.form-field select:hover:not(:focus) {
+  border-color: rgba(105, 178, 230, 0.4) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   9. ENQUIRE PAGE
+═══════════════════════════════════════════════════════════════ */
+
+.sidebar-point {
+  transition: transform var(--transition-fast), color var(--transition-fast) !important;
+}
+.sidebar-point:hover {
+  transform: translateX(4px);
+  color: var(--accent) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   10. NAVBAR
+═══════════════════════════════════════════════════════════════ */
+
+.nav-link {
+  transition: color var(--transition-fast) !important;
+}
+.nav-link:hover {
+  color: var(--accent) !important;
+}
+
+.logo {
+  transition: opacity var(--transition-fast), transform var(--transition-fast) !important;
+}
+.logo:hover {
+  opacity: 0.85;
+  transform: var(--hover-lift-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   11. FOOTER
+═══════════════════════════════════════════════════════════════ */
+
+.footer-column > a {
+  transition: color var(--transition-fast), transform var(--transition-fast) !important;
+}
+.footer-column > a:hover {
+  color: var(--accent) !important;
+  transform: translateX(3px) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   12. IMAGE ZOOM — any card image with overflow:hidden parent
+═══════════════════════════════════════════════════════════════ */
+
+.service-image-wrap {
+  overflow: hidden;
+}
+.service-image {
+  transition: transform var(--transition-slow) !important;
+}
+.service-card:hover .service-image {
+  transform: scale(1.05);
+}
+
+.ab-approach-photo,
+.ab-future-photo,
+.ab-hero-photo {
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow) !important;
+}
+.ab-approach-photo:hover,
+.ab-future-photo:hover,
+.ab-hero-photo:hover {
+  transform: scale(1.02);
+  box-shadow: var(--hover-shadow-lg);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   13. FLOATING WHATSAPP
+═══════════════════════════════════════════════════════════════ */
+
+.floating-whatsapp-button {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+.floating-whatsapp-button:hover {
+  transform: scale(1.12) var(--hover-lift-sm) !important;
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.35) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   14. DARK MODE ADJUSTMENTS
+═══════════════════════════════════════════════════════════════ */
+
+body.dark-mode .service-card:hover,
+body.dark-mode .ab-service-card:hover,
+body.dark-mode .up-service-card:hover,
+body.dark-mode .sd-package-card:hover,
+body.dark-mode .work-project-card:hover,
+body.dark-mode .work-capability-card:hover,
+body.dark-mode .ind-sector-card:hover,
+body.dark-mode .team-card:hover,
+body.dark-mode .ab-value-card:hover,
+body.dark-mode .ab-future-item:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   15. REDUCE MOTION OVERRIDE
+═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .service-card, .industry-card, .team-card,
+  .ab-service-card, .ab-value-card, .ab-future-item, .ab-system-node,
+  .up-service-card, .up-capability-card,
+  .sd-package-card, .sd-offering, .sd-outcome,
+  .work-project-card, .work-capability-card, .work-filter-button,
+  .process-item, .process-item-icon, .principle,
+  .ind-sector-card, .ind-card-image, .ind-capability-row, .ind-capability-icon,
+  .contact-detail, .contact-detail-icon, .social-icon,
+  .form-field input, .form-field textarea, .form-field select,
+  .sidebar-point, .nav-link, .logo,
+  .footer-column > a, .service-image,
+  .ab-approach-photo, .ab-future-photo, .ab-hero-photo,
+  .floating-whatsapp-button,
+  .primary-button, .secondary-button {
+    transition: none !important;
+    transform: none !important;
+  }
+}

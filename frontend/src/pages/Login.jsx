@@ -1021,7 +1021,12 @@ export default function Login() {
           cursor: pointer;
         }
 
-        .resend-button:disabled {
+                .resend-button:hover:not(:disabled) {
+          text-decoration: underline;
+          opacity: 0.85;
+        }
+
+.resend-button:disabled {
           cursor: not-allowed;
           opacity: 0.55;
         }

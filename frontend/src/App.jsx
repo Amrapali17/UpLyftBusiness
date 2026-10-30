@@ -18,6 +18,7 @@ import ScrollToTop from "./ScrollToTop";
 
 import "./App.css";
 import "./responsive.css";
+import "./hover-effects.css";
 
 function App() {
   return (
