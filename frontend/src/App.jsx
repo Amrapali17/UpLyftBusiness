@@ -11,10 +11,10 @@ import Process from "./pages/Process";
 import Industries from "./pages/Industries";
 import Contact from "./pages/Contact";
 import Enquire from "./pages/Enquire";
-import Pricing from "./pages/Pricing";
 
 import AdminDashboard from "./admin/AdminDashboard";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import ScrollToTop from "./ScrollToTop";
 
 import "./App.css";
 import "./responsive.css";
@@ -22,6 +22,7 @@ import "./responsive.css";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Website routes */}
         <Route path="/" element={<Home />} />
@@ -37,7 +38,6 @@ function App() {
         <Route path="/industries" element={<Industries />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/enquire" element={<Enquire />} />
-        <Route path="/pricing" element={<Pricing />} />
 
         {/* Admin dashboard */}
         <Route path="/admin" element={<AdminDashboard />} />

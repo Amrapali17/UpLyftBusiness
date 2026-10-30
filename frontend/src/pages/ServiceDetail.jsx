@@ -49,7 +49,7 @@ const serviceData = {
           "Contact form integration",
         ],
         price: "₹14,999",
-        priceLabel: "Fixed price",
+        priceLabel: "Starting From",
       },
       {
         name: "Growth",
@@ -64,7 +64,7 @@ const serviceData = {
           "Performance optimisation",
         ],
         price: "₹29,999",
-        priceLabel: "Fixed price",
+        priceLabel: "Starting From",
         popular: true,
       },
       {
@@ -79,8 +79,8 @@ const serviceData = {
           "Scalable architecture",
           "Project-specific planning",
         ],
-        price: "From ₹49,999",
-        priceLabel: "Fixed price",
+        price: "₹XX,XXX",
+        priceLabel: "Starting From",
       },
     ],
   },
@@ -107,50 +107,52 @@ const serviceData = {
     ],
     packages: [
       {
-        name: "Essential",
-        label: "For building visibility",
+        name: "Starter",
+        label: "For local businesses and shops",
         description:
-          "Establish a stronger digital foundation with essential visibility and optimisation activities.",
+          "Build your digital foundation with social content, basic SEO, and Google Business Profile optimisation.",
         features: [
-          "Digital presence review",
-          "Marketing direction",
-          "Basic SEO recommendations",
-          "Google Business Profile guidance",
-          "Action plan for improvement",
+          "8 social media posts per month",
+          "2 short-form reels",
+          "Basic SEO setup",
+          "Google Business Profile optimisation",
+          "Monthly performance report",
         ],
-        price: "Custom",
-        priceLabel: "Quote on enquiry",
+        price: "₹15,000",
+        priceLabel: "Per month",
       },
       {
         name: "Growth",
-        label: "For consistent progress",
+        label: "For businesses building visibility and leads",
         description:
-          "A coordinated approach to improve discoverability and build a stronger online presence.",
+          "Comprehensive content, SEO, and paid ad management to grow your audience and generate leads.",
         features: [
-          "Everything in Essential",
-          "Ongoing SEO activities",
-          "Content recommendations",
-          "Visibility improvements",
-          "Progress reporting",
+          "12–16 social media posts per month",
+          "4 short-form reels",
+          "SEO and keyword tracking",
+          "Google Ads or Meta Ads management",
+          "2 blogs or articles",
+          "Monthly report and strategy call",
         ],
-        price: "Custom",
-        priceLabel: "Quote on enquiry",
+        price: "₹30,000",
+        priceLabel: "Per month",
         popular: true,
       },
       {
-        name: "Custom",
-        label: "For ambitious goals",
+        name: "Premium",
+        label: "For growing businesses needing full digital support",
         description:
-          "A strategy shaped around your industry, competition, audience, and business objectives.",
+          "Broader digital coverage combining content, SEO, paid ads, and conversion tracking.",
         features: [
-          "Tailored marketing strategy",
-          "Expanded SEO planning",
-          "Multi-channel coordination",
-          "Competitor analysis",
-          "Goal-based reporting",
+          "16–20 social media posts per month",
+          "6–8 short-form reels",
+          "Comprehensive SEO",
+          "Google Ads and Meta Ads management",
+          "4 blogs or articles",
+          "Conversion tracking and detailed reporting",
         ],
-        price: "Custom",
-        priceLabel: "Quote on enquiry",
+        price: "₹50,000",
+        priceLabel: "Per month",
       },
     ],
   },
@@ -177,50 +179,56 @@ const serviceData = {
     ],
     packages: [
       {
-        name: "Essential",
-        label: "For a consistent presence",
+        name: "Starter",
+        label: "For small businesses building online presence",
         description:
-          "Create a more organised social presence with structured content planning and creative support.",
+          "Establish a consistent social presence with creative graphics, reels, and structured content management.",
         features: [
-          "Content calendar",
-          "Post and creative planning",
-          "Profile review",
-          "Brand consistency guidance",
-          "Monthly performance review",
+          "12 creative graphics per month",
+          "4 reels using client-provided footage",
+          "Monthly content calendar",
+          "Captions, hashtags and basic copywriting",
+          "Profile optimisation",
+          "Scheduling on 1–2 platforms",
+          "Monthly performance report",
         ],
-        price: "Custom",
-        priceLabel: "Quote on enquiry",
+        price: "₹25,000",
+        priceLabel: "Per month",
       },
       {
         name: "Growth",
-        label: "For stronger engagement",
+        label: "For consistent content and audience growth",
         description:
-          "Build a more active social presence through a coordinated content and engagement strategy.",
+          "Step up your social game with more content, animated creatives, and community management.",
         features: [
-          "Everything in Essential",
-          "Expanded content planning",
-          "Reels and campaign concepts",
-          "Platform-specific strategy",
-          "Engagement recommendations",
+          "20 creative graphics per month",
+          "6 reels",
+          "2 animated creatives or GIFs",
+          "Content strategy and monthly calendar",
+          "Management of up to 2 platforms",
+          "Community management",
+          "Monthly analytics and review meeting",
         ],
-        price: "Custom",
-        priceLabel: "Quote on enquiry",
+        price: "₹50,000",
+        priceLabel: "Per month",
         popular: true,
       },
       {
-        name: "Custom",
-        label: "For tailored campaigns",
+        name: "Core",
+        label: "For professional creative production",
         description:
-          "A customised social media approach based on your brand voice, platforms, and campaign needs.",
+          "Established businesses get brand storytelling, animated videos, multi-platform management, and paid campaigns.",
         features: [
-          "Custom content direction",
-          "Campaign planning",
-          "Multi-platform coordination",
-          "Creative collaboration",
-          "Goal-focused reporting",
+          "20 creative graphics per month",
+          "3 concept-based reels",
+          "2 animated videos or GIFs",
+          "1 logo animation or brand intro",
+          "Management of up to 3 platforms",
+          "Brand storytelling and content planning",
+          "Monthly performance report and strategy review",
         ],
-        price: "Custom",
-        priceLabel: "Quote on enquiry",
+        price: "₹1,00,000",
+        priceLabel: "Per month",
       },
     ],
   },
@@ -364,7 +372,7 @@ const serviceData = {
           "Enterprise-grade chatbot flows",
           "Priority support & training",
         ],
-        price: "₹21,999",
+        price: "₹XX,XXX",
         priceLabel: "One-time setup",
       },
     ],
@@ -627,6 +635,13 @@ function ServiceDetail() {
                       </li>
                     ))}
                   </ul>
+
+                  {pkg.price && (
+                    <div className="sd-package-price">
+                      <span className="sd-price-label">{pkg.priceLabel}</span>
+                      <span className="sd-price-value">{pkg.price} <span className="sd-price-onwards">Onwards</span></span>
+                    </div>
+                  )}
 
                   <Link
                     to={`/enquire?service=${serviceId}&package=${encodeURIComponent(
@@ -1186,6 +1201,53 @@ function ServiceDetail() {
           border-radius: 50%;
           background: #E8EEF5;
           color: #0B1F3A;
+        }
+
+        /* PRICE DISPLAY */
+        .sd-package-price {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          margin: 18px 0 12px;
+          padding: 14px 16px;
+          background: rgba(105, 178, 230, 0.07);
+          border: 1px solid rgba(105, 178, 230, 0.18);
+          border-radius: 10px;
+        }
+
+        .sd-price-label {
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #69b2e6;
+        }
+
+        .sd-price-value {
+          font-size: 22px;
+          font-weight: 850;
+          letter-spacing: -0.03em;
+          color: #071f2d;
+        }
+
+        .sd-price-onwards {
+          font-size: 13px;
+          font-weight: 600;
+          color: rgba(7, 31, 45, 0.55);
+          letter-spacing: 0;
+        }
+
+        body.dark-mode .sd-package-price {
+          background: rgba(105, 178, 230, 0.06);
+          border-color: rgba(105, 178, 230, 0.15);
+        }
+
+        body.dark-mode .sd-price-value {
+          color: #f0f6fc;
+        }
+
+        body.dark-mode .sd-price-onwards {
+          color: rgba(240, 246, 252, 0.5);
         }
 
         .sd-package-button {

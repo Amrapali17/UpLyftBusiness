@@ -28,7 +28,6 @@ function Navbar() {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
-    { name: "Pricing", path: "/pricing" },
     { name: "Work", path: "/work" },
     { name: "Industries", path: "/industries" },
   ];

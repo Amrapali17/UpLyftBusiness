@@ -96,7 +96,6 @@ function Footer() {
           <Link to="/work">Work</Link>
           <Link to="/industries">Industries</Link>
           <Link to="/contact">Contact</Link>
-          <Link to="/pricing">Pricing</Link>
         </div>
 
         {/* SERVICES */}
